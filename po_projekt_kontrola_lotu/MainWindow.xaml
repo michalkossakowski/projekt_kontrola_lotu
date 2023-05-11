@@ -5,8 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:po_projekt_kontrola_lotu"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200">
-    <Grid>
+        Title="MainWindow" Height="610" Width="1000">
+    <Grid Background="#FFC7C7C7">
+        <Rectangle HorizontalAlignment="Left" Height="500" Margin="179,58,0,0" Stroke="Black" VerticalAlignment="Top" Width="500"/>
+        <Rectangle HorizontalAlignment="Left" Height="160" Margin="9,398,0,0" Stroke="Black" VerticalAlignment="Top" Width="160"/>
+        <Label Content="Legenda" HorizontalAlignment="Left" Margin="54,367,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Label Content="Radar" HorizontalAlignment="Left" Margin="378,0,0,0" VerticalAlignment="Top" FontSize="36" RenderTransformOrigin="0.55,0.467"/>
+
+        <Button x:Name="wczytaj" Content="Wczytaj Plik" HorizontalAlignment="Left" Height="26" Margin="797,163,0,0" VerticalAlignment="Top" Width="100"  Background="#FF00A7FF" BorderBrush="Black" Foreground="White" FontWeight="Bold"/>
+        <TextBox HorizontalAlignment="Left" Margin="797,226,0,0" TextAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="Top" Width="100"  FontSize="11" BorderBrush="Black" Background="White"/>
+        <Button x:Name="wygeneruj_trasy" Content="Wygeneruj trasy" HorizontalAlignment="Left" Height="26" Margin="797,248,0,0" VerticalAlignment="Top"  Background="#FF4E00FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="100"/>
+
+
+        <Label Content="Podaj ilość statków:" HorizontalAlignment="Left" Margin="797,203,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="10" Height="23" Width="100"/>
+        <Button x:Name="start" Content="Start" HorizontalAlignment="Left" Height="26" Margin="797,295,0,0" VerticalAlignment="Top"  Background="#FF13FF00" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="44"/>
+        <Button x:Name="stop" Content="Stop" HorizontalAlignment="Left" Height="26" Margin="851,295,0,0" VerticalAlignment="Top"  Background="Red" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="46"/>
+        <Label Content="Timer:" HorizontalAlignment="Left" Margin="797,332,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="10" Height="23" Width="44"/>
+        <TextBox HorizontalAlignment="Left" Margin="841,335,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="00:00:00" VerticalAlignment="Top" Width="56"  FontSize="11" BorderBrush="Black" Background="White"/>
+        <TextBox HorizontalAlignment="Left" Margin="797,401,0,0" TextAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="Top" Width="100"  FontSize="11" BorderBrush="Black" Background="White"/>
+        <Label Content="Wybierz statek do &#xD;&#xA;zmiany trasy:" HorizontalAlignment="Left" Margin="797,364,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="10" Height="37" Width="100"/>
+        <Button x:Name="zmien_trase" Content="Zmien trasę" HorizontalAlignment="Left" Height="26" Margin="797,423,0,0" VerticalAlignment="Top"  Background="#FFC300FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="100"/>
 
     </Grid>
 </Window>
