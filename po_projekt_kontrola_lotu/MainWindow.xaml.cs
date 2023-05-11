@@ -15,8 +15,6 @@ using System.Windows.Shapes;
 
 class Radar { }
 
-class obiekt_na_ziemi { }
-
 namespace po_projekt_kontrola_lotu
 {
     /// <summary>
