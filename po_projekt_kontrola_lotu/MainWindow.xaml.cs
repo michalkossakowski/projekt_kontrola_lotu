@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+class Radar { }
+
 namespace po_projekt_kontrola_lotu
 {
     /// <summary>
