@@ -18,10 +18,10 @@
 
 
         <Label Content="Podaj ilość statków:" HorizontalAlignment="Left" Margin="797,203,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="10" Height="23" Width="100"/>
-        <Button x:Name="start" Content="Start" HorizontalAlignment="Left" Height="26" Margin="797,295,0,0" VerticalAlignment="Top"  Background="#FF13FF00" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="44"/>
-        <Button x:Name="stop" Content="Stop" HorizontalAlignment="Left" Height="26" Margin="851,295,0,0" VerticalAlignment="Top"  Background="Red" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="46"/>
+        <Button x:Name="start" Click="btnStart_Click" Content="Start" HorizontalAlignment="Left" Height="26" Margin="797,295,0,0" VerticalAlignment="Top"  Background="#FF13FF00" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="44"/>
+        <Button x:Name="stop"   Click="btnStop_Click"  Content="Stop" HorizontalAlignment="Left" Height="26" Margin="851,295,0,0" VerticalAlignment="Top"  Background="Red" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="46"/>
         <Label Content="Timer:" HorizontalAlignment="Left" Margin="797,332,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="10" Height="23" Width="44"/>
-        <TextBox HorizontalAlignment="Left" Margin="841,335,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="00:00:00" VerticalAlignment="Top" Width="56"  FontSize="11" BorderBrush="Black" Background="White"/>
+        <TextBox Name="TimerBox" IsReadOnly="True" HorizontalAlignment="Left" Margin="841,335,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="0" VerticalAlignment="Top" Width="56"  FontSize="11" BorderBrush="Black" Background="#7FFF0000" />
         <TextBox HorizontalAlignment="Left" Margin="797,401,0,0" TextAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="Top" Width="100"  FontSize="11" BorderBrush="Black" Background="White"/>
         <Label Content="Wybierz statek do &#xD;&#xA;zmiany trasy:" HorizontalAlignment="Left" Margin="797,364,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="10" Height="37" Width="100"/>
         <Button x:Name="zmien_trase" Content="Zmien trasę" HorizontalAlignment="Left" Height="26" Margin="797,423,0,0" VerticalAlignment="Top"  Background="#FFC300FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="100"/>
