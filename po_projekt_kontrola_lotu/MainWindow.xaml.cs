@@ -32,17 +32,16 @@ namespace po_projekt_kontrola_lotu
         private int _counter = 0;
         public MainWindow()
         {
-            
+            InitializeComponent();
             //poczatek main
-            LoadMapObjectsFromFile("obiekty.txt"); //nakaz wywołania metody ze zmienną "obiekty.txt"
             // wyłączenie rozszerzania okna
             this.ResizeMode = ResizeMode.NoResize;
             //timer
-            InitializeComponent();
+            
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += new EventHandler(dispatcherTimer_Tick);
-
+            LoadMapObjectsFromFile("obiekty.txt"); //nakaz wywołania metody ze zmienną "obiekty.txt"
 
             //koniec main
         }
