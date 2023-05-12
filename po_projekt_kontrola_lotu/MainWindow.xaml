@@ -25,6 +25,7 @@
         <TextBox HorizontalAlignment="Left" Margin="797,401,0,0" TextAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="Top" Width="100"  FontSize="11" BorderBrush="Black" Background="White"/>
         <Label Content="Wybierz statek do &#xD;&#xA;zmiany trasy:" HorizontalAlignment="Left" Margin="797,364,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="10" Height="37" Width="100"/>
         <Button x:Name="zmien_trase" Content="Zmien trasę" HorizontalAlignment="Left" Height="26" Margin="797,423,0,0" VerticalAlignment="Top"  Background="#FFC300FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="100"/>
+        <Button x:Name="Timer_Reset" Click="Timer_Reset_Click"  Content="Reset Timera" HorizontalAlignment="Left" Margin="797,497,0,0" VerticalAlignment="Top" Height="22" Width="100"/>
 
     </Grid>
 </Window>

@@ -62,5 +62,10 @@ namespace po_projekt_kontrola_lotu
             this.TimerBox.Background = new SolidColorBrush(customColor);
         }
 
+        private void Timer_Reset_Click(object sender, RoutedEventArgs e)
+        {
+            _counter = 0;
+            TimerBox.Text = _counter.ToString();
+        }
     }
 }
