@@ -63,7 +63,7 @@ namespace po_projekt_kontrola_lotu
 
 
         //reset
-        private void Reset_Click(object sender, RoutedEventArgs e)
+        private void ResetFun()
         {
             // timer
             _counter = 0;
@@ -75,6 +75,10 @@ namespace po_projekt_kontrola_lotu
             slider2Text.Visibility = Visibility.Hidden;
             wybierz_statek.Visibility = Visibility.Hidden;
             slider2.Visibility = Visibility.Hidden;
+        }
+        private void Reset_Click(object sender, RoutedEventArgs e)
+        {
+            ResetFun();
         }
 
 
@@ -94,8 +98,10 @@ namespace po_projekt_kontrola_lotu
                 slider2Text.Text = ((int)Math.Round(slider2.Value)).ToString();
             }
         }
+        // generowanie statkow
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
+            ResetFun();
             slider2.Maximum = ((int)Math.Round(slider1.Value));
             zmien_trase.Visibility = Visibility.Visible;
             slider2Text.Visibility = Visibility.Visible;
