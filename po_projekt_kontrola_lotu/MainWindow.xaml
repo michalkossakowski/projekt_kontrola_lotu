@@ -5,11 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:po_projekt_kontrola_lotu"
         mc:Ignorable="d"
-        Title="MainWindow" Height="610" Width="1000">
+        Title="Kontrola_lotów" Height="610" Width="1000">
     <Grid Background="#FFC7C7C7" Margin="0,0,0,0">
 
         <Label Content="Radar" HorizontalAlignment="Left" Margin="375,0,0,0" VerticalAlignment="Top" FontSize="36" RenderTransformOrigin="0.55,0.467" FontWeight="Bold"/>
-        <Rectangle HorizontalAlignment="Left" Height="500" Margin="179,58,0,0" Stroke="Black" VerticalAlignment="Top" Width="500"/>
 
         <Label Content="Legenda" HorizontalAlignment="Left" Margin="52,186,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
         <Rectangle HorizontalAlignment="Left" Height="339" Margin="9,219,0,0" Stroke="Black" VerticalAlignment="Top" Width="160"/>
@@ -34,6 +33,7 @@
         <Button Visibility="Hidden" x:Name="zmien_trase" Content="Zmien trasę" HorizontalAlignment="Left" Height="29" Margin="763,436,0,0" VerticalAlignment="Top"  Background="#FFC300FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="138" FontSize="14"/>
 
         <Button x:Name="Reset" Click="Reset_Click"  Content="Reset" HorizontalAlignment="Left" Margin="798,493,0,0" VerticalAlignment="Top" Height="29" Width="69" BorderBrush="Black" Background="White" FontSize="14" FontWeight="Bold"/>
+        <Canvas x:Name="Mapa" HorizontalAlignment="Left" Height="500" Margin="179,58,0,0" VerticalAlignment="Top" Width="500" Background="LightGreen"/>
 
     </Grid>
 </Window>
