@@ -33,7 +33,8 @@ namespace po_projekt_kontrola_lotu
         public MainWindow()
         {
             //poczatek main
-
+            // wyłączenie rozszerzania okna
+            this.ResizeMode = ResizeMode.NoResize;
             //timer
             InitializeComponent();
             _timer = new DispatcherTimer();
