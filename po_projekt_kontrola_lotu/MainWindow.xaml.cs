@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -15,6 +16,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.IO;
+using System.Reflection;
+using System.Security.Policy;
+using Path = System.IO.Path;
 
 class Radar { }
 
@@ -76,10 +81,15 @@ namespace po_projekt_kontrola_lotu
             slider2Text.Visibility = Visibility.Hidden;
             wybierz_statek.Visibility = Visibility.Hidden;
             slider2.Visibility = Visibility.Hidden;
+
         }
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
             ResetFun();
+            //wczytywanie 
+            wczytaj.Content = "Wczytaj Plik";
+            wczytaj.IsEnabled = true;
+
         }
 
 
@@ -112,5 +122,19 @@ namespace po_projekt_kontrola_lotu
 
 
 
+        private void Wczytaj_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            string mapsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Mapy");
+            openFileDialog.InitialDirectory = mapsDirectory;
+
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string selectedFilePath = openFileDialog.FileName;
+                wczytaj.Content = Path.GetFileName(selectedFilePath);
+                wczytaj.IsEnabled = false;
+            }
+        }
     }
 }
