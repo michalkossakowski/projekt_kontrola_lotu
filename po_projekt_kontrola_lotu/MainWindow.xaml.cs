@@ -86,7 +86,7 @@ namespace po_projekt_kontrola_lotu
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
             ResetFun();
-            //wczytywanie 
+                        //wczytywanie 
             wczytaj.Content = "Wczytaj Plik";
             wczytaj.IsEnabled = true;
 
@@ -125,7 +125,13 @@ namespace po_projekt_kontrola_lotu
         private void Wczytaj_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            string mapsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Mapy");
+            string nadrzednyFolder1 = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName;
+            string nadrzednyFolder2 = Directory.GetParent(nadrzednyFolder1).FullName;
+            string nadrzednyFolder3 = Directory.GetParent(nadrzednyFolder2).FullName;
+            string nadrzednyFolder4 = Directory.GetParent(nadrzednyFolder3).FullName;
+
+            string mapsDirectory = Path.Combine(nadrzednyFolder4,"Mapy");
+
             openFileDialog.InitialDirectory = mapsDirectory;
 
 
