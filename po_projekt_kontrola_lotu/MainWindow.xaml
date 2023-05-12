@@ -6,26 +6,34 @@
         xmlns:local="clr-namespace:po_projekt_kontrola_lotu"
         mc:Ignorable="d"
         Title="MainWindow" Height="610" Width="1000">
-    <Grid Background="#FFC7C7C7">
+    <Grid Background="#FFC7C7C7" Margin="0,0,0,0">
+
+        <Label Content="Radar" HorizontalAlignment="Left" Margin="375,0,0,0" VerticalAlignment="Top" FontSize="36" RenderTransformOrigin="0.55,0.467" FontWeight="Bold"/>
         <Rectangle HorizontalAlignment="Left" Height="500" Margin="179,58,0,0" Stroke="Black" VerticalAlignment="Top" Width="500"/>
-        <Rectangle HorizontalAlignment="Left" Height="160" Margin="9,398,0,0" Stroke="Black" VerticalAlignment="Top" Width="160"/>
-        <Label Content="Legenda" HorizontalAlignment="Left" Margin="54,367,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <Label Content="Radar" HorizontalAlignment="Left" Margin="378,0,0,0" VerticalAlignment="Top" FontSize="36" RenderTransformOrigin="0.55,0.467"/>
 
-        <Button x:Name="wczytaj" Content="Wczytaj Plik" HorizontalAlignment="Left" Height="26" Margin="797,163,0,0" VerticalAlignment="Top" Width="100"  Background="#FF00A7FF" BorderBrush="Black" Foreground="White" FontWeight="Bold"/>
-        <TextBox HorizontalAlignment="Left" Margin="797,226,0,0" TextAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="Top" Width="100"  FontSize="11" BorderBrush="Black" Background="White"/>
-        <Button x:Name="wygeneruj_trasy" Content="Wygeneruj trasy" HorizontalAlignment="Left" Height="26" Margin="797,248,0,0" VerticalAlignment="Top"  Background="#FF4E00FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="100"/>
+        <Label Content="Legenda" HorizontalAlignment="Left" Margin="52,186,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
+        <Rectangle HorizontalAlignment="Left" Height="339" Margin="9,219,0,0" Stroke="Black" VerticalAlignment="Top" Width="160"/>
 
 
-        <Label Content="Podaj ilość statków:" HorizontalAlignment="Left" Margin="797,203,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="10" Height="23" Width="100"/>
-        <Button x:Name="start" Click="btnStart_Click" Content="Start" HorizontalAlignment="Left" Height="26" Margin="797,295,0,0" VerticalAlignment="Top"  Background="#FF13FF00" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="44"/>
-        <Button x:Name="stop"   Click="btnStop_Click"  Content="Stop" HorizontalAlignment="Left" Height="26" Margin="851,295,0,0" VerticalAlignment="Top"  Background="Red" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="46"/>
-        <Label Content="Timer:" HorizontalAlignment="Left" Margin="797,332,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="10" Height="23" Width="44"/>
-        <TextBox Name="TimerBox" IsReadOnly="True" HorizontalAlignment="Left" Margin="841,335,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="0" VerticalAlignment="Top" Width="56"  FontSize="11" BorderBrush="Black" Background="#7FFF0000" />
-        <TextBox HorizontalAlignment="Left" Margin="797,401,0,0" TextAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="Top" Width="100"  FontSize="11" BorderBrush="Black" Background="White"/>
-        <Label Content="Wybierz statek do &#xD;&#xA;zmiany trasy:" HorizontalAlignment="Left" Margin="797,364,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="10" Height="37" Width="100"/>
-        <Button x:Name="zmien_trase" Content="Zmien trasę" HorizontalAlignment="Left" Height="26" Margin="797,423,0,0" VerticalAlignment="Top"  Background="#FFC300FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="100"/>
-        <Button x:Name="Timer_Reset" Click="Timer_Reset_Click"  Content="Reset Timera" HorizontalAlignment="Left" Margin="797,497,0,0" VerticalAlignment="Top" Height="22" Width="100"/>
+        <Button x:Name="wczytaj" Content="Wczytaj Plik" HorizontalAlignment="Left" Height="29" Margin="759,81,0,0" VerticalAlignment="Top" Width="138"  Background="#FF00A7FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" FontSize="14"/>
+
+        <Label Content="Podaj ilość statków:" HorizontalAlignment="Left" Margin="759,128,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="14" Height="35" Width="138" FontWeight="Bold"/>
+        <Slider x:Name="slider1" HorizontalAlignment="Left" Margin="759,163,0,0" VerticalAlignment="Top" Width="138"  Minimum="1" Maximum="6"  TickPlacement="BottomRight" TickFrequency="1" ValueChanged="slider1_ValueChanged" Height="38" Foreground="#FF4E00FF"/>
+        <TextBox x:Name="slider1Text" IsReadOnly="True" HorizontalAlignment="Left" Margin="904,163,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="1" VerticalAlignment="Top" Width="25"  FontSize="14" BorderBrush="Black" Background="#FF4E00FF" Height="24" Foreground="White" FontWeight="Bold" />
+        <Button x:Name="wygeneruj_trasy" Click="wygeneruj_Click" Content="Wygeneruj trasy" HorizontalAlignment="Left" Height="29" Margin="759,203,0,0" VerticalAlignment="Top"  Background="#FF4E00FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="138" FontSize="14"/>
+
+        <Button x:Name="start" Click="Start_Click" Content="Start" HorizontalAlignment="Left" Height="29" Margin="759,270,0,0" VerticalAlignment="Top"  Background="#FF13FF00" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="61" FontSize="14"/>
+        <Button x:Name="stop"   Click="Stop_Click"  Content="Stop" HorizontalAlignment="Left" Height="29" Margin="838,270,0,0" VerticalAlignment="Top"  Background="Red" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="63" FontSize="14"/>
+        <Label Content="Timer:" HorizontalAlignment="Left" Margin="776,309,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="14" Height="31" Width="52" FontWeight="Bold"/>
+        <TextBox Name="TimerBox" IsReadOnly="True" HorizontalAlignment="Left" Margin="828,313,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="0" VerticalAlignment="Top" Width="42"  FontSize="14" BorderBrush="Black" Background="White" Height="23" FontWeight="Bold" />
+
+
+        <Label  Visibility="Hidden" Name="wybierz_statek" Content="Wybierz statek:" HorizontalAlignment="Left" Margin="763,362,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="14" Height="34" Width="138" FontWeight="Bold"/>
+        <Slider Visibility="Hidden" x:Name="slider2" HorizontalAlignment="Left" Margin="763,396,0,0" VerticalAlignment="Top" Width="138"  Minimum="1" Maximum="1"  TickPlacement="BottomRight" TickFrequency="1" ValueChanged="slider2_ValueChanged" Height="39" Foreground="#FFC300FF"/>
+        <TextBox Visibility="Hidden" x:Name="slider2Text" IsReadOnly="True" HorizontalAlignment="Left" Margin="904,396,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="1" VerticalAlignment="Top" Width="25"  FontSize="14" BorderBrush="Black" Background="#FFC300FF" Height="25" Foreground="White" FontWeight="Bold" />
+        <Button Visibility="Hidden" x:Name="zmien_trase" Content="Zmien trasę" HorizontalAlignment="Left" Height="29" Margin="763,436,0,0" VerticalAlignment="Top"  Background="#FFC300FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="138" FontSize="14"/>
+
+        <Button x:Name="Reset" Click="Reset_Click"  Content="Reset" HorizontalAlignment="Left" Margin="798,493,0,0" VerticalAlignment="Top" Height="29" Width="69" BorderBrush="Black" Background="White" FontSize="14" FontWeight="Bold"/>
 
     </Grid>
 </Window>
