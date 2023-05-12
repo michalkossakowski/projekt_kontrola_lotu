@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-
+using System.IO; //potrzebne jest do plików tekstowych
 class Radar { }
 
 class obiekty_latajace { }
@@ -31,12 +31,15 @@ namespace po_projekt_kontrola_lotu
         private DispatcherTimer _timer;
         private int _counter = 0;
         public MainWindow()
-        {
+        { 
+
             //poczatek main
+            InitializeComponent();
+            LoadMapObjectsFromFile("obiekty.txt"); //nakaz wywołania metody ze zmienną "obiekty.txt"
             // wyłączenie rozszerzania okna
             this.ResizeMode = ResizeMode.NoResize;
             //timer
-            InitializeComponent();
+          
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += new EventHandler(dispatcherTimer_Tick);
@@ -108,9 +111,58 @@ namespace po_projekt_kontrola_lotu
             slider2Text.Visibility = Visibility.Visible;
             wybierz_statek.Visibility = Visibility.Visible;
             slider2.Visibility = Visibility.Visible;
+        }  
+        //tworzy obiekty na mapie
+   
+        //ładuje obiekty z pliku
+        private void LoadMapObjectsFromFile(string sciezka_pliku)
+        {
+            try
+            {
+                string[] lines = File.ReadAllLines(sciezka_pliku);
+
+                foreach (string line in lines)
+                {
+                    if (line.StartsWith("punkty(") && line.EndsWith(")"))
+                    {
+                        string coordinates = line.Substring(7, line.Length - 8);
+                        string[] parts = coordinates.Split(',');
+
+                        if (parts.Length == 2 && int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
+                        {
+                            CreateObject(x, y);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Nieprawidłowe dane: " + line);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nieprawidłowy format linii: " + line);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Błąd podczas wczytywania danych z pliku: " + ex.Message);
+            }
         }
-
-
-
+           private void CreateObject(int x, int y)
+        {
+            // Twórz obiekt kwadrat na podanych koordynatach
+            Rectangle kwadraty = new Rectangle
+            {
+                Width = 10,
+                Height = 10,
+                Fill = Brushes.Black,
+                Stroke = Brushes.Black,
+                StrokeThickness = 1,
+                Margin = new Thickness(x, y, 0, 0)
+            };
+            Mapa.Children.Add(kwadraty);
+        }
     }
 }
+
+
