@@ -31,15 +31,14 @@ namespace po_projekt_kontrola_lotu
         private DispatcherTimer _timer;
         private int _counter = 0;
         public MainWindow()
-        { 
-
+        {
+            
             //poczatek main
-            InitializeComponent();
             LoadMapObjectsFromFile("obiekty.txt"); //nakaz wywołania metody ze zmienną "obiekty.txt"
             // wyłączenie rozszerzania okna
             this.ResizeMode = ResizeMode.NoResize;
             //timer
-          
+            InitializeComponent();
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += new EventHandler(dispatcherTimer_Tick);
@@ -111,9 +110,7 @@ namespace po_projekt_kontrola_lotu
             slider2Text.Visibility = Visibility.Visible;
             wybierz_statek.Visibility = Visibility.Visible;
             slider2.Visibility = Visibility.Visible;
-        }  
-        //tworzy obiekty na mapie
-   
+        }
         //ładuje obiekty z pliku
         private void LoadMapObjectsFromFile(string sciezka_pliku)
         {
@@ -148,14 +145,15 @@ namespace po_projekt_kontrola_lotu
                 MessageBox.Show("Błąd podczas wczytywania danych z pliku: " + ex.Message);
             }
         }
-           private void CreateObject(int x, int y)
+        //tworzy obiekty na mapie
+        private void CreateObject(int x, int y)
         {
-            // Twórz obiekt kwadrat na podanych koordynatach
+            // Twórz obiekt na kanwie o określonych koordynatach
             Rectangle kwadraty = new Rectangle
             {
                 Width = 10,
                 Height = 10,
-                Fill = Brushes.Black,
+                Fill = Brushes.Red,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
                 Margin = new Thickness(x, y, 0, 0)
