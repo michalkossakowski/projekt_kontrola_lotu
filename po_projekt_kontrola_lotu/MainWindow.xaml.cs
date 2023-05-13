@@ -82,6 +82,7 @@ namespace po_projekt_kontrola_lotu
             slider2.Visibility = Visibility.Hidden;
             //reset wczytanego pliku
             Mapa.Children.Clear();
+            legendContainer.Children.Clear();
         }
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
@@ -141,6 +142,28 @@ namespace po_projekt_kontrola_lotu
                 wczytaj.IsEnabled = false;
                 WczytajPlik (openFileDialog.FileName); //mapa z pliku
             }
+            Rectangle kwadrat = new Rectangle(); //dodaje wczytany kwadrat
+            kwadrat.Width = 20;
+            kwadrat.Height = 20;
+            kwadrat.Fill = Brushes.DarkOliveGreen;
+            kwadrat.Stroke = Brushes.Black;
+            kwadrat.StrokeThickness = 1;
+
+            TextBlock opis = new TextBlock(); //dodaje komentarz 
+            opis.Text = "Budynki";
+            opis.VerticalAlignment = VerticalAlignment.Center;
+            opis.Margin = new Thickness(5, 0, 0, 0);
+
+            Grid legendGrid = new Grid(); //dzieli legendę na dwie kolumny. Jedną obrazkową, drugą opisową
+            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            legendGrid.Children.Add(kwadrat); //wpisuje kwadrat i komentarz do legendy
+            legendGrid.Children.Add(opis);
+            Grid.SetColumn(kwadrat, 0);
+            Grid.SetColumn(opis, 1);
+
+            legendContainer.Children.Add(legendGrid);
         }
 
         //ładuje obiekty z pliku
@@ -187,7 +210,7 @@ namespace po_projekt_kontrola_lotu
 
                 Width = rnd.Next(10,51),
                 Height =rnd.Next(10, 51),
-            Fill = Brushes.Black,
+                Fill = Brushes.DarkOliveGreen,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
                 Margin = new Thickness(x, y, 0, 0)
