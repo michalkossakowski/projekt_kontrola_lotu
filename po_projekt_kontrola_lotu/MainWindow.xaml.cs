@@ -139,23 +139,23 @@ namespace po_projekt_kontrola_lotu
                 string selectedFilePath = openFileDialog.FileName;
                 wczytaj.Content = Path.GetFileName(selectedFilePath);
                 wczytaj.IsEnabled = false;
-                LoadMapObjectsFromFile(openFileDialog.FileName); //mapa z pliku
+                WczytajPlik (openFileDialog.FileName); //mapa z pliku
             }
         }
 
         //ładuje obiekty z pliku
-        private void LoadMapObjectsFromFile(string sciezka_pliku)
+        private void WczytajPlik(string sciezka_pliku)
         {
             try
             {
-                string[] lines = File.ReadAllLines(sciezka_pliku);
+                string[] linie = File.ReadAllLines(sciezka_pliku);
 
-                foreach (string line in lines)
+                foreach (string linia in linie)
                 {
-                    if (line.StartsWith("punkty(") && line.EndsWith(")"))
+                    if (linia.StartsWith("punkty(") && linia.EndsWith(")"))
                     {
-                        string coordinates = line.Substring(7, line.Length - 8);
-                        string[] parts = coordinates.Split(',');
+                        string punkty = linia.Substring(7, linia.Length - 8);
+                        string[] parts = punkty.Split(',');
 
                         if (parts.Length == 2 && int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
                         {
@@ -163,12 +163,12 @@ namespace po_projekt_kontrola_lotu
                         }
                         else
                         {
-                            MessageBox.Show("Nieprawidłowe dane: " + line);
+                            MessageBox.Show("Nieprawidłowe dane: " + linia);
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Nieprawidłowy format linii: " + line);
+                        MessageBox.Show("Nieprawidłowy format linii: " + linia);
                     }
                 }
             }
@@ -180,12 +180,14 @@ namespace po_projekt_kontrola_lotu
         //tworzy obiekty na mapie
         private void CreateObject(int x, int y)
         {
+            Random rnd = new Random();
             // Twórz obiekt na kanwie o określonych koordynatach
             Rectangle kwadraty = new Rectangle
             {
-                Width = 10,
-                Height = 10,
-                Fill = Brushes.Red,
+
+                Width = rnd.Next(10,51),
+                Height =rnd.Next(10, 51),
+            Fill = Brushes.Gray,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
                 Margin = new Thickness(x, y, 0, 0)

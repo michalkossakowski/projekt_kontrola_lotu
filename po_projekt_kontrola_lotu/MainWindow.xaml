@@ -13,7 +13,7 @@
         <Label Content="Legenda" HorizontalAlignment="Left" Margin="52,186,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
         <Rectangle HorizontalAlignment="Left" Height="339" Margin="9,219,0,0" Stroke="Black" VerticalAlignment="Top" Width="160"/>
 
-        <Canvas x:Name="Mapa" HorizontalAlignment="Left" Height="500" Margin="179,58,0,0" VerticalAlignment="Top" Width="500" Background="LightGreen"/>
+       
 
         <Button x:Name="wczytaj" IsEnabled="True" Click="Wczytaj_Click" Content="Wczytaj Plik" HorizontalAlignment="Left" Height="29" Margin="759,81,0,0" VerticalAlignment="Top" Width="138"  Background="#FF00A7FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" FontSize="14"/>
         
@@ -32,7 +32,7 @@
         <Slider Visibility="Hidden" x:Name="slider2" HorizontalAlignment="Left" Margin="763,396,0,0" VerticalAlignment="Top" Width="138"  Minimum="1" Maximum="1"  TickPlacement="BottomRight" TickFrequency="1" ValueChanged="slider2_ValueChanged" Height="39" Foreground="#FFC300FF"/>
         <TextBox IsEnabled="False" Visibility="Hidden" x:Name="slider2Text" IsReadOnly="True" HorizontalAlignment="Left" Margin="904,396,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="1" VerticalAlignment="Top" Width="25"  FontSize="14" BorderBrush="Black" Background="Black" Height="25" Foreground="White" FontWeight="Bold" SelectionBrush="Black" />
         <Button Visibility="Hidden" x:Name="zmien_trase" Content="Zmien trasę" HorizontalAlignment="Left" Height="29" Margin="763,436,0,0" VerticalAlignment="Top"  Background="#FFC300FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="138" FontSize="14"/>
-
+        <Canvas x:Name="Mapa" HorizontalAlignment="Left" Height="500" Margin="179,58,0,0" VerticalAlignment="Top" Width="500" Background="LightGreen"/>
         <Button x:Name="Reset" Click="Reset_Click"  Content="Reset" HorizontalAlignment="Left" Margin="798,493,0,0" VerticalAlignment="Top" Height="29" Width="69" BorderBrush="Black" Background="White" FontSize="14" FontWeight="Bold"/>
     </Grid>
 </Window>
