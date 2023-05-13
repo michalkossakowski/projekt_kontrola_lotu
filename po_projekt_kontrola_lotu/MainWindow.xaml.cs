@@ -21,7 +21,7 @@ using Microsoft.Win32;
 
 class Radar { }
 
-class obiekty_latajace { }
+//class obiekty_latajace { }
 
 
 namespace po_projekt_kontrola_lotu
