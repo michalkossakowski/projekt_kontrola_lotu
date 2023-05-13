@@ -187,7 +187,7 @@ namespace po_projekt_kontrola_lotu
 
                 Width = rnd.Next(10,51),
                 Height =rnd.Next(10, 51),
-            Fill = Brushes.Gray,
+            Fill = Brushes.Black,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
                 Margin = new Thickness(x, y, 0, 0)
