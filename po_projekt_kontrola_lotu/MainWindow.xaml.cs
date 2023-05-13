@@ -68,7 +68,7 @@ namespace po_projekt_kontrola_lotu
 
 
         //reset
-        private void ResetFun()
+        private void ResetSoft()
         {
             // timer
             _counter = 0;
@@ -80,6 +80,10 @@ namespace po_projekt_kontrola_lotu
             slider2Text.Visibility = Visibility.Hidden;
             wybierz_statek.Visibility = Visibility.Hidden;
             slider2.Visibility = Visibility.Hidden;
+        }
+        private void ResetFun()
+        {
+            ResetSoft();
             //reset wczytanego pliku
             Mapa.Children.Clear();
             LegendaContainer.Children.Clear();
@@ -113,15 +117,7 @@ namespace po_projekt_kontrola_lotu
         // generowanie statkow
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
-            _counter = 0;
-            TimerBox.Text = _counter.ToString();
-            _timer.Stop();
-            this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
-            // slidery
-            zmien_trase.Visibility = Visibility.Hidden;
-            slider2Text.Visibility = Visibility.Hidden;
-            wybierz_statek.Visibility = Visibility.Hidden;
-            slider2.Visibility = Visibility.Hidden;
+            ResetSoft();
             slider2.Maximum = ((int)Math.Round(slider1.Value));
             zmien_trase.Visibility = Visibility.Visible;
             slider2Text.Visibility = Visibility.Visible;
