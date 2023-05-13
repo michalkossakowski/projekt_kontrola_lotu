@@ -15,7 +15,7 @@
 
         <Canvas x:Name="Mapa" HorizontalAlignment="Left" Height="500" Margin="179,58,0,0" VerticalAlignment="Top" Width="500" Background="LightGreen"/>
 
-        <Button x:Name="wczytaj" Content="Wczytaj Plik" HorizontalAlignment="Left" Height="29" Margin="759,81,0,0" VerticalAlignment="Top" Width="138"  Background="#FF00A7FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" FontSize="14"/>
+        <Button x:Name="wczytaj" IsEnabled="True" Click="Wczytaj_Click" Content="Wczytaj Plik" HorizontalAlignment="Left" Height="29" Margin="759,81,0,0" VerticalAlignment="Top" Width="138"  Background="#FF00A7FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" FontSize="14"/>
         
         <Label Content="Podaj ilość statków:" HorizontalAlignment="Left" Margin="759,128,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="14" Height="35" Width="138" FontWeight="Bold"/>
         <Slider x:Name="slider1" HorizontalAlignment="Left" Margin="759,163,0,0" VerticalAlignment="Top" Width="138"  Minimum="1" Maximum="6"  TickPlacement="BottomRight" TickFrequency="1" ValueChanged="slider1_ValueChanged" Height="38" Foreground="#FF4E00FF"/>

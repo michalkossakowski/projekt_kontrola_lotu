@@ -16,6 +16,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.IO; //potrzebne jest do plików tekstowych
+using Path = System.IO.Path;
+using Microsoft.Win32;
+
 class Radar { }
 
 class obiekty_latajace { }
@@ -41,7 +44,7 @@ namespace po_projekt_kontrola_lotu
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += new EventHandler(dispatcherTimer_Tick);
-            LoadMapObjectsFromFile("obiekty.txt"); //nakaz wywołania metody ze zmienną "obiekty.txt"
+            //LoadMapObjectsFromFile("obiekty.txt"); //nakaz wywołania metody ze zmienną "obiekty.txt"
 
             //koniec main
         }
@@ -81,6 +84,10 @@ namespace po_projekt_kontrola_lotu
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
             ResetFun();
+            //wczytywanie 
+            wczytaj.Content = "Wczytaj Plik";
+            wczytaj.IsEnabled = true;
+
         }
 
 
@@ -110,6 +117,30 @@ namespace po_projekt_kontrola_lotu
             wybierz_statek.Visibility = Visibility.Visible;
             slider2.Visibility = Visibility.Visible;
         }
+
+        //przycisk wczytaj
+        private void Wczytaj_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            string nadrzednyFolder1 = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName;
+            string nadrzednyFolder2 = Directory.GetParent(nadrzednyFolder1).FullName;
+            string nadrzednyFolder3 = Directory.GetParent(nadrzednyFolder2).FullName;
+            string nadrzednyFolder4 = Directory.GetParent(nadrzednyFolder3).FullName;
+
+            string mapsDirectory = Path.Combine(nadrzednyFolder4, "Mapy");
+
+            openFileDialog.InitialDirectory = mapsDirectory;
+
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string selectedFilePath = openFileDialog.FileName;
+                wczytaj.Content = Path.GetFileName(selectedFilePath);
+                wczytaj.IsEnabled = false;
+                LoadMapObjectsFromFile(openFileDialog.FileName); //mapa z pliku
+            }
+        }
+
         //ładuje obiekty z pliku
         private void LoadMapObjectsFromFile(string sciezka_pliku)
         {
