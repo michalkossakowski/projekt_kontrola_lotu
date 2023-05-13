@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.5.33414.496
+VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "po_projekt_kontrola_lotu", "po_projekt_kontrola_lotu\po_projekt_kontrola_lotu.csproj", "{08111444-9F34-496C-904E-C8DF60CE9B70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "po_projekt_kontrola_lotu", "po_projekt_kontrola_lotu\po_projekt_kontrola_lotu.csproj", "{C52BD372-875A-4C90-AF8E-6C9DFA98155E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{08111444-9F34-496C-904E-C8DF60CE9B70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08111444-9F34-496C-904E-C8DF60CE9B70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08111444-9F34-496C-904E-C8DF60CE9B70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08111444-9F34-496C-904E-C8DF60CE9B70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C52BD372-875A-4C90-AF8E-6C9DFA98155E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C52BD372-875A-4C90-AF8E-6C9DFA98155E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C52BD372-875A-4C90-AF8E-6C9DFA98155E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C52BD372-875A-4C90-AF8E-6C9DFA98155E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {0F7AF45E-525E-472C-A706-D1419EA2D4E7}
+		SolutionGuid = {B03A382F-69C6-4DA3-B0AA-1FB3255FA87B}
 	EndGlobalSection
 EndGlobal

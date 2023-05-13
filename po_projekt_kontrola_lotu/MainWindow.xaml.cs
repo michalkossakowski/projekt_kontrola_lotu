@@ -16,10 +16,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.IO;
-using System.Reflection;
-using System.Security.Policy;
+using System.IO; //potrzebne jest do plików tekstowych
 using Path = System.IO.Path;
+using Microsoft.Win32;
 
 class Radar { }
 
@@ -37,15 +36,16 @@ namespace po_projekt_kontrola_lotu
         private int _counter = 0;
         public MainWindow()
         {
+            InitializeComponent();
             //poczatek main
             // wyłączenie rozszerzania okna
             this.ResizeMode = ResizeMode.NoResize;
             //timer
-            InitializeComponent();
+            
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += new EventHandler(dispatcherTimer_Tick);
-
+            //LoadMapObjectsFromFile("obiekty.txt"); //nakaz wywołania metody ze zmienną "obiekty.txt"
 
             //koniec main
         }
@@ -81,12 +81,13 @@ namespace po_projekt_kontrola_lotu
             slider2Text.Visibility = Visibility.Hidden;
             wybierz_statek.Visibility = Visibility.Hidden;
             slider2.Visibility = Visibility.Hidden;
-
+            //reset wczytanego pliku
+            Mapa.Children.Clear();
         }
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
             ResetFun();
-                        //wczytywanie 
+            //wczytywanie 
             wczytaj.Content = "Wczytaj Plik";
             wczytaj.IsEnabled = true;
 
@@ -120,8 +121,7 @@ namespace po_projekt_kontrola_lotu
             slider2.Visibility = Visibility.Visible;
         }
 
-
-
+        //przycisk wczytaj
         private void Wczytaj_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -130,7 +130,7 @@ namespace po_projekt_kontrola_lotu
             string nadrzednyFolder3 = Directory.GetParent(nadrzednyFolder2).FullName;
             string nadrzednyFolder4 = Directory.GetParent(nadrzednyFolder3).FullName;
 
-            string mapsDirectory = Path.Combine(nadrzednyFolder4,"Mapy");
+            string mapsDirectory = Path.Combine(nadrzednyFolder4, "Mapy");
 
             openFileDialog.InitialDirectory = mapsDirectory;
 
@@ -140,7 +140,62 @@ namespace po_projekt_kontrola_lotu
                 string selectedFilePath = openFileDialog.FileName;
                 wczytaj.Content = Path.GetFileName(selectedFilePath);
                 wczytaj.IsEnabled = false;
+                WczytajPlik (openFileDialog.FileName); //mapa z pliku
             }
+        }
+
+        //ładuje obiekty z pliku
+        private void WczytajPlik(string sciezka_pliku)
+        {
+            try
+            {
+                string[] linie = File.ReadAllLines(sciezka_pliku);
+
+                foreach (string linia in linie)
+                {
+                    if (linia.StartsWith("punkty(") && linia.EndsWith(")"))
+                    {
+                        string punkty = linia.Substring(7, linia.Length - 8);
+                        string[] parts = punkty.Split(',');
+
+                        if (parts.Length == 2 && int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
+                        {
+                            CreateObject(x, y);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Nieprawidłowe dane: " + linia);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nieprawidłowy format linii: " + linia);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Błąd podczas wczytywania danych z pliku: " + ex.Message);
+            }
+        }
+        //tworzy obiekty na mapie
+        private void CreateObject(int x, int y)
+        {
+            Random rnd = new Random();
+            // Twórz obiekt na kanwie o określonych koordynatach
+            Rectangle kwadraty = new Rectangle
+            {
+
+                Width = rnd.Next(10,51),
+                Height =rnd.Next(10, 51),
+            Fill = Brushes.Black,
+                Stroke = Brushes.Black,
+                StrokeThickness = 1,
+                Margin = new Thickness(x, y, 0, 0)
+            };
+            Mapa.Children.Add(kwadraty);
         }
     }
 }
+
+
