@@ -29,6 +29,6 @@
         <Button Visibility="Hidden" x:Name="zmien_trase" Content="Zmien trasę" HorizontalAlignment="Left" Height="29" Margin="763,436,0,0" VerticalAlignment="Top"  Background="#FFC300FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="138" FontSize="14"/>
         <Canvas x:Name="Mapa" HorizontalAlignment="Left" Height="500" Margin="179,58,0,0" VerticalAlignment="Top" Width="500" Background="LightGreen"/>
         <Button x:Name="Reset" Click="Reset_Click"  Content="Reset" HorizontalAlignment="Left" Margin="798,493,0,0" VerticalAlignment="Top" Height="29" Width="69" BorderBrush="Black" Background="White" FontSize="14" FontWeight="Bold"/>
-        <StackPanel x:Name="legendContainer" Margin="10,222,831,36"/>
+        <StackPanel x:Name="LegendaContainer" Margin="10,222,831,36"/>
     </Grid>
 </Window>

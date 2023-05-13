@@ -82,7 +82,7 @@ namespace po_projekt_kontrola_lotu
             slider2.Visibility = Visibility.Hidden;
             //reset wczytanego pliku
             Mapa.Children.Clear();
-            legendContainer.Children.Clear();
+            LegendaContainer.Children.Clear();
         }
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
@@ -113,7 +113,15 @@ namespace po_projekt_kontrola_lotu
         // generowanie statkow
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
-            ResetFun();
+            _counter = 0;
+            TimerBox.Text = _counter.ToString();
+            _timer.Stop();
+            this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+            // slidery
+            zmien_trase.Visibility = Visibility.Hidden;
+            slider2Text.Visibility = Visibility.Hidden;
+            wybierz_statek.Visibility = Visibility.Hidden;
+            slider2.Visibility = Visibility.Hidden;
             slider2.Maximum = ((int)Math.Round(slider1.Value));
             zmien_trase.Visibility = Visibility.Visible;
             slider2Text.Visibility = Visibility.Visible;
@@ -163,7 +171,7 @@ namespace po_projekt_kontrola_lotu
             Grid.SetColumn(kwadrat, 0);
             Grid.SetColumn(opis, 1);
 
-            legendContainer.Children.Add(legendGrid);
+            LegendaContainer.Children.Add(legendGrid);
         }
 
         //ładuje obiekty z pliku
