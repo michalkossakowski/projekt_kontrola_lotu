@@ -80,6 +80,8 @@ namespace po_projekt_kontrola_lotu
             slider2Text.Visibility = Visibility.Hidden;
             wybierz_statek.Visibility = Visibility.Hidden;
             slider2.Visibility = Visibility.Hidden;
+            //reset wczytanego pliku
+            Mapa.Children.Clear();
         }
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
