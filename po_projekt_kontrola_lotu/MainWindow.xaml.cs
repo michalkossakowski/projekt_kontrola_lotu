@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using System.IO; //potrzebne jest do plików tekstowych
 using Path = System.IO.Path;
 using Microsoft.Win32;
+using System.Collections;
 
 class Radar { }
 
@@ -59,7 +60,7 @@ namespace po_projekt_kontrola_lotu
             ///////////////////////////////////////////////// koniec main
         }
 
-        //timer
+        ///////////////////////////// timer
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             _counter++;
@@ -77,7 +78,7 @@ namespace po_projekt_kontrola_lotu
         }
 
 
-        //reset
+        ///////////////////////////// resety
         private void ResetSoft()
         {
             // timer
@@ -104,6 +105,7 @@ namespace po_projekt_kontrola_lotu
             //wczytywanie 
             wczytaj.Content = "Wczytaj Plik";
             wczytaj.IsEnabled = true;
+            ResetFlyObj();
 
         }
 
@@ -124,17 +126,181 @@ namespace po_projekt_kontrola_lotu
                 slider2Text.Text = ((int)Math.Round(slider2.Value)).ToString();
             }
         }
+        ///////////////////////////// obiekty latajace
+        class Punkt
+        {
+            private int x;
+        private int y;
+        public Punkt()
+        {
+            this.x = 0;
+            this.y = 0;
+        }
+        public Punkt(int xx, int yy)
+        {
+            this.x = xx;
+            this.y = yy;
+        }
+        public Punkt(Punkt p)
+        {
+            this.x = p.x;
+            this.y = p.y;
+        }
+        public void przesun(int px, int py)
+        {
+            this.x += px;
+            this.y += py;
+        }
+        public override string ToString()
+        {
+            return "(" + this.x + "," + this.y + ")";
+        }
+        public int getX()
+        {
+            return x;
+        }
+        public int getY()
+        {
+            return y;
+        }
+    }
+    class Odcinek
+    {
+        private Punkt p1;
+        private Punkt p2;
+        private int wysokosc;
+        private int predkosc;
+        public Odcinek(Punkt pp1, Punkt pp2, int wys, int pred)
+        {
+            this.p1 = pp1;
+            this.p2 = pp2;
+            this.wysokosc = wys;
+            this.predkosc = pred;
+        }
+        public Odcinek(Odcinek o)
+        {
+            this.p1 = o.p1;
+            this.p2 = o.p2;
+        }
+
+        public Punkt getP1()
+        {
+            return p1;    
+        }
+        public Punkt getP2()
+        {
+            return p2;
+        }
+
+
+        }
+    class FlyObject
+    {
+        private Punkt pocz;
+        private List<Odcinek> Trasa;
+        public FlyObject(int x, int y)
+        {
+            this.pocz = new Punkt(x, y);
+            Trasa = new List<Odcinek>();
+
+            Random rnd = new Random();
+            var p1 = new Punkt(pocz.getX(), pocz.getY());
+            for (int i = 0; i < rnd.Next(3,6); i++)
+            {
+                var p2 = new Punkt(rnd.Next(20, 480), rnd.Next(20, 480));
+                var odc = new Odcinek(p1, p2, rnd.Next(500, 2000), rnd.Next(20, 50));
+                Trasa.Add(odc);
+                p1 = new Punkt(p2);
+            }
+        }
+        public List<Odcinek> getTrasa()
+        {
+            return Trasa;
+        }
+
+        public int getPoczX()
+        {
+            return pocz.getX();
+        }
+        public int getPoczY()
+        {
+            return pocz.getY();
+        }
+
+    }
+    // tworzenie obiektow latajacych
+        private void CreateFlyObject(FlyObject FlOb)
+        {
+            Ellipse FlyObj = new Ellipse
+            {
+                Width = 10,
+                Height = 10,
+                // potem w zaleznosci od klasy inny kolor
+                Fill = Brushes.DarkRed,
+                Stroke = Brushes.Black,
+                StrokeThickness = 1,
+                Margin = new Thickness(FlOb.getPoczX(), FlOb.getPoczY(), 0, 0)
+            };
+            FlyMapa.Children.Add(FlyObj);
+
+        }
+        private void CreateOdcinek(Odcinek o)
+        {
+            Line linia1 = new Line();
+            {
+                var p1 = new Punkt(o.getP1());
+                var p2 = new Punkt(o.getP2());
+
+                linia1.X1 =p1.getX();
+                linia1.Y1 =p1.getY();
+                linia1.X2 = p2.getX();
+                linia1.Y2 = p2.getY();
+                linia1.Stroke = Brushes.DarkRed;
+                linia1.StrokeThickness = 2;
+            };
+
+            FlyMapa.Children.Add(linia1);
+
+
+        }
+        //resetowanie statków
+        private void ResetFlyObj()
+        {
+            FlyMapa.Children.Clear();
+        }
         // generowanie statkow
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
             ResetSoft();
-            slider2.Maximum = ((int)Math.Round(slider1.Value));
+            int ilosc = ((int)Math.Round(slider1.Value));
+            slider2.Maximum = ilosc ;
             zmien_trase.Visibility = Visibility.Visible;
             slider2Text.Visibility = Visibility.Visible;
             wybierz_statek.Visibility = Visibility.Visible;
             slider2.Visibility = Visibility.Visible;
+
+            ResetFlyObj();
+            List<FlyObject> ListaStatkow = new List<FlyObject>();
+
+            for (int i = 0; i < ilosc; i++)
+            {
+                Random rnd = new Random();
+                var Statek = new FlyObject(rnd.Next(20, 480), rnd.Next(20, 480));
+                ListaStatkow.Add(Statek);
+                CreateFlyObject(Statek);
+                List<Odcinek> TrasaStatek = Statek.getTrasa();
+                foreach (Odcinek odc in TrasaStatek)
+                {
+                    CreateOdcinek(odc);
+                }
+
+            }
         }
 
+
+
+
+        ///////////////////////////// wczytywanie mapy
         //przycisk wczytaj
         private void Wczytaj_Click(object sender, RoutedEventArgs e)
         {
@@ -223,7 +389,7 @@ namespace po_projekt_kontrola_lotu
             {
 
                 Width = rnd.Next(10,51),
-                Height =rnd.Next(10, 51),
+                Height = rnd.Next(10, 51),
                 Fill = Brushes.DarkOliveGreen,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
@@ -231,6 +397,13 @@ namespace po_projekt_kontrola_lotu
             };
             Mapa.Children.Add(kwadraty);
         }
+
+
+
+
+
+
+        // koniec window
     }
 }
 
