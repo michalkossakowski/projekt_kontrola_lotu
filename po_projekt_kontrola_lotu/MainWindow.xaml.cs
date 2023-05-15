@@ -271,6 +271,7 @@ namespace po_projekt_kontrola_lotu
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
             ResetSoft();
+            ResetFlyObj();
             int ilosc = ((int)Math.Round(slider1.Value));
             slider2.Maximum = ilosc ;
             zmien_trase.Visibility = Visibility.Visible;
@@ -278,7 +279,28 @@ namespace po_projekt_kontrola_lotu
             wybierz_statek.Visibility = Visibility.Visible;
             slider2.Visibility = Visibility.Visible;
 
-            ResetFlyObj();
+            Ellipse kolo = new Ellipse(); //dodaje wczytane koło
+            kolo.Width = 20;
+            kolo.Height = 20;
+            kolo.Fill = Brushes.Maroon;
+            kolo.Stroke = Brushes.Black;
+            kolo.StrokeThickness = 1;
+
+            TextBlock opisKola = new TextBlock(); //dodaje opis dla koła
+            opisKola.Text = "Samolot";
+            opisKola.VerticalAlignment = VerticalAlignment.Center;
+            opisKola.Margin = new Thickness(5, 0, 0, 0);
+
+            Grid legendGrid = new Grid(); //dzieli legendę na dwie kolumny. Jedną obrazkową, drugą opisową
+            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            legendGrid.Children.Add(kolo); //wpisuje koło i opis do legendy
+            legendGrid.Children.Add(opisKola);
+
+            Grid.SetColumn(kolo, 0);//ustawia wizualne przedstawienie po lewej
+            Grid.SetColumn(opisKola, 1);// ustawia opis po prawej
+            LegendaContainer.Children.Add(legendGrid);
+
             List<FlyObject> ListaStatkow = new List<FlyObject>();
 
             for (int i = 0; i < ilosc; i++)
@@ -383,7 +405,7 @@ namespace po_projekt_kontrola_lotu
         private void CreateObject(int x, int y)
         {
             Random rnd = new Random();
-            // Twórz obiekt na kanwie o określonych koordynatach
+            // Twórz obiekt na mapie o określonych koordynatach
             Rectangle kwadraty = new Rectangle
             {
 
