@@ -106,7 +106,6 @@ namespace po_projekt_kontrola_lotu
             wczytaj.Content = "Wczytaj Plik";
             wczytaj.IsEnabled = true;
             ResetFlyObj();
-
         }
 
 
