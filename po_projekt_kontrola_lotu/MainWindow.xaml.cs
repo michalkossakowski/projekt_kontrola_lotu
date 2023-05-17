@@ -77,9 +77,6 @@ namespace po_projekt_kontrola_lotu
             _timer.Stop();
             this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
         }
-
-
-        ///////////////////////////// resety
         private void ResetSoft()
         {
             // timer
@@ -269,11 +266,23 @@ namespace po_projekt_kontrola_lotu
         {
             FlyMapa.Children.Clear();
         }
-        // generowanie statkow  
+        // generowanie statkow
+
+        Grid legendGrid = new Grid
+        {
+            ColumnDefinitions =
+    {
+        new ColumnDefinition(),
+        new ColumnDefinition()
+    }
+        };
+        ///////////////////////////// resety
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
             ResetSoft();
             ResetFlyObj();
+            LegendaContainer.Children.Remove(legendGrid);
+            legendGrid.Children.Clear();
             int ilosc = ((int)Math.Round(slider1.Value));
             slider2.Maximum = ilosc ;
             zmien_trase.Visibility = Visibility.Visible;
@@ -284,7 +293,7 @@ namespace po_projekt_kontrola_lotu
             stop.Visibility = Visibility.Visible;
             Timer_text.Visibility = Visibility.Visible;
             TimerBox.Visibility = Visibility.Visible;
-
+            
             Ellipse kolo = new Ellipse(); //dodaje wczytane koło
             kolo.Width = 20;
             kolo.Height = 20;
@@ -297,9 +306,6 @@ namespace po_projekt_kontrola_lotu
             opisKola.VerticalAlignment = VerticalAlignment.Center;
             opisKola.Margin = new Thickness(5, 0, 0, 0);
 
-            Grid legendGrid = new Grid(); //dzieli legendę na dwie kolumny. Jedną obrazkową, drugą opisową
-            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
             legendGrid.Children.Add(kolo); //wpisuje koło i opis do legendy
             legendGrid.Children.Add(opisKola);
 
@@ -360,7 +366,6 @@ namespace po_projekt_kontrola_lotu
             opis.Text = "Budynki";
             opis.VerticalAlignment = VerticalAlignment.Center;
             opis.Margin = new Thickness(5, 0, 0, 0);
-
             Grid legendGrid = new Grid(); //dzieli legendę na dwie kolumny. Jedną obrazkową, drugą opisową
             legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
             legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
