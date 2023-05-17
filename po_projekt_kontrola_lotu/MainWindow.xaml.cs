@@ -272,11 +272,6 @@ namespace po_projekt_kontrola_lotu
         // generowanie statkow  
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
-            foreach (UIElement child in LegendaContainer.Children) { 
-            {
-                // Tutaj możesz wyświetlić informacje o danym obiekcie child
-                Console.WriteLine(child.ToString());
-            }
             ResetSoft();
             ResetFlyObj();
             int ilosc = ((int)Math.Round(slider1.Value));
