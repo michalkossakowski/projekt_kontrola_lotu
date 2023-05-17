@@ -19,6 +19,7 @@ using System.IO; //potrzebne jest do plików tekstowych
 using Path = System.IO.Path;
 using Microsoft.Win32;
 using System.Collections;
+using System.ComponentModel;
 
 class Radar { }
 
@@ -106,6 +107,7 @@ namespace po_projekt_kontrola_lotu
             wczytaj.Content = "Wczytaj Plik";
             wczytaj.IsEnabled = true;
             ResetFlyObj();
+            ukryjInterfejs();
         }
 
 
@@ -267,9 +269,14 @@ namespace po_projekt_kontrola_lotu
         {
             FlyMapa.Children.Clear();
         }
-        // generowanie statkow
+        // generowanie statkow  
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
+            foreach (UIElement child in LegendaContainer.Children) { 
+            {
+                // Tutaj możesz wyświetlić informacje o danym obiekcie child
+                Console.WriteLine(child.ToString());
+            }
             ResetSoft();
             ResetFlyObj();
             int ilosc = ((int)Math.Round(slider1.Value));
@@ -278,6 +285,10 @@ namespace po_projekt_kontrola_lotu
             slider2Text.Visibility = Visibility.Visible;
             wybierz_statek.Visibility = Visibility.Visible;
             slider2.Visibility = Visibility.Visible;
+            start.Visibility = Visibility.Visible;
+            stop.Visibility = Visibility.Visible;
+            Timer_text.Visibility = Visibility.Visible;
+            TimerBox.Visibility = Visibility.Visible;
 
             Ellipse kolo = new Ellipse(); //dodaje wczytane koło
             kolo.Width = 20;
@@ -365,6 +376,11 @@ namespace po_projekt_kontrola_lotu
             Grid.SetColumn(opis, 1);
 
             LegendaContainer.Children.Add(legendGrid);
+            ilosc_statkow.Visibility = Visibility.Visible;
+            slider1Text.Visibility = Visibility.Visible;
+            wygeneruj_trasy.Visibility = Visibility.Visible;
+            slider1.Visibility = Visibility.Visible;
+
         }
 
         //ładuje obiekty z pliku
@@ -389,17 +405,43 @@ namespace po_projekt_kontrola_lotu
                         {
                             MessageBox.Show("Nieprawidłowe dane: " + linia);
                         }
+
                     }
                     else
                     {
                         MessageBox.Show("Nieprawidłowy format linii: " + linia);
                     }
+
                 }
+       
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Błąd podczas wczytywania danych z pliku: " + ex.Message);
             }
+        }
+
+        private void pokazInterfejs()
+        {
+            ilosc_statkow.Visibility = Visibility.Visible;
+            slider1Text.Visibility = Visibility.Visible;
+            wygeneruj_trasy.Visibility = Visibility.Visible;
+            slider1.Visibility = Visibility.Visible;
+            start.Visibility = Visibility.Visible;
+            stop.Visibility = Visibility.Visible;
+            Timer_text.Visibility = Visibility.Visible;
+            TimerBox.Visibility = Visibility.Visible;
+        }
+        private void ukryjInterfejs()
+        {
+            ilosc_statkow.Visibility = Visibility.Hidden;
+            slider1Text.Visibility = Visibility.Hidden;
+            wygeneruj_trasy.Visibility = Visibility.Hidden;
+            slider1.Visibility = Visibility.Hidden;
+            start.Visibility = Visibility.Hidden;
+            stop.Visibility = Visibility.Hidden;
+            Timer_text.Visibility = Visibility.Hidden;
+            TimerBox.Visibility = Visibility.Hidden;
         }
         //tworzy obiekty na mapie
         private void CreateObject(int x, int y)
