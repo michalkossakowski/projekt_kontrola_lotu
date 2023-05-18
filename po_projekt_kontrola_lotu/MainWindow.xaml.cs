@@ -163,7 +163,7 @@ namespace po_projekt_kontrola_lotu
         private Punkt p1;
         private Punkt p2;
         private int wysokosc;
-        private int predkosc;
+        public int predkosc;
         public Odcinek(Punkt pp1, Punkt pp2, int wys, int pred)
         {
             this.p1 = pp1;
@@ -190,7 +190,7 @@ namespace po_projekt_kontrola_lotu
         }
     class FlyObject
     {
-        private Punkt pocz;
+        public Punkt pocz;
         private List<Odcinek> Trasa;
         public FlyObject(int x, int y)
         {
@@ -202,7 +202,7 @@ namespace po_projekt_kontrola_lotu
             for (int i = 0; i < rnd.Next(3,6); i++)
             {
                 var p2 = new Punkt(rnd.Next(20, 480), rnd.Next(20, 480));
-                var odc = new Odcinek(p1, p2, rnd.Next(500, 2000), rnd.Next(20, 50));
+                var odc = new Odcinek(p1, p2, rnd.Next(500, 2000), rnd.Next(1, 5));
                 Trasa.Add(odc);
                 p1 = new Punkt(p2);
             }
@@ -260,6 +260,27 @@ namespace po_projekt_kontrola_lotu
         {
             _timer.Start();
             this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 0, 255, 0));
+            // Ruch obiektów latających
+            foreach (var flyObject in ListaStatkow)
+            {
+                var trasa = flyObject.getTrasa();
+
+                foreach (var odc in trasa)
+                {
+                    var p1 = odc.getP1();
+                    var p2 = odc.getP2();
+                    var predkosc = odc.predkosc;
+
+                    var deltaX = p2.getX() - p1.getX();
+                    var deltaY = p2.getY() - p1.getY();
+                    var dlugosc = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+
+                    var przesuniecieX = (int)Math.Round((deltaX / dlugosc) * predkosc);
+                    var przesuniecieY = (int)Math.Round((deltaY / dlugosc) * predkosc);
+
+                    flyObject.pocz.przesun(przesuniecieX, przesuniecieY);
+                }
+            }
         }
         //resetowanie statków
         private void ResetFlyObj()
