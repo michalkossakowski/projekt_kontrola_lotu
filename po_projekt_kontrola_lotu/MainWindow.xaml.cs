@@ -67,11 +67,7 @@ namespace po_projekt_kontrola_lotu
             _counter++;
             TimerBox.Text = _counter.ToString();
         }
-        private void Start_Click(object sender, RoutedEventArgs e)
-        {
-            _timer.Start();
-            this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 0, 255, 0));
-        }
+      
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
             _timer.Stop();
@@ -127,7 +123,7 @@ namespace po_projekt_kontrola_lotu
         ///////////////////////////// obiekty latajace
         class Punkt
         {
-            private int x;
+        private int x;
         private int y;
         public Punkt()
         {
@@ -155,11 +151,11 @@ namespace po_projekt_kontrola_lotu
         }
         public int getX()
         {
-            return x;
+            return x+5;
         }
         public int getY()
         {
-            return y;
+            return y+5;
         }
     }
     class Odcinek
@@ -255,11 +251,15 @@ namespace po_projekt_kontrola_lotu
                 linia1.Y2 = p2.getY();
                 linia1.Stroke = Brushes.DarkRed;
                 linia1.StrokeThickness = 2;
-            };
-
+            }
             FlyMapa.Children.Add(linia1);
+        }
 
-
+         
+        private void Start_Click(object sender, RoutedEventArgs e)
+        {
+            _timer.Start();
+            this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 0, 255, 0));
         }
         //resetowanie statków
         private void ResetFlyObj()
@@ -268,7 +268,7 @@ namespace po_projekt_kontrola_lotu
         }
         // generowanie statkow
 
-        Grid legendGrid = new Grid
+        Grid legendGrid = new Grid //tworzy siatkę, która posiada dwie kolumny
         {
             ColumnDefinitions =
     {
@@ -277,12 +277,13 @@ namespace po_projekt_kontrola_lotu
     }
         };
         ///////////////////////////// resety
+        List<FlyObject> ListaStatkow = new List<FlyObject>();
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
             ResetSoft();
             ResetFlyObj();
-            LegendaContainer.Children.Remove(legendGrid);
-            legendGrid.Children.Clear();
+            LegendaContainer.Children.Remove(legendGrid); //usuwa z legendy opis oraz obrazek
+            legendGrid.Children.Clear(); //usuwa z legend grid poprzednią informację. Bez tego tekst stale się pogrubiał, ponieważ "tworzył nowy obiekt na starym obiekcie"
             int ilosc = ((int)Math.Round(slider1.Value));
             slider2.Maximum = ilosc ;
             zmien_trase.Visibility = Visibility.Visible;
@@ -313,7 +314,7 @@ namespace po_projekt_kontrola_lotu
             Grid.SetColumn(opisKola, 1);// ustawia opis po prawej
             LegendaContainer.Children.Add(legendGrid);
 
-            List<FlyObject> ListaStatkow = new List<FlyObject>();
+            
 
             for (int i = 0; i < ilosc; i++)
             {
