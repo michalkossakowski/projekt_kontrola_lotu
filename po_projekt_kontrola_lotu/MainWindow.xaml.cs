@@ -21,10 +21,6 @@ using Microsoft.Win32;
 using System.Collections;
 using System.ComponentModel;
 
-class Radar { }
-
-class obiekty_latajace { }
-
 
 namespace po_projekt_kontrola_lotu
 {
@@ -52,8 +48,6 @@ namespace po_projekt_kontrola_lotu
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += new EventHandler(dispatcherTimer_Tick);
 
-            //LoadMapObjectsFromFile("obiekty.txt"); //nakaz wywołania metody ze zmienną "obiekty.txt"
-
 
 
             
@@ -65,6 +59,7 @@ namespace po_projekt_kontrola_lotu
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             _counter++;
+            
             TimerBox.Text = _counter.ToString();
         }
       
@@ -80,6 +75,7 @@ namespace po_projekt_kontrola_lotu
             TimerBox.Text = _counter.ToString();
             _timer.Stop();
             this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+
             // slidery
             zmien_trase.Visibility = Visibility.Hidden;
             slider2Text.Visibility = Visibility.Hidden;
@@ -192,20 +188,27 @@ namespace po_projekt_kontrola_lotu
     {
         public Punkt pocz;
         private List<Odcinek> Trasa;
+        private Brush brush1;
+
         public FlyObject(int x, int y)
         {
             this.pocz = new Punkt(x, y);
             Trasa = new List<Odcinek>();
 
             Random rnd = new Random();
+            brush1 = new SolidColorBrush(Color.FromRgb((byte)rnd.Next(1, 155), (byte)rnd.Next(1, 55), (byte)rnd.Next(1, 155)));
             var p1 = new Punkt(pocz.getX(), pocz.getY());
-            for (int i = 0; i < rnd.Next(3,6); i++)
+            for (int i = 0; i < rnd.Next(2,4); i++)
             {
                 var p2 = new Punkt(rnd.Next(20, 480), rnd.Next(20, 480));
                 var odc = new Odcinek(p1, p2, rnd.Next(500, 2000), rnd.Next(1, 5));
                 Trasa.Add(odc);
                 p1 = new Punkt(p2);
             }
+        }
+        public Brush GetBrush()
+        {
+            return brush1;
         }
         public List<Odcinek> getTrasa()
         {
@@ -223,14 +226,17 @@ namespace po_projekt_kontrola_lotu
 
     }
     // tworzenie obiektow latajacych
-        private void CreateFlyObject(FlyObject FlOb)
+        private void CreateFlyObject(FlyObject FlOb,Brush brush1)
         {
+            
             Ellipse FlyObj = new Ellipse
             {
                 Width = 10,
                 Height = 10,
                 // potem w zaleznosci od klasy inny kolor
-                Fill = Brushes.DarkRed,
+               
+
+                Fill = brush1,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
                 Margin = new Thickness(FlOb.getPoczX(), FlOb.getPoczY(), 0, 0)
@@ -238,7 +244,7 @@ namespace po_projekt_kontrola_lotu
             FlyMapa.Children.Add(FlyObj);
 
         }
-        private void CreateOdcinek(Odcinek o)
+        private void CreateOdcinek(Odcinek o, Brush brush1)
         {
             Line linia1 = new Line();
             {
@@ -249,7 +255,7 @@ namespace po_projekt_kontrola_lotu
                 linia1.Y1 =p1.getY();
                 linia1.X2 = p2.getX();
                 linia1.Y2 = p2.getY();
-                linia1.Stroke = Brushes.DarkRed;
+                linia1.Stroke = brush1;
                 linia1.StrokeThickness = 2;
             }
             FlyMapa.Children.Add(linia1);
@@ -318,7 +324,8 @@ namespace po_projekt_kontrola_lotu
             
             Ellipse kolo = new Ellipse(); //dodaje wczytane koło
             kolo.Width = 20;
-            kolo.Height = 20;
+            kolo.Height = 20; 
+            Random rnd = new Random();
             kolo.Fill = Brushes.Maroon;
             kolo.Stroke = Brushes.Black;
             kolo.StrokeThickness = 1;
@@ -339,14 +346,14 @@ namespace po_projekt_kontrola_lotu
 
             for (int i = 0; i < ilosc; i++)
             {
-                Random rnd = new Random();
                 var Statek = new FlyObject(rnd.Next(20, 480), rnd.Next(20, 480));
                 ListaStatkow.Add(Statek);
-                CreateFlyObject(Statek);
+
+                CreateFlyObject(Statek,Statek.GetBrush());
                 List<Odcinek> TrasaStatek = Statek.getTrasa();
                 foreach (Odcinek odc in TrasaStatek)
                 {
-                    CreateOdcinek(odc);
+                    CreateOdcinek(odc,Statek.GetBrush());
                 }
 
             }
@@ -443,17 +450,6 @@ namespace po_projekt_kontrola_lotu
             }
         }
 
-        private void pokazInterfejs()
-        {
-            ilosc_statkow.Visibility = Visibility.Visible;
-            slider1Text.Visibility = Visibility.Visible;
-            wygeneruj_trasy.Visibility = Visibility.Visible;
-            slider1.Visibility = Visibility.Visible;
-            start.Visibility = Visibility.Visible;
-            stop.Visibility = Visibility.Visible;
-            Timer_text.Visibility = Visibility.Visible;
-            TimerBox.Visibility = Visibility.Visible;
-        }
         private void ukryjInterfejs()
         {
             ilosc_statkow.Visibility = Visibility.Hidden;
@@ -469,22 +465,21 @@ namespace po_projekt_kontrola_lotu
         private void CreateObject(int x, int y)
         {
             Random rnd = new Random();
+            Brush br1 = new SolidColorBrush(Color.FromRgb(100, 255, 100));
             // Twórz obiekt na mapie o określonych koordynatach
             Rectangle kwadraty = new Rectangle
             {
 
-                Width = rnd.Next(10,51),
+                Width = rnd.Next(10, 51),
                 Height = rnd.Next(10, 51),
-                Fill = Brushes.DarkOliveGreen,
+
+                Fill = br1,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
                 Margin = new Thickness(x, y, 0, 0)
             };
             Mapa.Children.Add(kwadraty);
         }
-
-
-
 
 
 

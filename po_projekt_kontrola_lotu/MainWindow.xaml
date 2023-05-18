@@ -11,7 +11,7 @@
         <!-- RADAR -->
         <Label Content="Radar" HorizontalAlignment="Left" Margin="375,-1,0,0" VerticalAlignment="Top" FontSize="36" RenderTransformOrigin="0.55,0.467" FontWeight="Bold"/>
         <Rectangle Height="502" Stroke="Black" Width="502" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="-1" Canvas.Top="-1" Margin="178,57,0,0"/>
-        <Canvas x:Name="Mapa" HorizontalAlignment="Left" Height="500" Margin="179,58,0,0" VerticalAlignment="Top" Width="500" Background="LightGreen"/>
+        <Canvas x:Name="Mapa" HorizontalAlignment="Left" Height="500" Margin="179,58,0,0" VerticalAlignment="Top" Width="500" Background="#FFBBCEBB"/>
         <Canvas x:Name="FlyMapa" HorizontalAlignment="Left" Height="500" Margin="179,58,0,0" VerticalAlignment="Top" Width="500"/>
         <!-- LEGENDA -->
         <Label Content="Legenda" HorizontalAlignment="Left" Margin="52,187,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
