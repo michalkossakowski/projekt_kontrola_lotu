@@ -55,15 +55,14 @@ namespace po_projekt_kontrola_lotu
             ///////////////////////////////////////////////// koniec main
         }
 
-        ///////////////////////////// timer
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
+
+        private void Start_Click(object sender, RoutedEventArgs e)
         {
-            _counter++;
-            
-            TimerBox.Text = _counter.ToString();
+            _timer.Start();
+            this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 0, 255, 0));
         }
-      
-        private void Stop_Click(object sender, RoutedEventArgs e)
+
+            private void Stop_Click(object sender, RoutedEventArgs e)
         {
             _timer.Stop();
             this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
@@ -89,6 +88,13 @@ namespace po_projekt_kontrola_lotu
             Mapa.Children.Clear();
             LegendaContainer.Children.Clear();
         }
+
+        //resetowanie statków
+        private void ResetFlyObj()
+        {
+            FlyMapa.Children.Clear();
+        }
+
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
             ResetFun();
@@ -99,6 +105,126 @@ namespace po_projekt_kontrola_lotu
             ukryjInterfejs();
         }
 
+        private void ukryjInterfejs()
+        {
+            ilosc_statkow.Visibility = Visibility.Hidden;
+            slider1Text.Visibility = Visibility.Hidden;
+            wygeneruj_trasy.Visibility = Visibility.Hidden;
+            slider1.Visibility = Visibility.Hidden;
+            start.Visibility = Visibility.Hidden;
+            stop.Visibility = Visibility.Hidden;
+            Timer_text.Visibility = Visibility.Hidden;
+            TimerBox.Visibility = Visibility.Hidden;
+        }
+
+        //tworzy obiekty na mapie
+        private void CreateObject(int x, int y)
+        {
+            Random rnd = new Random();
+            Brush br1 = new SolidColorBrush(Color.FromRgb(100, 255, 100));
+            // Twórz obiekt na mapie o określonych koordynatach
+            Rectangle kwadraty = new Rectangle
+            {
+
+                Width = rnd.Next(10, 51),
+                Height = rnd.Next(10, 51),
+
+                Fill = br1,
+                Stroke = Brushes.Black,
+                StrokeThickness = 1,
+                Margin = new Thickness(x, y, 0, 0)
+            };
+            Mapa.Children.Add(kwadraty);
+        }
+
+
+        //ładuje obiekty z pliku
+        private void WczytajPlik(string sciezka_pliku)
+        {
+            try
+            {
+                string[] linie = File.ReadAllLines(sciezka_pliku);
+
+                foreach (string linia in linie)
+                {
+                    if (linia.StartsWith("punkty(") && linia.EndsWith(")"))
+                    {
+                        string punkty = linia.Substring(7, linia.Length - 8);
+                        string[] parts = punkty.Split(',');
+
+                        if (parts.Length == 2 && int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
+                        {
+                            CreateObject(x, y);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Nieprawidłowe dane: " + linia);
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nieprawidłowy format linii: " + linia);
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Błąd podczas wczytywania danych z pliku: " + ex.Message);
+            }
+        }
+
+        ///////////////////////////// wczytywanie mapy
+        //przycisk wczytaj
+        private void Wczytaj_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            string nadrzednyFolder1 = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName;
+            string nadrzednyFolder2 = Directory.GetParent(nadrzednyFolder1).FullName;
+            string nadrzednyFolder3 = Directory.GetParent(nadrzednyFolder2).FullName;
+            string nadrzednyFolder4 = Directory.GetParent(nadrzednyFolder3).FullName;
+
+            string mapsDirectory = Path.Combine(nadrzednyFolder4, "Mapy");
+
+            openFileDialog.InitialDirectory = mapsDirectory;
+
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string selectedFilePath = openFileDialog.FileName;
+                wczytaj.Content = Path.GetFileName(selectedFilePath);
+                wczytaj.IsEnabled = false;
+                WczytajPlik(openFileDialog.FileName); //mapa z pliku
+            }
+            Rectangle kwadrat = new Rectangle(); //dodaje wczytany kwadrat
+            kwadrat.Width = 20;
+            kwadrat.Height = 20;
+            kwadrat.Fill = Brushes.DarkOliveGreen;
+            kwadrat.Stroke = Brushes.Black;
+            kwadrat.StrokeThickness = 1;
+
+            TextBlock opis = new TextBlock(); //dodaje komentarz 
+            opis.Text = "Budynki";
+            opis.VerticalAlignment = VerticalAlignment.Center;
+            opis.Margin = new Thickness(5, 0, 0, 0);
+            Grid legendGrid = new Grid(); //dzieli legendę na dwie kolumny. Jedną obrazkową, drugą opisową
+            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            legendGrid.Children.Add(kwadrat); //wpisuje kwadrat i komentarz do legendy
+            legendGrid.Children.Add(opis);
+            Grid.SetColumn(kwadrat, 0);
+            Grid.SetColumn(opis, 1);
+
+            LegendaContainer.Children.Add(legendGrid);
+            ilosc_statkow.Visibility = Visibility.Visible;
+            slider1Text.Visibility = Visibility.Visible;
+            wygeneruj_trasy.Visibility = Visibility.Visible;
+            slider1.Visibility = Visibility.Visible;
+
+        }
 
 
         //slidery
@@ -261,50 +387,21 @@ namespace po_projekt_kontrola_lotu
             FlyMapa.Children.Add(linia1);
         }
 
-         
-        private void Start_Click(object sender, RoutedEventArgs e)
-        {
-            _timer.Start();
-            this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 0, 255, 0));
-            // Ruch obiektów latających
-            foreach (var flyObject in ListaStatkow)
-            {
-                var trasa = flyObject.getTrasa();
 
-                foreach (var odc in trasa)
-                {
-                    var p1 = odc.getP1();
-                    var p2 = odc.getP2();
-                    var predkosc = odc.predkosc;
-
-                    var deltaX = p2.getX() - p1.getX();
-                    var deltaY = p2.getY() - p1.getY();
-                    var dlugosc = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-
-                    var przesuniecieX = (int)Math.Round((deltaX / dlugosc) * predkosc);
-                    var przesuniecieY = (int)Math.Round((deltaY / dlugosc) * predkosc);
-
-                    flyObject.pocz.przesun(przesuniecieX, przesuniecieY);
-                }
-            }
-        }
-        //resetowanie statków
-        private void ResetFlyObj()
-        {
-            FlyMapa.Children.Clear();
-        }
         // generowanie statkow
 
         Grid legendGrid = new Grid //tworzy siatkę, która posiada dwie kolumny
         {
             ColumnDefinitions =
-    {
-        new ColumnDefinition(),
-        new ColumnDefinition()
-    }
+            {
+                new ColumnDefinition(),
+                new ColumnDefinition()
+            }
         };
-        ///////////////////////////// resety
+
+        ///////////////////////////// tworzenie listy statków (ja ci kurwa dam resety)
         List<FlyObject> ListaStatkow = new List<FlyObject>();
+
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
             ResetSoft();
@@ -342,7 +439,6 @@ namespace po_projekt_kontrola_lotu
             Grid.SetColumn(opisKola, 1);// ustawia opis po prawej
             LegendaContainer.Children.Add(legendGrid);
 
-            
 
             for (int i = 0; i < ilosc; i++)
             {
@@ -359,129 +455,36 @@ namespace po_projekt_kontrola_lotu
             }
         }
 
-
-
-
-        ///////////////////////////// wczytywanie mapy
-        //przycisk wczytaj
-        private void Wczytaj_Click(object sender, RoutedEventArgs e)
+        ///////////////////////////// timer, ruch statkow niedokonczony
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            string nadrzednyFolder1 = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName;
-            string nadrzednyFolder2 = Directory.GetParent(nadrzednyFolder1).FullName;
-            string nadrzednyFolder3 = Directory.GetParent(nadrzednyFolder2).FullName;
-            string nadrzednyFolder4 = Directory.GetParent(nadrzednyFolder3).FullName;
-
-            string mapsDirectory = Path.Combine(nadrzednyFolder4, "Mapy");
-
-            openFileDialog.InitialDirectory = mapsDirectory;
-
-
-            if (openFileDialog.ShowDialog() == true)
+            _counter++;
+            TimerBox.Text = _counter.ToString();
+            foreach (var flyObject in ListaStatkow)
             {
-                string selectedFilePath = openFileDialog.FileName;
-                wczytaj.Content = Path.GetFileName(selectedFilePath);
-                wczytaj.IsEnabled = false;
-                WczytajPlik (openFileDialog.FileName); //mapa z pliku
-            }
-            Rectangle kwadrat = new Rectangle(); //dodaje wczytany kwadrat
-            kwadrat.Width = 20;
-            kwadrat.Height = 20;
-            kwadrat.Fill = Brushes.DarkOliveGreen;
-            kwadrat.Stroke = Brushes.Black;
-            kwadrat.StrokeThickness = 1;
+                var trasa = flyObject.getTrasa();
 
-            TextBlock opis = new TextBlock(); //dodaje komentarz 
-            opis.Text = "Budynki";
-            opis.VerticalAlignment = VerticalAlignment.Center;
-            opis.Margin = new Thickness(5, 0, 0, 0);
-            Grid legendGrid = new Grid(); //dzieli legendę na dwie kolumny. Jedną obrazkową, drugą opisową
-            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
-
-            legendGrid.Children.Add(kwadrat); //wpisuje kwadrat i komentarz do legendy
-            legendGrid.Children.Add(opis);
-            Grid.SetColumn(kwadrat, 0);
-            Grid.SetColumn(opis, 1);
-
-            LegendaContainer.Children.Add(legendGrid);
-            ilosc_statkow.Visibility = Visibility.Visible;
-            slider1Text.Visibility = Visibility.Visible;
-            wygeneruj_trasy.Visibility = Visibility.Visible;
-            slider1.Visibility = Visibility.Visible;
-
-        }
-
-        //ładuje obiekty z pliku
-        private void WczytajPlik(string sciezka_pliku)
-        {
-            try
-            {
-                string[] linie = File.ReadAllLines(sciezka_pliku);
-
-                foreach (string linia in linie)
+                foreach (var odc in trasa)
                 {
-                    if (linia.StartsWith("punkty(") && linia.EndsWith(")"))
-                    {
-                        string punkty = linia.Substring(7, linia.Length - 8);
-                        string[] parts = punkty.Split(',');
+                    var p1 = odc.getP1();
+                    var p2 = odc.getP2();
+                    var predkosc = odc.predkosc;
 
-                        if (parts.Length == 2 && int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
-                        {
-                            CreateObject(x, y);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Nieprawidłowe dane: " + linia);
-                        }
+                    var deltaX = p2.getX() - p1.getX();
+                    var deltaY = p2.getY() - p1.getY();
+                    var dlugosc = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
 
-                    }
-                    else
-                    {
-                        MessageBox.Show("Nieprawidłowy format linii: " + linia);
-                    }
+                    var przesuniecieX = (int)Math.Round((deltaX / dlugosc) * predkosc);
+                    var przesuniecieY = (int)Math.Round((deltaY / dlugosc) * predkosc);
 
+                    flyObject.pocz.przesun(przesuniecieX, przesuniecieY);
+
+                    /*
+                    var fly = new FlyObject(przesuniecieX, przesuniecieY);
+                    CreateFlyObject(fly, flyObject.GetBrush());*/
                 }
-       
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Błąd podczas wczytywania danych z pliku: " + ex.Message);
             }
         }
-
-        private void ukryjInterfejs()
-        {
-            ilosc_statkow.Visibility = Visibility.Hidden;
-            slider1Text.Visibility = Visibility.Hidden;
-            wygeneruj_trasy.Visibility = Visibility.Hidden;
-            slider1.Visibility = Visibility.Hidden;
-            start.Visibility = Visibility.Hidden;
-            stop.Visibility = Visibility.Hidden;
-            Timer_text.Visibility = Visibility.Hidden;
-            TimerBox.Visibility = Visibility.Hidden;
-        }
-        //tworzy obiekty na mapie
-        private void CreateObject(int x, int y)
-        {
-            Random rnd = new Random();
-            Brush br1 = new SolidColorBrush(Color.FromRgb(100, 255, 100));
-            // Twórz obiekt na mapie o określonych koordynatach
-            Rectangle kwadraty = new Rectangle
-            {
-
-                Width = rnd.Next(10, 51),
-                Height = rnd.Next(10, 51),
-
-                Fill = br1,
-                Stroke = Brushes.Black,
-                StrokeThickness = 1,
-                Margin = new Thickness(x, y, 0, 0)
-            };
-            Mapa.Children.Add(kwadraty);
-        }
-
-
 
         // koniec window
     }
