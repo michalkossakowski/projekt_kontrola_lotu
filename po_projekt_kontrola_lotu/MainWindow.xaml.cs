@@ -1,35 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.IO; //potrzebne jest do plików tekstowych
-using Path = System.IO.Path;
-using Microsoft.Win32;
+using Path = System.IO.Path; //do wczytywania plików z folderu
+using Microsoft.Win32;//do wczytywania plików z folderu
 using System.Collections;
-using System.ComponentModel;
-
 
 namespace po_projekt_kontrola_lotu
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        // timer
+        // timer zmienne globalne
         private DispatcherTimer _timer;
         private int _counter = 0;
 
@@ -37,8 +22,6 @@ namespace po_projekt_kontrola_lotu
         public MainWindow()
         {
             ///////////////////////////////////////////////// poczatek main
-            
-            
             // wyłączenie rozszerzania okna
             this.ResizeMode = ResizeMode.NoResize;
 
@@ -48,43 +31,34 @@ namespace po_projekt_kontrola_lotu
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += new EventHandler(dispatcherTimer_Tick);
 
-
-
-            
-            
             ///////////////////////////////////////////////// koniec main
         }
 
-
+        ///////////////////////////////////////////////// Obsługa Timer
         private void Start_Click(object sender, RoutedEventArgs e)
         {
             _timer.Start();
             this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 0, 255, 0));
         }
-
-            private void Stop_Click(object sender, RoutedEventArgs e)
+        private void Stop_Click(object sender, RoutedEventArgs e)
         {
             _timer.Stop();
             this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
         }
-        private void ResetSoft()
+        private void ResetTimer()
         {
-            // timer
             _counter = 0;
             TimerBox.Text = _counter.ToString();
             _timer.Stop();
             this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
-
-            // slidery
-            zmien_trase.Visibility = Visibility.Hidden;
-            slider2Text.Visibility = Visibility.Hidden;
-            wybierz_statek.Visibility = Visibility.Hidden;
-            slider2.Visibility = Visibility.Hidden;
         }
+
+        /////////////////////////////////////////////////// Resetowanie
         private void ResetFun()
         {
-            ResetSoft();
-            //reset wczytanego pliku
+            //resetowanie timera
+            ResetTimer();
+            //reset Mapy i legendy
             Mapa.Children.Clear();
             LegendaContainer.Children.Clear();
         }
@@ -93,19 +67,25 @@ namespace po_projekt_kontrola_lotu
         private void ResetFlyObj()
         {
             FlyMapa.Children.Clear();
+            ListaStatkow.Clear();
+            ResetTimer();
         }
 
+        //przycisk reset
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
+            //reset timera mapy i legendy
             ResetFun();
-            //wczytywanie 
+            //reset wczytywania pliku
             wczytaj.Content = "Wczytaj Plik";
             wczytaj.IsEnabled = true;
+            //reset obiektow
             ResetFlyObj();
-            ukryjInterfejs();
+            // ukrywanie interfajsu
+            HideInterface();
         }
-
-        private void ukryjInterfejs()
+        //ukrywanie interfejsu
+        private void HideInterface()
         {
             ilosc_statkow.Visibility = Visibility.Hidden;
             slider1Text.Visibility = Visibility.Hidden;
@@ -117,7 +97,11 @@ namespace po_projekt_kontrola_lotu
             TimerBox.Visibility = Visibility.Hidden;
         }
 
-        //tworzy obiekty na mapie
+
+
+        ///////////////////////////////////////////// wczytywanie mapy
+
+        //rysowanie obiektów na mapie
         private void CreateObject(int x, int y)
         {
             Random rnd = new Random();
@@ -125,10 +109,8 @@ namespace po_projekt_kontrola_lotu
             // Twórz obiekt na mapie o określonych koordynatach
             Rectangle kwadraty = new Rectangle
             {
-
                 Width = rnd.Next(10, 51),
                 Height = rnd.Next(10, 51),
-
                 Fill = br1,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
@@ -136,8 +118,6 @@ namespace po_projekt_kontrola_lotu
             };
             Mapa.Children.Add(kwadraty);
         }
-
-
         //ładuje obiekty z pliku
         private void WczytajPlik(string sciezka_pliku)
         {
@@ -176,7 +156,6 @@ namespace po_projekt_kontrola_lotu
             }
         }
 
-        ///////////////////////////// wczytywanie mapy
         //przycisk wczytaj
         private void Wczytaj_Click(object sender, RoutedEventArgs e)
         {
@@ -227,6 +206,7 @@ namespace po_projekt_kontrola_lotu
         }
 
 
+        ///////////////////////////// obiekty latajace
         //slidery
         private void slider1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -242,116 +222,8 @@ namespace po_projekt_kontrola_lotu
                 slider2Text.Text = ((int)Math.Round(slider2.Value)).ToString();
             }
         }
-        ///////////////////////////// obiekty latajace
-        class Punkt
-        {
-        private int x;
-        private int y;
-        public Punkt()
-        {
-            this.x = 0;
-            this.y = 0;
-        }
-        public Punkt(int xx, int yy)
-        {
-            this.x = xx;
-            this.y = yy;
-        }
-        public Punkt(Punkt p)
-        {
-            this.x = p.x;
-            this.y = p.y;
-        }
-        public void przesun(int px, int py)
-        {
-            this.x += px;
-            this.y += py;
-        }
-        public override string ToString()
-        {
-            return "(" + this.x + "," + this.y + ")";
-        }
-        public int getX()
-        {
-            return x+5;
-        }
-        public int getY()
-        {
-            return y+5;
-        }
-    }
-    class Odcinek
-    {
-        private Punkt p1;
-        private Punkt p2;
-        private int wysokosc;
-        public int predkosc;
-        public Odcinek(Punkt pp1, Punkt pp2, int wys, int pred)
-        {
-            this.p1 = pp1;
-            this.p2 = pp2;
-            this.wysokosc = wys;
-            this.predkosc = pred;
-        }
-        public Odcinek(Odcinek o)
-        {
-            this.p1 = o.p1;
-            this.p2 = o.p2;
-        }
 
-        public Punkt getP1()
-        {
-            return p1;    
-        }
-        public Punkt getP2()
-        {
-            return p2;
-        }
-
-
-        }
-    class FlyObject
-    {
-        public Punkt pocz;
-        private List<Odcinek> Trasa;
-        private Brush brush1;
-
-        public FlyObject(int x, int y)
-        {
-            this.pocz = new Punkt(x, y);
-            Trasa = new List<Odcinek>();
-
-            Random rnd = new Random();
-            brush1 = new SolidColorBrush(Color.FromRgb((byte)rnd.Next(1, 155), (byte)rnd.Next(1, 55), (byte)rnd.Next(1, 155)));
-            var p1 = new Punkt(pocz.getX(), pocz.getY());
-            for (int i = 0; i < rnd.Next(2,4); i++)
-            {
-                var p2 = new Punkt(rnd.Next(20, 480), rnd.Next(20, 480));
-                var odc = new Odcinek(p1, p2, rnd.Next(500, 2000), rnd.Next(1, 5));
-                Trasa.Add(odc);
-                p1 = new Punkt(p2);
-            }
-        }
-        public Brush GetBrush()
-        {
-            return brush1;
-        }
-        public List<Odcinek> getTrasa()
-        {
-            return Trasa;
-        }
-
-        public int getPoczX()
-        {
-            return pocz.getX();
-        }
-        public int getPoczY()
-        {
-            return pocz.getY();
-        }
-
-    }
-    // tworzenie obiektow latajacych
+        // rysowanie obiektow latajacych
         private void CreateFlyObject(FlyObject FlOb,Brush brush1)
         {
             
@@ -359,9 +231,6 @@ namespace po_projekt_kontrola_lotu
             {
                 Width = 10,
                 Height = 10,
-                // potem w zaleznosci od klasy inny kolor
-               
-
                 Fill = brush1,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
@@ -370,6 +239,7 @@ namespace po_projekt_kontrola_lotu
             FlyMapa.Children.Add(FlyObj);
 
         }
+        // rysowanie odcinkow
         private void CreateOdcinek(Odcinek o, Brush brush1)
         {
             Line linia1 = new Line();
@@ -399,17 +269,11 @@ namespace po_projekt_kontrola_lotu
             }
         };
 
-        ///////////////////////////// tworzenie listy statków (ja ci kurwa dam resety)
-        List<FlyObject> ListaStatkow = new List<FlyObject>();
 
-        private void wygeneruj_Click(object sender, RoutedEventArgs e)
+
+        //pokaz interfejs
+        private void ShowInterface()
         {
-            ResetSoft();
-            ResetFlyObj();
-            LegendaContainer.Children.Remove(legendGrid); //usuwa z legendy opis oraz obrazek
-            legendGrid.Children.Clear(); //usuwa z legend grid poprzednią informację. Bez tego tekst stale się pogrubiał, ponieważ "tworzył nowy obiekt na starym obiekcie"
-            int ilosc = ((int)Math.Round(slider1.Value));
-            slider2.Maximum = ilosc ;
             zmien_trase.Visibility = Visibility.Visible;
             slider2Text.Visibility = Visibility.Visible;
             wybierz_statek.Visibility = Visibility.Visible;
@@ -418,12 +282,26 @@ namespace po_projekt_kontrola_lotu
             stop.Visibility = Visibility.Visible;
             Timer_text.Visibility = Visibility.Visible;
             TimerBox.Visibility = Visibility.Visible;
-            
-            Ellipse kolo = new Ellipse(); //dodaje wczytane koło
+        }
+
+        // tworzenie listy statków 
+        List<FlyObject> ListaStatkow = new List<FlyObject>();
+
+        private void wygeneruj_Click(object sender, RoutedEventArgs e)
+        {
+            ResetFlyObj();
+            LegendaContainer.Children.Remove(legendGrid); //usuwa z legendy opis oraz obrazek
+            legendGrid.Children.Clear(); //usuwa z legend grid poprzednią informację. Bez tego tekst stale się pogrubiał, ponieważ "tworzył nowy obiekt na starym obiekcie"
+            int ilosc = ((int)Math.Round(slider1.Value));
+            slider2.Maximum = ilosc ;
+            ShowInterface();
+
+            //do legendy
+            Ellipse kolo = new Ellipse(); //dodaje wczytane koło 
             kolo.Width = 20;
             kolo.Height = 20; 
             Random rnd = new Random();
-            kolo.Fill = Brushes.Maroon;
+            kolo.Fill = Brushes.AliceBlue;
             kolo.Stroke = Brushes.Black;
             kolo.StrokeThickness = 1;
 
@@ -442,51 +320,111 @@ namespace po_projekt_kontrola_lotu
 
             for (int i = 0; i < ilosc; i++)
             {
-                var Statek = new FlyObject(rnd.Next(20, 480), rnd.Next(20, 480));
-                ListaStatkow.Add(Statek);
-
-                CreateFlyObject(Statek,Statek.GetBrush());
-                List<Odcinek> TrasaStatek = Statek.getTrasa();
-                foreach (Odcinek odc in TrasaStatek)
+                var typ = rnd.Next(1, 5);
+                if (typ == 1)
                 {
-                    CreateOdcinek(odc,Statek.GetBrush());
+                    var Statek = new Samolot(rnd.Next(20, 480), rnd.Next(20, 480));
+                    ListaStatkow.Add(Statek);
+                    CreateFlyObject(Statek, Statek.GetBrush());
+                    List<Odcinek> TrasaStatek = Statek.getTrasa();
+                    foreach (Odcinek odc in TrasaStatek)
+                    {
+                        CreateOdcinek(odc, Statek.GetBrush());
+                    }
                 }
-
+                if (typ == 2)
+                {
+                    var Statek = new Smiglowiec(rnd.Next(20, 480), rnd.Next(20, 480));
+                    ListaStatkow.Add(Statek);
+                    CreateFlyObject(Statek, Statek.GetBrush());
+                    List<Odcinek> TrasaStatek = Statek.getTrasa();
+                    foreach (Odcinek odc in TrasaStatek)
+                    {
+                        CreateOdcinek(odc, Statek.GetBrush());
+                    }
+                }
+                if(typ == 3) {
+                    var Statek = new Balon(rnd.Next(20, 480), rnd.Next(20, 480));
+                    ListaStatkow.Add(Statek);
+                    CreateFlyObject(Statek, Statek.GetBrush());
+                    List<Odcinek> TrasaStatek = Statek.getTrasa();
+                    foreach (Odcinek odc in TrasaStatek)
+                    {
+                        CreateOdcinek(odc, Statek.GetBrush());
+                    }
+                }
+                if (typ == 4)
+                {
+                    var Statek = new Szybowiec(rnd.Next(20, 480), rnd.Next(20, 480));
+                    ListaStatkow.Add(Statek);
+                    CreateFlyObject(Statek, Statek.GetBrush());
+                    List<Odcinek> TrasaStatek = Statek.getTrasa();
+                    foreach (Odcinek odc in TrasaStatek)
+                    {
+                        CreateOdcinek(odc, Statek.GetBrush());
+                    }
+                }
             }
         }
 
+        // Mati numero uno ruszanie
         ///////////////////////////// timer, ruch statkow niedokonczony
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             _counter++;
             TimerBox.Text = _counter.ToString();
-            foreach (var flyObject in ListaStatkow)
+
+
+
+            // kosak ruszanie
+            FlyMapa.Children.Clear();
+            foreach (var sta in ListaStatkow)
             {
-                var trasa = flyObject.getTrasa();
-
-                foreach (var odc in trasa)
+                sta.przesun(20, 20);
+                CreateFlyObject(sta, sta.GetBrush());
+                List<Odcinek> TrasaStatek = sta.getTrasa();
+                foreach (Odcinek odc in TrasaStatek)
                 {
-                    var p1 = odc.getP1();
-                    var p2 = odc.getP2();
-                    var predkosc = odc.predkosc;
-
-                    var deltaX = p2.getX() - p1.getX();
-                    var deltaY = p2.getY() - p1.getY();
-                    var dlugosc = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-
-                    var przesuniecieX = (int)Math.Round((deltaX / dlugosc) * predkosc);
-                    var przesuniecieY = (int)Math.Round((deltaY / dlugosc) * predkosc);
-
-                    flyObject.pocz.przesun(przesuniecieX, przesuniecieY);
-
-                    /*
-                    var fly = new FlyObject(przesuniecieX, przesuniecieY);
-                    CreateFlyObject(fly, flyObject.GetBrush());*/
+                    CreateOdcinek(odc, sta.GetBrush());
                 }
             }
+
+
+
+            // Mati numero uno ruszanie
+            /*            
+                        foreach (var flyObject in ListaStatkow)
+                        {
+                            var trasa = flyObject.getTrasa();
+
+                            foreach (var odc in trasa)
+                            {
+                                var p1 = odc.getP1();
+                                var p2 = odc.getP2();
+                                var predkosc = odc.predkosc;
+
+                                var deltaX = p2.getX() - p1.getX();
+                                var deltaY = p2.getY() - p1.getY();
+                                var dlugosc = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+
+                                var przesuniecieX = (int)Math.Round((deltaX / dlugosc) * predkosc);
+                                var przesuniecieY = (int)Math.Round((deltaY / dlugosc) * predkosc);
+
+                                //flyObject.pocz.przesun(przesuniecieX, przesuniecieY);
+
+                                *//*
+                                var fly = new FlyObject(przesuniecieX, przesuniecieY);
+                                CreateFlyObject(fly, flyObject.GetBrush());*//*
+                            }
+                        }
+                        */
         }
 
-        // koniec window
+
+
+
+
+        /////////////////////////////////////////////// koniec window
     }
 }
 
