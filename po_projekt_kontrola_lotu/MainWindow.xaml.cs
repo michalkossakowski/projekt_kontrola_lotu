@@ -61,6 +61,10 @@ namespace po_projekt_kontrola_lotu
             //reset Mapy i legendy
             Mapa.Children.Clear();
             LegendaContainer.Children.Clear();
+            wybierz_statek.Visibility = Visibility.Hidden;
+            slider2.Visibility = Visibility.Hidden;
+            slider2Text.Visibility = Visibility.Hidden;
+            zmien_trase.Visibility = Visibility.Hidden;
         }
 
         //resetowanie statków

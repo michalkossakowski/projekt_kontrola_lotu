@@ -39,6 +39,7 @@
         <TextBox IsEnabled="False" Visibility="Hidden" x:Name="slider2Text" IsReadOnly="True" HorizontalAlignment="Left" Margin="904,396,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="1" VerticalAlignment="Top" Width="25"  FontSize="14" BorderBrush="Black" Background="Black" Height="25" Foreground="White" FontWeight="Bold" SelectionBrush="Black" />
         <Button Visibility="Hidden" x:Name="zmien_trase" Content="Zmien trasę" HorizontalAlignment="Left" Height="29" Margin="763,436,0,0" VerticalAlignment="Top"  Background="#FFC300FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="138" FontSize="14"/>
 
+        
         <!-- GENEROWANIE STATKOW -->
         <Button x:Name="Reset" Click="Reset_Click"  Content="Reset" HorizontalAlignment="Left" Margin="798,493,0,0" VerticalAlignment="Top" Height="29" Width="69" BorderBrush="Black" Background="White" FontSize="14" FontWeight="Bold"/>
 
