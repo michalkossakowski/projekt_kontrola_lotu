@@ -25,18 +25,10 @@ class Odcinek
     }
 
     // losowy odcinek o podanej dlugosci z wybranego puntu 
-    public Odcinek(Punkt pp1,double wys, double pred)
+    private void kierunekFun(Punkt p2,double poprzedni, double kierunek, double pred)
     {
-        this.p1 = pp1;
-        this.wysokosc = wys;
-        this.predkosc = pred;
-        this.p2 = new Punkt(pp1);
-        Random rnd = new Random();
-
-        var kierunek = rnd.Next(1, 9);
         double a = (pred * Math.Sqrt(2)) / 2;
-        int poprzedni = 0;
-        if (kierunek==1)
+        if (kierunek == 1)
         {
             p2.przesun(pred, 0);
         }
@@ -54,7 +46,7 @@ class Odcinek
         }
         if (kierunek == 5)
         {
-            p2.przesun(a,a);
+            p2.przesun(a, a);
         }
         if (kierunek == 6)
         {
@@ -69,6 +61,21 @@ class Odcinek
             p2.przesun(-a, -a);
         }
         poprzedni = kierunek;
+    }
+    public Odcinek(Punkt pp1,double wys, double pred)
+    {
+        this.p1 = pp1;
+        this.wysokosc = wys;
+        this.predkosc = pred;
+        this.p2 = new Punkt(pp1);
+        Random rnd = new Random();
+
+        var kierunek = rnd.Next(1, 9);
+        double poprzedni = 0;
+        kierunekFun(p2, poprzedni, kierunek, pred);
+
+
+
 
     }
     // kierunek lotu

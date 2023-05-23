@@ -23,7 +23,7 @@
         
         <!-- GENEROWANIE STATKOW -->
         <Label Content="Podaj ilość statków:" x:Name="ilosc_statkow" Visibility="Hidden" HorizontalAlignment="Left" Margin="759,128,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="14" Height="35" Width="138" FontWeight="Bold"/>
-        <Slider x:Name="slider1" Visibility="Hidden" HorizontalAlignment="Left" Margin="759,163,0,0" VerticalAlignment="Top" Width="138"  Minimum="1" Maximum="6"  TickPlacement="BottomRight" TickFrequency="1" ValueChanged="slider1_ValueChanged" Height="38" Foreground="#FF4E00FF"/>
+        <Slider x:Name="slider1" Visibility="Hidden" HorizontalAlignment="Left" Margin="759,163,0,0" VerticalAlignment="Top" Width="138"  Minimum="1" Maximum="5"  TickPlacement="BottomRight" TickFrequency="1" ValueChanged="slider1_ValueChanged" Height="38" Foreground="#FF4E00FF"/>
         <TextBox IsEnabled="False" Visibility="Hidden" x:Name="slider1Text" IsReadOnly="True"  HorizontalAlignment="Left" Margin="904,163,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="1" VerticalAlignment="Top" Width="25"  FontSize="14" BorderBrush="Black" Background="Black" Height="24" Foreground="White" FontWeight="Bold" SelectionBrush="Black" />
         <Button x:Name="wygeneruj_trasy" Visibility="Hidden" Click="wygeneruj_Click" Content="Wygeneruj trasy" HorizontalAlignment="Left" Height="29" Margin="758,203,0,0" VerticalAlignment="Top"  Background="#FF4E00FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="138" FontSize="14"/>
 
