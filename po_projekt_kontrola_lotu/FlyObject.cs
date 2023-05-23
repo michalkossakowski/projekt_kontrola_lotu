@@ -2,6 +2,7 @@
 using System.Windows.Media;
 using System;
 
+
 class Odcinek
 {
     private Punkt p1;
@@ -29,10 +30,12 @@ class Odcinek
         this.p1 = pp1;
         this.wysokosc = wys;
         this.predkosc = pred;
-        this.p2 = pp1;
+        this.p2 = new Punkt(pp1);
         Random rnd = new Random();
 
         var kierunek = rnd.Next(1, 9);
+        double a = (pred * Math.Sqrt(2)) / 2;
+        int poprzedni = 0;
         if (kierunek==1)
         {
             p2.przesun(pred, 0);
@@ -51,23 +54,25 @@ class Odcinek
         }
         if (kierunek == 5)
         {
-            p2.przesun(pred, 0);
+            p2.przesun(a,a);
         }
         if (kierunek == 6)
         {
-            p2.przesun(pred, 0);
+            p2.przesun(-a, a);
         }
         if (kierunek == 7)
         {
-            p2.przesun(pred, 0);
+            p2.przesun(a, -a);
         }
         if (kierunek == 8)
         {
-            p2.przesun(pred, 0);
+            p2.przesun(-a, -a);
         }
-
+        poprzedni = kierunek;
 
     }
+    // kierunek lotu
+
 
     public Punkt getP1()
     {
@@ -128,14 +133,14 @@ class Samolot : FlyObject
         // kolor czerwony
         brush1 = new SolidColorBrush(Color.FromRgb(255,0,0));
         var p1 = new Punkt(pocz.getX(), pocz.getY());
-        for (double i = 0; i < rnd.Next(8, 20); i++)
+        for (double i = 0; i < rnd.Next(20, 50); i++)
         {
-            var p2 = new Punkt(rnd.Next(20, 480), rnd.Next(20, 480));
             // wpisywanie do listy odcinkow dla samolot
             // wysokowsc 1000-1500
-            // predkosc 80-140
-            var odc = new Odcinek(p1, p2, rnd.Next(1000, 1500), rnd.Next(80, 140));
+            // predkosc 40-80
+            var odc = new Odcinek(p1, rnd.Next(1000, 1500), rnd.Next(40, 80));
             Trasa.Add(odc);
+            var p2 = odc.getP2();
             p1 = new Punkt(p2);
         }
     }
@@ -144,17 +149,17 @@ class Smiglowiec : FlyObject {
     public Smiglowiec(double x, double y) : base(x, y)
     {
         Random rnd = new Random();
-        // koor niebieski
+        // kolor niebieski
         brush1 = new SolidColorBrush(Color.FromRgb(0, 0, 255));
         var p1 = new Punkt(pocz.getX(), pocz.getY());
-        for (double i = 0; i < rnd.Next(2, 4); i++)
+        for (double i = 0; i < rnd.Next(20, 50); i++)
         {
-            var p2 = new Punkt(rnd.Next(20, 480), rnd.Next(20, 480));
-            // wpisywanie do listy odcinkow dla samolot
-            // wysokowsc 600-800
-            // predkosc 30-70
-            var odc = new Odcinek(p1, p2, rnd.Next(600, 800), rnd.Next(30, 70));
+            // wpisywanie do listy odcinkow dla smiglowiec
+            // wysokowsc 800-1000
+            // predkosc 30-60
+            var odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(30, 60));
             Trasa.Add(odc);
+            var p2 = odc.getP2();
             p1 = new Punkt(p2);
         }
     }
@@ -167,14 +172,14 @@ class Balon : FlyObject
         // kolor rózowy 
         brush1 = new SolidColorBrush(Color.FromRgb(255, 0, 255));
         var p1 = new Punkt(pocz.getX(), pocz.getY());
-        for (double i = 0; i < rnd.Next(2, 4); i++)
+        for (double i = 0; i < rnd.Next(20, 50); i++)
         {
-            var p2 = new Punkt(rnd.Next(20, 480), rnd.Next(20, 480));
-            // wpisywanie do listy odcinkow dla samolot
-            // wysokowsc 100-300
-            // predkosc 10-30
-            var odc = new Odcinek(p1, p2, rnd.Next(100, 300), rnd.Next(10, 30));
+            // wpisywanie do listy odcinkow dla balon
+            // wysokowsc 400-800
+            // predkosc 10-20
+            var odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(10, 20));
             Trasa.Add(odc);
+            var p2 = odc.getP2();
             p1 = new Punkt(p2);
         }
     }
@@ -187,14 +192,14 @@ class Szybowiec : FlyObject
         // kolor pomaranczowy
         brush1 = new SolidColorBrush(Color.FromRgb(255, 125, 0));
         var p1 = new Punkt(pocz.getX(), pocz.getY());
-        for (double i = 0; i < rnd.Next(2, 4); i++)
+        for (double i = 0; i < rnd.Next(20, 50); i++)
         {
-            var p2 = new Punkt(rnd.Next(20, 480), rnd.Next(20, 480));
-            // wpisywanie do listy odcinkow dla samolot
-            // wysokowsc 400-900
-            // predkosc 20-60
-            var odc = new Odcinek(p1, p2, rnd.Next(400, 900), rnd.Next(20, 60));
+            // wpisywanie do listy odcinkow dla szybowiec
+            // wysokowsc 700-1100
+            // predkosc 20-50
+            var odc = new Odcinek(p1, rnd.Next(700, 1100), rnd.Next(20, 50));
             Trasa.Add(odc);
+            var p2 = odc.getP2();
             p1 = new Punkt(p2);
         }
     }
