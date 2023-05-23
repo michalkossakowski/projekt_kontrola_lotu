@@ -9,6 +9,7 @@ using System.IO; //potrzebne jest do plików tekstowych
 using Path = System.IO.Path; //do wczytywania plików z folderu
 using Microsoft.Win32;//do wczytywania plików z folderu
 using System.Collections;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace po_projekt_kontrola_lotu
 {
@@ -238,7 +239,8 @@ namespace po_projekt_kontrola_lotu
                 Fill = brush1,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
-                Margin = new Thickness(FlOb.getPoczX(), FlOb.getPoczY(), 0, 0)
+                // -5 bo przesuwa elipse
+                Margin = new Thickness(FlOb.getPoczX()-5, FlOb.getPoczY()-5, 0, 0)
             };
             FlyMapa.Children.Add(FlyObj);
 
@@ -321,7 +323,7 @@ namespace po_projekt_kontrola_lotu
             Grid.SetColumn(opisKola, 1);// ustawia opis po prawej
             LegendaContainer.Children.Add(legendGrid);
 
-
+            //komentarz
             for (int i = 0; i < ilosc; i++)
             {
                 var typ = rnd.Next(1, 5);
@@ -375,23 +377,46 @@ namespace po_projekt_kontrola_lotu
         ///////////////////////////// timer, ruch statkow niedokonczony
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
+            // timer
             _counter++;
             TimerBox.Text = _counter.ToString();
 
 
 
             // kosak ruszanie
+            /*            
+                        FlyMapa.Children.Clear();
+                        foreach (var sta in ListaStatkow)
+                        {
+                            sta.przesun(-5, 20);
+                            CreateFlyObject(sta, sta.GetBrush());
+                            List<Odcinek> TrasaStatek = sta.getTrasa();
+                            foreach (Odcinek odc in TrasaStatek)
+                            {
+                                CreateOdcinek(odc, sta.GetBrush());
+                            }
+                        }
+            */
+
+            // ruszanie kosak 2
             FlyMapa.Children.Clear();
             foreach (var sta in ListaStatkow)
             {
-                sta.przesun(20, 20);
-                CreateFlyObject(sta, sta.GetBrush());
+                
                 List<Odcinek> TrasaStatek = sta.getTrasa();
-                foreach (Odcinek odc in TrasaStatek)
+                if (TrasaStatek.Count>=1)
                 {
-                    CreateOdcinek(odc, sta.GetBrush());
+                    sta.skok(TrasaStatek[0]);
+                    TrasaStatek.RemoveAt(0);
+                    CreateFlyObject(sta, sta.GetBrush());
+                    foreach (Odcinek odc in TrasaStatek)
+                    {
+                        CreateOdcinek(odc, sta.GetBrush());
+                    }
                 }
+
             }
+
 
 
 

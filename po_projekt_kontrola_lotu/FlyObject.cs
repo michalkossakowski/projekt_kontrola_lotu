@@ -2,43 +2,6 @@
 using System.Windows.Media;
 using System;
 
-class Punkt
-{
-    private int x;
-    private int y;
-    public Punkt()
-    {
-        this.x = 0;
-        this.y = 0;
-    }
-    public Punkt(int xx, int yy)
-    {
-        this.x = xx;
-        this.y = yy;
-    }
-    public Punkt(Punkt p)
-    {
-        this.x = p.x;
-        this.y = p.y;
-    }
-    public void przesun(int px, int py)
-    {
-        this.x += px;
-        this.y += py;
-    }
-    public override string ToString()
-    {
-        return "(" + this.x + "," + this.y + ")";
-    }
-    public int getX()
-    {
-        return x;
-    }
-    public int getY()
-    {
-        return y;
-    }
-}
 class Odcinek
 {
     private Punkt p1;
@@ -103,6 +66,11 @@ abstract class FlyObject
     {
         pocz.przesun(x,y);
     }
+    // skoki co odcinek
+    public virtual void skok(Odcinek odc)
+    {
+        pocz = odc.getP2();
+    }
 }
 
 class Samolot : FlyObject
@@ -113,7 +81,7 @@ class Samolot : FlyObject
         // kolor czerwony
         brush1 = new SolidColorBrush(Color.FromRgb(255,0,0));
         var p1 = new Punkt(pocz.getX(), pocz.getY());
-        for (int i = 0; i < rnd.Next(2, 4); i++)
+        for (int i = 0; i < rnd.Next(8, 20); i++)
         {
             var p2 = new Punkt(rnd.Next(20, 480), rnd.Next(20, 480));
             // wpisywanie do listy odcinkow dla samolot
@@ -169,8 +137,8 @@ class Szybowiec : FlyObject
     public Szybowiec(int x, int y) : base(x, y)
     {
         Random rnd = new Random();
-        // kolor cyan 
-        brush1 = new SolidColorBrush(Color.FromRgb(0, 255,255));
+        // kolor pomaranczowy
+        brush1 = new SolidColorBrush(Color.FromRgb(255, 125, 0));
         var p1 = new Punkt(pocz.getX(), pocz.getY());
         for (int i = 0; i < rnd.Next(2, 4); i++)
         {
