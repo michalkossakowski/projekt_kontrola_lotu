@@ -6,9 +6,9 @@ class Odcinek
 {
     private Punkt p1;
     private Punkt p2;
-    private int wysokosc;
-    public int predkosc;
-    public Odcinek(Punkt pp1, Punkt pp2, int wys, int pred)
+    private double wysokosc;
+    public double predkosc;
+    public Odcinek(Punkt pp1, Punkt pp2, double wys, double pred)
     {
         this.p1 = pp1;
         this.p2 = pp2;
@@ -23,6 +23,52 @@ class Odcinek
         this.predkosc = o.predkosc;
     }
 
+    // losowy odcinek o podanej dlugosci z wybranego puntu 
+    public Odcinek(Punkt pp1,double wys, double pred)
+    {
+        this.p1 = pp1;
+        this.wysokosc = wys;
+        this.predkosc = pred;
+        this.p2 = pp1;
+        Random rnd = new Random();
+
+        var kierunek = rnd.Next(1, 9);
+        if (kierunek==1)
+        {
+            p2.przesun(pred, 0);
+        }
+        if (kierunek == 2)
+        {
+            p2.przesun(-pred, 0);
+        }
+        if (kierunek == 3)
+        {
+            p2.przesun(0, pred);
+        }
+        if (kierunek == 4)
+        {
+            p2.przesun(0, -pred);
+        }
+        if (kierunek == 5)
+        {
+            p2.przesun(pred, 0);
+        }
+        if (kierunek == 6)
+        {
+            p2.przesun(pred, 0);
+        }
+        if (kierunek == 7)
+        {
+            p2.przesun(pred, 0);
+        }
+        if (kierunek == 8)
+        {
+            p2.przesun(pred, 0);
+        }
+
+
+    }
+
     public Punkt getP1()
     {
         return p1;
@@ -32,6 +78,7 @@ class Odcinek
         return p2;
     }
 
+    
 
 }
 abstract class FlyObject
@@ -40,7 +87,7 @@ abstract class FlyObject
     protected List<Odcinek> Trasa;
     protected Brush brush1;
 
-    public FlyObject(int x, int y)
+    public FlyObject(double x, double y)
     {
         this.pocz = new Punkt(x, y);
         Trasa = new List<Odcinek>();
@@ -54,15 +101,15 @@ abstract class FlyObject
         return Trasa;
     }
 
-    public virtual int getPoczX()
+    public virtual double getPoczX()
     {
         return pocz.getX();
     }
-    public virtual int getPoczY()
+    public virtual double getPoczY()
     {
         return pocz.getY();
     }
-    public virtual void przesun(int x, int y)
+    public virtual void przesun(double x, double y)
     {
         pocz.przesun(x,y);
     }
@@ -75,13 +122,13 @@ abstract class FlyObject
 
 class Samolot : FlyObject
 {
-    public Samolot(int x, int y) : base(x,y)
+    public Samolot(double x, double y) : base(x,y)
     {
         Random rnd = new Random();
         // kolor czerwony
         brush1 = new SolidColorBrush(Color.FromRgb(255,0,0));
         var p1 = new Punkt(pocz.getX(), pocz.getY());
-        for (int i = 0; i < rnd.Next(8, 20); i++)
+        for (double i = 0; i < rnd.Next(8, 20); i++)
         {
             var p2 = new Punkt(rnd.Next(20, 480), rnd.Next(20, 480));
             // wpisywanie do listy odcinkow dla samolot
@@ -94,13 +141,13 @@ class Samolot : FlyObject
     }
 }
 class Smiglowiec : FlyObject {
-    public Smiglowiec(int x, int y) : base(x, y)
+    public Smiglowiec(double x, double y) : base(x, y)
     {
         Random rnd = new Random();
         // koor niebieski
         brush1 = new SolidColorBrush(Color.FromRgb(0, 0, 255));
         var p1 = new Punkt(pocz.getX(), pocz.getY());
-        for (int i = 0; i < rnd.Next(2, 4); i++)
+        for (double i = 0; i < rnd.Next(2, 4); i++)
         {
             var p2 = new Punkt(rnd.Next(20, 480), rnd.Next(20, 480));
             // wpisywanie do listy odcinkow dla samolot
@@ -114,13 +161,13 @@ class Smiglowiec : FlyObject {
 }
 class Balon : FlyObject
 {
-    public Balon(int x, int y) : base(x, y)
+    public Balon(double x, double y) : base(x, y)
     {
         Random rnd = new Random();
         // kolor rózowy 
         brush1 = new SolidColorBrush(Color.FromRgb(255, 0, 255));
         var p1 = new Punkt(pocz.getX(), pocz.getY());
-        for (int i = 0; i < rnd.Next(2, 4); i++)
+        for (double i = 0; i < rnd.Next(2, 4); i++)
         {
             var p2 = new Punkt(rnd.Next(20, 480), rnd.Next(20, 480));
             // wpisywanie do listy odcinkow dla samolot
@@ -134,13 +181,13 @@ class Balon : FlyObject
 }
 class Szybowiec : FlyObject
 {
-    public Szybowiec(int x, int y) : base(x, y)
+    public Szybowiec(double x, double y) : base(x, y)
     {
         Random rnd = new Random();
         // kolor pomaranczowy
         brush1 = new SolidColorBrush(Color.FromRgb(255, 125, 0));
         var p1 = new Punkt(pocz.getX(), pocz.getY());
-        for (int i = 0; i < rnd.Next(2, 4); i++)
+        for (double i = 0; i < rnd.Next(2, 4); i++)
         {
             var p2 = new Punkt(rnd.Next(20, 480), rnd.Next(20, 480));
             // wpisywanie do listy odcinkow dla samolot

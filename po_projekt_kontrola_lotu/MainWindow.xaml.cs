@@ -17,7 +17,7 @@ namespace po_projekt_kontrola_lotu
     {
         // timer zmienne globalne
         private DispatcherTimer _timer;
-        private int _counter = 0;
+        private double _counter = 0;
 
         // mainwindow
         public MainWindow()
@@ -86,11 +86,11 @@ namespace po_projekt_kontrola_lotu
             wczytaj.IsEnabled = true;
             //reset obiektow
             ResetFlyObj();
-            // ukrywanie interfajsu
-            HideInterface();
+            // ukrywanie doubleerfajsu
+            Hidedoubleerface();
         }
-        //ukrywanie interfejsu
-        private void HideInterface()
+        //ukrywanie doubleerfejsu
+        private void Hidedoubleerface()
         {
             ilosc_statkow.Visibility = Visibility.Hidden;
             slider1Text.Visibility = Visibility.Hidden;
@@ -107,7 +107,7 @@ namespace po_projekt_kontrola_lotu
         ///////////////////////////////////////////// wczytywanie mapy
 
         //rysowanie obiektów na mapie
-        private void CreateObject(int x, int y)
+        private void CreateObject(double x, double y)
         {
             Random rnd = new Random();
             Brush br1 = new SolidColorBrush(Color.FromRgb(100, 255, 100));
@@ -137,7 +137,7 @@ namespace po_projekt_kontrola_lotu
                         string punkty = linia.Substring(7, linia.Length - 8);
                         string[] parts = punkty.Split(',');
 
-                        if (parts.Length == 2 && int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
+                        if (parts.Length == 2 && double.TryParse(parts[0], out double x) && double.TryParse(parts[1], out double y))
                         {
                             CreateObject(x, y);
                         }
@@ -217,14 +217,14 @@ namespace po_projekt_kontrola_lotu
         {
             if (slider1 != null && slider1Text != null)
             {
-                slider1Text.Text = ((int)Math.Round(slider1.Value)).ToString();
+                slider1Text.Text = ((double)Math.Round(slider1.Value)).ToString();
             }
         }
         private void slider2_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (slider2 != null && slider2Text != null)
             {
-                slider2Text.Text = ((int)Math.Round(slider2.Value)).ToString();
+                slider2Text.Text = ((double)Math.Round(slider2.Value)).ToString();
             }
         }
 
@@ -277,8 +277,8 @@ namespace po_projekt_kontrola_lotu
 
 
 
-        //pokaz interfejs
-        private void ShowInterface()
+        //pokaz doubleerfejs
+        private void Showdoubleerface()
         {
             zmien_trase.Visibility = Visibility.Visible;
             slider2Text.Visibility = Visibility.Visible;
@@ -298,9 +298,9 @@ namespace po_projekt_kontrola_lotu
             ResetFlyObj();
             LegendaContainer.Children.Remove(legendGrid); //usuwa z legendy opis oraz obrazek
             legendGrid.Children.Clear(); //usuwa z legend grid poprzednią informację. Bez tego tekst stale się pogrubiał, ponieważ "tworzył nowy obiekt na starym obiekcie"
-            int ilosc = ((int)Math.Round(slider1.Value));
+            double ilosc = ((double)Math.Round(slider1.Value));
             slider2.Maximum = ilosc ;
-            ShowInterface();
+            Showdoubleerface();
 
             //do legendy
             Ellipse kolo = new Ellipse(); //dodaje wczytane koło 
@@ -324,7 +324,7 @@ namespace po_projekt_kontrola_lotu
             LegendaContainer.Children.Add(legendGrid);
 
             //komentarz
-            for (int i = 0; i < ilosc; i++)
+            for (double i = 0; i < ilosc; i++)
             {
                 var typ = rnd.Next(1, 5);
                 if (typ == 1)
@@ -436,8 +436,8 @@ namespace po_projekt_kontrola_lotu
                                 var deltaY = p2.getY() - p1.getY();
                                 var dlugosc = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
 
-                                var przesuniecieX = (int)Math.Round((deltaX / dlugosc) * predkosc);
-                                var przesuniecieY = (int)Math.Round((deltaY / dlugosc) * predkosc);
+                                var przesuniecieX = (double)Math.Round((deltaX / dlugosc) * predkosc);
+                                var przesuniecieY = (double)Math.Round((deltaY / dlugosc) * predkosc);
 
                                 //flyObject.pocz.przesun(przesuniecieX, przesuniecieY);
 

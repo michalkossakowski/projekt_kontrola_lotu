@@ -4,14 +4,14 @@ using System;
 
 class Punkt
 {
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     public Punkt()
     {
         this.x = 0;
         this.y = 0;
     }
-    public Punkt(int xx, int yy)
+    public Punkt(double xx, double yy)
     {
         this.x = xx;
         this.y = yy;
@@ -21,7 +21,7 @@ class Punkt
         this.x = p.x;
         this.y = p.y;
     }
-    public void przesun(int px, int py)
+    public void przesun(double px, double py)
     {
         this.x += px;
         this.y += py;
@@ -30,20 +30,20 @@ class Punkt
     {
         return "(" + this.x + "," + this.y + ")";
     }
-    public int getX()
+    public double getX()
     {
         return x;
     }
-    public int getY()
+    public double getY()
     {
         return y;
     }
 
-    public void setX(int sx)
+    public void setX(double sx)
     {
         this.x = sx;
     }
-    public void setY(int sy)
+    public void setY(double sy)
     {
         this.y = sy;
     }
