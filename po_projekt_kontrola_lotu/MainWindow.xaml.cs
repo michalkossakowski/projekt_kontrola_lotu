@@ -10,6 +10,7 @@ using Path = System.IO.Path; //do wczytywania plików z folderu
 using Microsoft.Win32;//do wczytywania plików z folderu
 using System.Collections;
 using System.DirectoryServices.ActiveDirectory;
+using System.Reflection;
 
 namespace po_projekt_kontrola_lotu
 {
@@ -183,9 +184,10 @@ namespace po_projekt_kontrola_lotu
                 WczytajPlik(openFileDialog.FileName); //mapa z pliku
             }
             Rectangle kwadrat = new Rectangle(); //dodaje wczytany kwadrat
+            Brush br1 = new SolidColorBrush(Color.FromRgb(100, 255, 100));
             kwadrat.Width = 20;
             kwadrat.Height = 20;
-            kwadrat.Fill = Brushes.DarkOliveGreen;
+            kwadrat.Fill = br1;
             kwadrat.Stroke = Brushes.Black;
             kwadrat.StrokeThickness = 1;
 
@@ -266,16 +268,44 @@ namespace po_projekt_kontrola_lotu
 
         // generowanie statkow
 
-        Grid legendGrid = new Grid //tworzy siatkę, która posiada dwie kolumny
+      
+
+        
+
+        // tworzenie listy statków 
+        List<FlyObject> ListaStatkow = new List<FlyObject>();
+        //tworzenie listy siatek
+        List<Grid> ListaGrid = new List<Grid>();
+        public void DodajdoLegendy(string nazwa, Brush kolor)
         {
-            ColumnDefinitions =
+         Grid legendGrid = new Grid //tworzy siatkę, która posiada dwie kolumny
+            {
+                ColumnDefinitions =
             {
                 new ColumnDefinition(),
                 new ColumnDefinition()
             }
-        };
+            };
+        Ellipse kolo = new Ellipse(); //dodaje wczytane koło 
+        kolo.Width = 20;
+        kolo.Height = 20;  
+        kolo.Fill = kolor;
+        kolo.Stroke = Brushes.Black;
+        kolo.StrokeThickness = 1;
 
+        TextBlock opisKola = new TextBlock(); //dodaje opis dla koła
+        opisKola.Text = nazwa;
+        opisKola.VerticalAlignment = VerticalAlignment.Center;
+        opisKola.Margin = new Thickness(5, 0, 0, 0);
 
+        legendGrid.Children.Add(kolo); //wpisuje koło i opis do legendy
+        legendGrid.Children.Add(opisKola);
+
+        Grid.SetColumn(kolo, 0);//ustawia wizualne przedstawienie po lewej
+        Grid.SetColumn(opisKola, 1);// ustawia opis po prawej
+        LegendaContainer.Children.Add(legendGrid);
+        }
+     
 
         //pokaz doubleerfejs
         private void Showdoubleerface()
@@ -289,39 +319,18 @@ namespace po_projekt_kontrola_lotu
             Timer_text.Visibility = Visibility.Visible;
             TimerBox.Visibility = Visibility.Visible;
         }
-
-        // tworzenie listy statków 
-        List<FlyObject> ListaStatkow = new List<FlyObject>();
-
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
+            Random rnd = new Random();
             ResetFlyObj();
-            LegendaContainer.Children.Remove(legendGrid); //usuwa z legendy opis oraz obrazek
-            legendGrid.Children.Clear(); //usuwa z legend grid poprzednią informację. Bez tego tekst stale się pogrubiał, ponieważ "tworzył nowy obiekt na starym obiekcie"
+            for (int i = LegendaContainer.Children.Count - 1; i > 0; i--)
+            {
+                LegendaContainer.Children.RemoveAt(i);
+            }
             double ilosc = ((double)Math.Round(slider1.Value));
             slider2.Maximum = ilosc ;
             Showdoubleerface();
 
-            //do legendy
-            Ellipse kolo = new Ellipse(); //dodaje wczytane koło 
-            kolo.Width = 20;
-            kolo.Height = 20; 
-            Random rnd = new Random();
-            kolo.Fill = Brushes.AliceBlue;
-            kolo.Stroke = Brushes.Black;
-            kolo.StrokeThickness = 1;
-
-            TextBlock opisKola = new TextBlock(); //dodaje opis dla koła
-            opisKola.Text = "Samolot";
-            opisKola.VerticalAlignment = VerticalAlignment.Center;
-            opisKola.Margin = new Thickness(5, 0, 0, 0);
-
-            legendGrid.Children.Add(kolo); //wpisuje koło i opis do legendy
-            legendGrid.Children.Add(opisKola);
-
-            Grid.SetColumn(kolo, 0);//ustawia wizualne przedstawienie po lewej
-            Grid.SetColumn(opisKola, 1);// ustawia opis po prawej
-            LegendaContainer.Children.Add(legendGrid);
 
             //komentarz
             for (double i = 0; i < ilosc; i++)
@@ -337,6 +346,7 @@ namespace po_projekt_kontrola_lotu
                     {
                         CreateOdcinek(odc, Statek.GetBrush());
                     }
+                    DodajdoLegendy("Samolot", Statek.GetBrush());
                 }
                 if (typ == 2)
                 {
@@ -348,6 +358,7 @@ namespace po_projekt_kontrola_lotu
                     {
                         CreateOdcinek(odc, Statek.GetBrush());
                     }
+                    DodajdoLegendy("Śmigłowiec", Statek.GetBrush());
                 }
                 if(typ == 3) {
                     var Statek = new Balon(rnd.Next(20, 480), rnd.Next(20, 480));
@@ -358,6 +369,7 @@ namespace po_projekt_kontrola_lotu
                     {
                         CreateOdcinek(odc, Statek.GetBrush());
                     }
+                    DodajdoLegendy("Balon", Statek.GetBrush());
                 }
                 if (typ == 4)
                 {
@@ -369,36 +381,17 @@ namespace po_projekt_kontrola_lotu
                     {
                         CreateOdcinek(odc, Statek.GetBrush());
                     }
+                    DodajdoLegendy("Szybowiec", Statek.GetBrush());
                 }
             }
         }
 
-        // Mati numero uno ruszanie
         ///////////////////////////// timer, ruch statkow niedokonczony
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             // timer
             _counter++;
             TimerBox.Text = _counter.ToString();
-
-
-
-            // kosak ruszanie
-            /*            
-                        FlyMapa.Children.Clear();
-                        foreach (var sta in ListaStatkow)
-                        {
-                            sta.przesun(-5, 20);
-                            CreateFlyObject(sta, sta.GetBrush());
-                            List<Odcinek> TrasaStatek = sta.getTrasa();
-                            foreach (Odcinek odc in TrasaStatek)
-                            {
-                                CreateOdcinek(odc, sta.GetBrush());
-                            }
-                        }
-            */
-
-            // ruszanie kosak 2
             FlyMapa.Children.Clear();
             foreach (var sta in ListaStatkow)
             {
@@ -416,37 +409,6 @@ namespace po_projekt_kontrola_lotu
                 }
 
             }
-
-
-
-
-            // Mati numero uno ruszanie
-            /*            
-                        foreach (var flyObject in ListaStatkow)
-                        {
-                            var trasa = flyObject.getTrasa();
-
-                            foreach (var odc in trasa)
-                            {
-                                var p1 = odc.getP1();
-                                var p2 = odc.getP2();
-                                var predkosc = odc.predkosc;
-
-                                var deltaX = p2.getX() - p1.getX();
-                                var deltaY = p2.getY() - p1.getY();
-                                var dlugosc = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-
-                                var przesuniecieX = (double)Math.Round((deltaX / dlugosc) * predkosc);
-                                var przesuniecieY = (double)Math.Round((deltaY / dlugosc) * predkosc);
-
-                                //flyObject.pocz.przesun(przesuniecieX, przesuniecieY);
-
-                                *//*
-                                var fly = new FlyObject(przesuniecieX, przesuniecieY);
-                                CreateFlyObject(fly, flyObject.GetBrush());*//*
-                            }
-                        }
-                        */
         }
 
 
