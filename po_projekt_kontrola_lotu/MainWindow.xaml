@@ -36,7 +36,7 @@
         <!-- ZMIANA TRASY -->
         <Label  Visibility="Hidden" Name="wybierz_statek" Content="Wybierz statek:" HorizontalAlignment="Left" Margin="763,362,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.55,0.467" FontSize="14" Height="34" Width="138" FontWeight="Bold"/>
         <Slider Visibility="Hidden" x:Name="slider2" HorizontalAlignment="Left" Margin="763,396,0,0" VerticalAlignment="Top" Width="138"  Minimum="1" Maximum="1"  TickPlacement="BottomRight" TickFrequency="1" ValueChanged="slider2_ValueChanged" Height="39" Foreground="#FFC300FF"/>
-        <TextBox IsEnabled="False" Visibility="Hidden" x:Name="slider2Text" IsReadOnly="True" HorizontalAlignment="Left" Margin="904,396,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="1" VerticalAlignment="Top" Width="25"  FontSize="14" BorderBrush="Black" Background="Black" Height="25" Foreground="White" FontWeight="Bold" SelectionBrush="Black" />
+        <TextBox IsEnabled="False" Visibility="Hidden" x:Name="slider2Text" IsReadOnly="True" HorizontalAlignment="Left" Margin="904,396,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="1" VerticalAlignment="Top" Width="24"  FontSize="14" BorderBrush="Black" Background="Black" Height="24" Foreground="White" FontWeight="Bold" SelectionBrush="Black" />
         <Button Visibility="Hidden" x:Name="zmien_trase" Content="Zmien trasę" HorizontalAlignment="Left" Height="29" Margin="763,436,0,0" VerticalAlignment="Top"  Background="#FFC300FF" BorderBrush="Black" Foreground="White" FontWeight="Bold" Width="138" FontSize="14"/>
 
         
