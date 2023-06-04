@@ -11,6 +11,7 @@ using Microsoft.Win32;//do wczytywania plików z folderu
 using System.Collections;
 using System.DirectoryServices.ActiveDirectory;
 using System.Reflection;
+using System.Diagnostics.Metrics;
 
 namespace po_projekt_kontrola_lotu
 {
@@ -393,9 +394,9 @@ namespace po_projekt_kontrola_lotu
             _counter++;
             TimerBox.Text = _counter.ToString();
             FlyMapa.Children.Clear();
+            int liczniklotow = LegendaContainer.Children.Count-1;
             foreach (var sta in ListaStatkow)
             {
-                
                 List<Odcinek> TrasaStatek = sta.getTrasa();
                 if (TrasaStatek.Count>=1)
                 {
@@ -406,6 +407,18 @@ namespace po_projekt_kontrola_lotu
                     {
                         CreateOdcinek(odc, sta.GetBrush());
                     }
+                }
+                if(TrasaStatek.Count==0)
+                {
+                    liczniklotow--;
+                    if(liczniklotow == 0)
+                    {                     
+                        for (int i = LegendaContainer.Children.Count - 1; i > 0; i--)
+                    {
+                        LegendaContainer.Children.RemoveAt(i);
+                    }
+                    }
+
                 }
 
             }
