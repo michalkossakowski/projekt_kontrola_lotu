@@ -8,79 +8,154 @@ class Odcinek
     private Punkt p1;
     private Punkt p2;
     private double wysokosc;
-    public double predkosc;
-    public Odcinek(Punkt pp1, Punkt pp2, double wys, double pred)
+    private double predkosc;
+    private double kierunek;
+
+    public Odcinek(Punkt pp1, double wys, double pred, double kie)
     {
+        Random rnd = new Random();
         this.p1 = pp1;
-        this.p2 = pp2;
+        this.p2 = new Punkt(pp1);
         this.wysokosc = wys;
         this.predkosc = pred;
-    }
-    public Odcinek(Odcinek o)
-    {
-        this.p1 = o.p1;
-        this.p2 = o.p2;
-        this.wysokosc = o.wysokosc;
-        this.predkosc = o.predkosc;
+        this.kierunek = kie;
+        if (kierunek == 0)
+        {
+            kierunek = rnd.Next(1, 9);
+        }
+        else if (kierunek == 1)
+        {
+            var los = rnd.Next(1, 3);
+            if (los == 1)
+                kierunek = 8;
+            if (los == 2)
+                kierunek = 2;
+        }
+        else if (kierunek == 2)
+        {
+            var los = rnd.Next(1, 3);
+            if (los == 1)
+                kierunek = 1;
+            if (los == 2)
+                kierunek = 3;
+        }
+        else if (kierunek == 3)
+        {
+            var los = rnd.Next(1, 3);
+            if (los == 1)
+                kierunek = 2;
+            if (los == 2)
+                kierunek = 4;
+        }
+        else if (kierunek == 4)
+        {
+            var los = rnd.Next(1, 3);
+            if (los == 1)
+                kierunek = 3;
+            if (los == 2)
+                kierunek = 5;
+        }
+        else if (kierunek == 5)
+        {
+            var los = rnd.Next(1, 3);
+            if (los == 1)
+                kierunek = 4;
+            if (los == 2)
+                kierunek = 6;
+        }
+        else if (kierunek == 6)
+        {
+            var los = rnd.Next(1, 3);
+            if (los == 1)
+                kierunek = 5;
+            if (los == 2)
+                kierunek = 7;
+        }
+        else if (kierunek == 7)
+        {
+            var los = rnd.Next(1, 3);
+            if (los == 1)
+                kierunek = 6;
+            if (los == 2)
+                kierunek = 8;
+        }
+        else if (kierunek == 8)
+        {
+            var los = rnd.Next(1, 3);
+            if (los == 1)
+                kierunek = 7;
+            if (los == 2)
+                kierunek = 1;
+        }
+
+        kierunekFun(kierunek);
     }
 
-    // losowy odcinek o podanej dlugosci z wybranego puntu 
-    private void kierunekFun(Punkt p2,double poprzedni, double kierunek, double pred)
+    private void kierunekFun(double kierunek)
     {
-        double a = (pred * Math.Sqrt(2)) / 2;
+        double a = (predkosc * Math.Sqrt(2)) / 2;
         if (kierunek == 1)
         {
-            p2.przesun(pred, 0);
+            p2.przesun(predkosc, 0);
         }
         if (kierunek == 2)
         {
-            p2.przesun(-pred, 0);
+            p2.przesun(a, a);
         }
         if (kierunek == 3)
         {
-            p2.przesun(0, pred);
+            p2.przesun(0, predkosc);
         }
         if (kierunek == 4)
         {
-            p2.przesun(0, -pred);
+            p2.przesun(-a, a);
         }
         if (kierunek == 5)
         {
-            p2.przesun(a, a);
+            p2.przesun(-predkosc, 0);
         }
         if (kierunek == 6)
         {
-            p2.przesun(-a, a);
+            p2.przesun(-a, -a);
         }
         if (kierunek == 7)
         {
-            p2.przesun(a, -a);
+            p2.przesun(0, -predkosc);
         }
         if (kierunek == 8)
         {
-            p2.przesun(-a, -a);
+            p2.przesun(a, -a);
         }
-        poprzedni = kierunek;
+
+        if (p2.getX() > 480)
+        {
+            kierunek = 5;
+            kierunekFun(kierunek);
+        }
+        if (p2.getX() < 20)
+        {
+            kierunek = 1;
+            kierunekFun(kierunek);
+        }
+        if (p2.getY() > 480)
+        {
+            kierunek = 7;
+            kierunekFun(kierunek);
+        }
+        if (p2.getY() < 20)
+        {
+            kierunek = 3;
+            kierunekFun(kierunek);
+        }
+
+        
+        
+        
+
     }
-    public Odcinek(Punkt pp1,double wys, double pred)
-    {
-        this.p1 = pp1;
-        this.wysokosc = wys;
-        this.predkosc = pred;
-        this.p2 = new Punkt(pp1);
-        Random rnd = new Random();
-
-        var kierunek = rnd.Next(1, 9);
-        double poprzedni = 0;
-        kierunekFun(p2, poprzedni, kierunek, pred);
-
-
-
-
+    public double getKierunek() {
+        return kierunek;
     }
-    // kierunek lotu
-
-
     public Punkt getP1()
     {
         return p1;
@@ -89,9 +164,6 @@ class Odcinek
     {
         return p2;
     }
-
-    
-
 }
 abstract class FlyObject
 {
@@ -132,8 +204,10 @@ abstract class FlyObject
     }
 }
 
+
 class Samolot : FlyObject
 {
+   
     public Samolot(double x, double y) : base(x,y)
     {
         Random rnd = new Random();
@@ -145,7 +219,16 @@ class Samolot : FlyObject
             // wpisywanie do listy odcinkow dla samolot
             // wysokowsc 1000-1500
             // predkosc 40-80
-            var odc = new Odcinek(p1, rnd.Next(1000, 1500), rnd.Next(40, 80));
+            Odcinek odc;
+            if (Trasa.Count == 0)
+            {
+                odc = new Odcinek(p1, rnd.Next(1000, 1500), rnd.Next(40, 80), 0);
+            }
+            else
+            {
+                odc = new Odcinek(p1, rnd.Next(1000, 1500), rnd.Next(40, 80), Trasa[Trasa.Count - 1].getKierunek());
+            }
+
             Trasa.Add(odc);
             var p2 = odc.getP2();
             p1 = new Punkt(p2);
@@ -164,7 +247,16 @@ class Smiglowiec : FlyObject {
             // wpisywanie do listy odcinkow dla smiglowiec
             // wysokowsc 800-1000
             // predkosc 30-60
-            var odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(30, 60));
+            Odcinek odc;
+            if(Trasa.Count == 0)
+            {
+                odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(30, 60), 0);
+            }
+            else
+            {
+                odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(30, 60), Trasa[Trasa.Count - 1].getKierunek());
+            }
+            
             Trasa.Add(odc);
             var p2 = odc.getP2();
             p1 = new Punkt(p2);
@@ -184,7 +276,16 @@ class Balon : FlyObject
             // wpisywanie do listy odcinkow dla balon
             // wysokowsc 400-800
             // predkosc 10-20
-            var odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(10, 20));
+            Odcinek odc;
+            if (Trasa.Count == 0)
+            {
+                odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(10, 20), 0);
+            }
+            else
+            {
+                odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(10, 20), Trasa[Trasa.Count - 1].getKierunek());
+            }
+
             Trasa.Add(odc);
             var p2 = odc.getP2();
             p1 = new Punkt(p2);
@@ -204,7 +305,15 @@ class Szybowiec : FlyObject
             // wpisywanie do listy odcinkow dla szybowiec
             // wysokowsc 700-1100
             // predkosc 20-50
-            var odc = new Odcinek(p1, rnd.Next(700, 1100), rnd.Next(20, 50));
+            Odcinek odc;
+            if (Trasa.Count == 0)
+            {
+                odc = new Odcinek(p1, rnd.Next(700, 1100), rnd.Next(20, 50), 0);
+            }
+            else
+            {
+                odc = new Odcinek(p1, rnd.Next(700, 1100), rnd.Next(20, 50), Trasa[Trasa.Count - 1].getKierunek());
+            }
             Trasa.Add(odc);
             var p2 = odc.getP2();
             p1 = new Punkt(p2);

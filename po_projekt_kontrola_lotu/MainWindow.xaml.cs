@@ -88,11 +88,11 @@ namespace po_projekt_kontrola_lotu
             wczytaj.IsEnabled = true;
             //reset obiektow
             ResetFlyObj();
-            // ukrywanie doubleerfajsu
-            Hidedoubleerface();
+            // ukrywanie interfejsu
+            Hideinterface();
         }
-        //ukrywanie doubleerfejsu
-        private void Hidedoubleerface()
+        //ukrywanie interfejsu
+        private void Hideinterface()
         {
             ilosc_statkow.Visibility = Visibility.Hidden;
             slider1Text.Visibility = Visibility.Hidden;
