@@ -91,62 +91,106 @@ class Odcinek
         kierunekFun(kierunek);
     }
 
+    private int sprawdzZakres()
+    {
+        if (p2.getX() > 480)
+        {
+            kierunek = 5;
+            kierunekFun(kierunek);
+            return 1;
+        }
+        if (p2.getX() < 20)
+        {
+            kierunek = 1;
+            kierunekFun(kierunek);
+            return 1;
+        }
+        if (p2.getY() > 480)
+        {
+            kierunek = 7;
+            kierunekFun(kierunek);
+            return 1;
+        }
+        if (p2.getY() < 20)
+        {
+            kierunek = 3;
+            kierunekFun(kierunek);
+            return 1;
+        }
+        else { 
+            return 0;
+        }
+    }
     private void kierunekFun(double kierunek)
     {
         double a = (predkosc * Math.Sqrt(2)) / 2;
         if (kierunek == 1)
         {
             p2.przesun(predkosc, 0);
+            if (sprawdzZakres() == 1)
+            {
+                p2.przesun(-predkosc, 0);
+            }
+            
         }
         if (kierunek == 2)
         {
             p2.przesun(a, a);
+            if (sprawdzZakres() == 1)
+            {
+                p2.przesun(-a, -a);
+            }
         }
         if (kierunek == 3)
         {
             p2.przesun(0, predkosc);
+            if (sprawdzZakres() == 1)
+            {
+                p2.przesun(0,-predkosc);
+            }
         }
         if (kierunek == 4)
         {
             p2.przesun(-a, a);
+            if (sprawdzZakres() == 1)
+            {
+                p2.przesun(a,-a);
+            }
         }
         if (kierunek == 5)
         {
             p2.przesun(-predkosc, 0);
+            if (sprawdzZakres() == 1)
+            {
+                p2.przesun(predkosc, 0);
+            }
         }
         if (kierunek == 6)
         {
             p2.przesun(-a, -a);
+            if (sprawdzZakres() == 1)
+            {
+                p2.przesun(a,a);
+            }
         }
         if (kierunek == 7)
         {
             p2.przesun(0, -predkosc);
+            if (sprawdzZakres() == 1)
+            {
+                p2.przesun(0,predkosc);
+            }
         }
         if (kierunek == 8)
         {
             p2.przesun(a, -a);
+            if (sprawdzZakres() == 1)
+            {
+                p2.przesun(-a,a);
+            }
         }
 
-        if (p2.getX() > 480)
-        {
-            kierunek = 5;
-            kierunekFun(kierunek);
-        }
-        if (p2.getX() < 20)
-        {
-            kierunek = 1;
-            kierunekFun(kierunek);
-        }
-        if (p2.getY() > 480)
-        {
-            kierunek = 7;
-            kierunekFun(kierunek);
-        }
-        if (p2.getY() < 20)
-        {
-            kierunek = 3;
-            kierunekFun(kierunek);
-        }
+
 
         
         
