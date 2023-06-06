@@ -190,12 +190,6 @@ class Odcinek
             }
         }
 
-
-
-        
-        
-        
-
     }
     public double getKierunek() {
         return kierunek;
@@ -266,11 +260,11 @@ class Samolot : FlyObject
             Odcinek odc;
             if (Trasa.Count == 0)
             {
-                odc = new Odcinek(p1, rnd.Next(1000, 1500), rnd.Next(40, 80), 0);
+                odc = new Odcinek(p1, rnd.Next(1000, 1500), rnd.Next(20, 30), 0);
             }
             else
             {
-                odc = new Odcinek(p1, rnd.Next(1000, 1500), rnd.Next(40, 80), Trasa[Trasa.Count - 1].getKierunek());
+                odc = new Odcinek(p1, rnd.Next(1000, 1500), rnd.Next(20, 30), Trasa[Trasa.Count - 1].getKierunek());
             }
 
             Trasa.Add(odc);
@@ -294,11 +288,11 @@ class Smiglowiec : FlyObject {
             Odcinek odc;
             if(Trasa.Count == 0)
             {
-                odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(30, 60), 0);
+                odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(10, 20), 0);
             }
             else
             {
-                odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(30, 60), Trasa[Trasa.Count - 1].getKierunek());
+                odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(10, 20), Trasa[Trasa.Count - 1].getKierunek());
             }
             
             Trasa.Add(odc);
@@ -323,11 +317,11 @@ class Balon : FlyObject
             Odcinek odc;
             if (Trasa.Count == 0)
             {
-                odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(10, 20), 0);
+                odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(5, 10), 0);
             }
             else
             {
-                odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(10, 20), Trasa[Trasa.Count - 1].getKierunek());
+                odc = new Odcinek(p1, rnd.Next(800, 1000), rnd.Next(5, 10), Trasa[Trasa.Count - 1].getKierunek());
             }
 
             Trasa.Add(odc);
@@ -352,11 +346,11 @@ class Szybowiec : FlyObject
             Odcinek odc;
             if (Trasa.Count == 0)
             {
-                odc = new Odcinek(p1, rnd.Next(700, 1100), rnd.Next(20, 50), 0);
+                odc = new Odcinek(p1, rnd.Next(700, 1100), rnd.Next(10, 15), 0);
             }
             else
             {
-                odc = new Odcinek(p1, rnd.Next(700, 1100), rnd.Next(20, 50), Trasa[Trasa.Count - 1].getKierunek());
+                odc = new Odcinek(p1, rnd.Next(700, 1100), rnd.Next(10, 15), Trasa[Trasa.Count - 1].getKierunek());
             }
             Trasa.Add(odc);
             var p2 = odc.getP2();
