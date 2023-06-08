@@ -29,7 +29,7 @@ namespace po_projekt_kontrola_lotu
             InitializeComponent();
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
-            _timer.Tick += new EventHandler(dispatcherTimer_Tick);
+            _timer.Tick += new EventHandler(Timer_Tick);
 
             ///////////////////////////////////////////////// koniec main
         }
@@ -187,16 +187,15 @@ namespace po_projekt_kontrola_lotu
             kwadrat.Fill = br1;
             kwadrat.Stroke = Brushes.Black;
             kwadrat.StrokeThickness = 1;
-            kwadrat.Margin = new Thickness(1, 5, 1, 5);
+            kwadrat.Margin = new Thickness(0, 5, 0, 5);
 
             TextBlock opis = new TextBlock(); //dodaje komentarz 
             opis.Text = "Budynki";
             opis.VerticalAlignment = VerticalAlignment.Center;
-            opis.Margin = new Thickness(5, 0, 0, 0);
+            opis.Margin = new Thickness(0, 0, 0, 0);
             Grid legendGrid = new Grid(); //dzieli legendę na dwie kolumny. Jedną obrazkową, drugą opisową
             legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
             legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
-
             legendGrid.Children.Add(kwadrat); //wpisuje kwadrat i komentarz do legendy
             legendGrid.Children.Add(opis);
             Grid.SetColumn(kwadrat, 0);
@@ -232,7 +231,7 @@ namespace po_projekt_kontrola_lotu
         }
 
         // rysowanie obiektow latajacych
-        private void CreateFlyObject(FlyObject FlOb,Brush brush1)
+        private void CreateFlyObject(FlyObject FlOb, Brush brush1)
         {
             Ellipse FlyObj = new Ellipse
             {
@@ -242,9 +241,19 @@ namespace po_projekt_kontrola_lotu
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
                 // -5 bo przesuwa elipse
-                Margin = new Thickness(FlOb.getPoczX()-5, FlOb.getPoczY()-5, 0, 0)
+                Margin = new Thickness(FlOb.getPoczX() - 5, FlOb.getPoczY() - 5, 0, 0)
             };
+            TextBlock idEl = new TextBlock();
+            idEl.Text = FlOb.getId().ToString();
+            idEl.Margin = new Thickness(FlOb.getPoczX() - 5, FlOb.getPoczY() + 1, 0, 0);
+            idEl.FontSize = 15;
+            idEl.FontWeight = FontWeights.Bold;
+            idEl.Foreground = Brushes.Black;
+    
+
             FlyMapa.Children.Add(FlyObj);
+            FlyMapa.Children.Add(idEl);
+
 
         }
         // rysowanie odcinkow
@@ -255,8 +264,8 @@ namespace po_projekt_kontrola_lotu
                 var p1 = new Punkt(o.getP1());
                 var p2 = new Punkt(o.getP2());
 
-                linia1.X1 =p1.getX();
-                linia1.Y1 =p1.getY();
+                linia1.X1 = p1.getX();
+                linia1.Y1 = p1.getY();
                 linia1.X2 = p2.getX();
                 linia1.Y2 = p2.getY();
                 linia1.Stroke = brush1;
@@ -282,29 +291,29 @@ namespace po_projekt_kontrola_lotu
                 new ColumnDefinition()
                 }
             };
-        Ellipse kolo = new Ellipse(); //dodaje wczytane koło 
-        kolo.Width = 20;
-        kolo.Height = 20;  
-        kolo.Fill = kolor;
-        kolo.Stroke = Brushes.Black;
-        kolo.StrokeThickness = 1;
-        kolo.Margin = new Thickness(1, 5, 1, 5);
+            Ellipse kolo = new Ellipse(); //dodaje wczytane koło 
+            kolo.Width = 20;
+            kolo.Height = 20;
+            kolo.Fill = kolor;
+            kolo.Stroke = Brushes.Black;
+            kolo.StrokeThickness = 1;
+            kolo.Margin = new Thickness(0, 5, 1, 5);
 
             TextBlock opisKola = new TextBlock(); //dodaje opis dla koła
-        opisKola.Text = nazwa;
-        opisKola.VerticalAlignment = VerticalAlignment.Center;
-        opisKola.Margin = new Thickness(5, 0, 0, 0);
+            opisKola.Text = nazwa;
+            opisKola.VerticalAlignment = VerticalAlignment.Center;
+            opisKola.Margin = new Thickness(0, 0, 0, 0);
 
-        legendGrid.Children.Add(kolo); //wpisuje koło i opis do legendy
-        legendGrid.Children.Add(opisKola);
+            legendGrid.Children.Add(kolo); //wpisuje koło i opis do legendy
+            legendGrid.Children.Add(opisKola);
 
-        Grid.SetColumn(kolo, 0);//ustawia wizualne przedstawienie po lewej
-        Grid.SetColumn(opisKola, 1);// ustawia opis po prawej
-        LegendaContainer.Children.Add(legendGrid);
+            Grid.SetColumn(kolo, 0);//ustawia wizualne przedstawienie po lewej
+            Grid.SetColumn(opisKola, 1);// ustawia opis po prawej
+            LegendaContainer.Children.Add(legendGrid);
         }
-     
 
-        //pokaz doubleerfejs
+
+        //pokaz interfejs
         private void Showinterface()
         {
             zmien_trase.Visibility = Visibility.Visible;
@@ -316,6 +325,7 @@ namespace po_projekt_kontrola_lotu
             Timer_text.Visibility = Visibility.Visible;
             TimerBox.Visibility = Visibility.Visible;
         }
+
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
             Random rnd = new Random();
@@ -323,52 +333,51 @@ namespace po_projekt_kontrola_lotu
             for (int i = LegendaContainer.Children.Count - 1; i > 0; i--)
                 LegendaContainer.Children.RemoveAt(i);
             double ilosc = ((double)Math.Round(slider1.Value));
-            slider2.Maximum = ilosc ;
+            slider2.Maximum = ilosc;
             Showinterface();
 
-
             //komentarz
-            for (double i = 0; i < ilosc; i++)
+            for (int i = 1; i <= ilosc; i++)
             {
                 var typ = rnd.Next(1, 5);
                 if (typ == 1)
                 {
-                    var Statek = new Samolot(rnd.Next(120, 180), rnd.Next(120, 380));
+                    var Statek = new Samolot(rnd.Next(120, 180), rnd.Next(120, 380),i);
                     ListaStatkow.Add(Statek);
                     CreateFlyObject(Statek, Statek.GetBrush());
                     List<Odcinek> TrasaStatek = Statek.getTrasa();
                     foreach (Odcinek odc in TrasaStatek)
                         CreateOdcinek(odc, Statek.GetBrush());
-                    DodajdoLegendy("Samolot", Statek.GetBrush());
+                    DodajdoLegendy(i+" Samolot", Statek.GetBrush());
                 }
                 if (typ == 2)
                 {
-                    var Statek = new Smiglowiec(rnd.Next(120, 380), rnd.Next(120, 380));
+                    var Statek = new Smiglowiec(rnd.Next(120, 380), rnd.Next(120, 380),i);
                     ListaStatkow.Add(Statek);
                     CreateFlyObject(Statek, Statek.GetBrush());
                     List<Odcinek> TrasaStatek = Statek.getTrasa();
                     foreach (Odcinek odc in TrasaStatek)
                         CreateOdcinek(odc, Statek.GetBrush());
-                    DodajdoLegendy("Śmigłowiec", Statek.GetBrush());
+                    DodajdoLegendy(i + " Śmigłowiec", Statek.GetBrush());
                 }
-                if(typ == 3) {
-                    var Statek = new Balon(rnd.Next(120, 380), rnd.Next(120, 380));
+                if (typ == 3) {
+                    var Statek = new Balon(rnd.Next(120, 380), rnd.Next(120, 380),i);
                     ListaStatkow.Add(Statek);
                     CreateFlyObject(Statek, Statek.GetBrush());
                     List<Odcinek> TrasaStatek = Statek.getTrasa();
                     foreach (Odcinek odc in TrasaStatek)
                         CreateOdcinek(odc, Statek.GetBrush());
-                    DodajdoLegendy("Balon", Statek.GetBrush());
+                    DodajdoLegendy(i + " Balon", Statek.GetBrush());
                 }
                 if (typ == 4)
                 {
-                    var Statek = new Szybowiec(rnd.Next(120, 380), rnd.Next(120, 380));
+                    var Statek = new Szybowiec(rnd.Next(120, 380), rnd.Next(120, 380),i);
                     ListaStatkow.Add(Statek);
                     CreateFlyObject(Statek, Statek.GetBrush());
                     List<Odcinek> TrasaStatek = Statek.getTrasa();
                     foreach (Odcinek odc in TrasaStatek)
                         CreateOdcinek(odc, Statek.GetBrush());
-                    DodajdoLegendy("Szybowiec", Statek.GetBrush());
+                    DodajdoLegendy(i + " Szybowiec", Statek.GetBrush());
                 }
             }
         }
@@ -376,11 +385,11 @@ namespace po_projekt_kontrola_lotu
         // zmiana trast
         private void zmiana_Click(object sender, RoutedEventArgs e)
         {
-            var wybor = ((int)Math.Round(slider2.Value))-1;
+            var wybor = ((int)Math.Round(slider2.Value)) - 1;
             var statek = ListaStatkow[wybor];
             statek.zmien_trase();
             // MessageBox.Show("Zmieniono trasę statku nr:"+wybor+" ", "Switch 1");
-            
+
             FlyMapa.Children.Clear();
             foreach (var sta in ListaStatkow)
             {
@@ -392,21 +401,22 @@ namespace po_projekt_kontrola_lotu
                         CreateOdcinek(odc, sta.GetBrush());
                 }
             }
-            }
+        }
 
         ///////////////////////////// timer, ruch statkow niedokonczony
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             // timer
             _counter++;
             TimerBox.Text = _counter.ToString();
             //statki 
             FlyMapa.Children.Clear();
-            int liczniklotow = LegendaContainer.Children.Count-1;
+            int liczniklotow = LegendaContainer.Children.Count - 1;
+
             foreach (var sta in ListaStatkow)
             {
                 List<Odcinek> TrasaStatek = sta.getTrasa();
-                if (TrasaStatek.Count>=1)
+                if (TrasaStatek.Count >= 1)
                 {
                     sta.skok(TrasaStatek[0]);
                     TrasaStatek.RemoveAt(0);
@@ -414,23 +424,50 @@ namespace po_projekt_kontrola_lotu
                     foreach (Odcinek odc in TrasaStatek)
                         CreateOdcinek(odc, sta.GetBrush());
                 }
-                if(TrasaStatek.Count==0)
+                if (TrasaStatek.Count == 0)
                 {
                     liczniklotow--;
-                    if(liczniklotow == 0)
-                    {                     
+                    if (liczniklotow == 0)
+                    {
                         for (int i = LegendaContainer.Children.Count - 1; i >= 0; i--)
                             LegendaContainer.Children.RemoveAt(i);
                     }
                 }
             }
-
-
-            // czy kolizja
-
-
-
+            sprawdzKolizje();
         }
+
+        // czy kolizja
+
+        private void sprawdzKolizje()
+        {
+            int ilStat = ListaStatkow.Count - 1;
+            for (int i = 0; i < ilStat; i++)
+            {
+                var x1 = ListaStatkow[i].getPoczX();
+                var y1 = ListaStatkow[i].getPoczY();
+                for (int j = i + 1; j <= ilStat; j++)
+                {
+                    var x2 = ListaStatkow[j].getPoczX();
+                    var y2 = ListaStatkow[j].getPoczY();
+                    if (Math.Abs(x1 - x2) < 20 && Math.Abs(y1 - y2) < 20)
+                    {
+                        MessageBox.Show("Kolizja obiektu nr: " + (i+1) + " z obiektm nr: " + (j+1) +" ! \nOba obiekty zostaną zniszczone !", " Wykryto Kolizję !!!");
+                        ListaStatkow.RemoveAt(j);
+                        ListaStatkow.RemoveAt(i);
+                        return;
+                    }
+                    if (Math.Abs(x1 - x2) < 30 && Math.Abs(y1 - y2) < 30)
+                    {
+                        _timer.Stop();
+                        this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
+                        MessageBox.Show("Obiekty nr: " + (i + 1) + " oraz nr: " + (j + 1) + " są niebezpiecznie blisko siebie \nZatrzymano timer ! \nZastanów się nad zmianą trasy !", "Wykryto Niebezpieczeństwo !!!");
+                       
+                    }
+                }
+            }
+        }
+
 
 
 

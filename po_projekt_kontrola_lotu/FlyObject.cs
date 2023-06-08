@@ -119,14 +119,23 @@ class Odcinek
 }
 abstract class FlyObject
 {
+    protected int id;
     protected Punkt pocz;
     protected List<Odcinek> Trasa;
     protected Brush brush1;
-    public FlyObject(double x, double y)
+
+
+    public FlyObject(double x, double y,int id)
     {
+        this.id = id;
         this.pocz = new Punkt(x, y);
         Trasa = new List<Odcinek>();
     }
+    public virtual int getId()
+    {
+        return id;
+    }
+
     public virtual Brush GetBrush()
     {
         return brush1;
@@ -160,7 +169,7 @@ abstract class FlyObject
 class Samolot : FlyObject
 {
 
-    public Samolot(double x, double y) : base(x,y)
+    public Samolot(double x, double y, int id) : base(x,y,id)
     {
         // kolor czerwony
         brush1 = new SolidColorBrush(Color.FromRgb(255,0,0));
@@ -191,7 +200,7 @@ class Samolot : FlyObject
     }
 }
 class Smiglowiec : FlyObject {
-    public Smiglowiec(double x, double y) : base(x, y)
+    public Smiglowiec(double x, double y, int id) : base(x, y, id)
     {
         // kolor niebieski
         brush1 = new SolidColorBrush(Color.FromRgb(0, 155, 255));
@@ -222,7 +231,7 @@ class Smiglowiec : FlyObject {
 }
 class Balon : FlyObject
 {
-    public Balon(double x, double y) : base(x, y)
+    public Balon(double x, double y, int id) : base(x, y, id)
     {
         // kolor rózowy 
         brush1 = new SolidColorBrush(Color.FromRgb(255, 0, 255));
@@ -253,7 +262,7 @@ class Balon : FlyObject
 }
 class Szybowiec : FlyObject
 {
-    public Szybowiec(double x, double y) : base(x, y)
+    public Szybowiec(double x, double y, int id) : base(x, y, id)
     {
         // kolor pomaranczowy
         brush1 = new SolidColorBrush(Color.FromRgb(255, 125, 0));
