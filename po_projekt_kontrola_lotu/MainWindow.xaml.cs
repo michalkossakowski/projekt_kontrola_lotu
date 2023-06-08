@@ -13,6 +13,7 @@ namespace po_projekt_kontrola_lotu
 {
     public partial class MainWindow : Window
     {
+
         // timer zmienne globalne
         private DispatcherTimer _timer;
         private double _counter = 0;
@@ -230,7 +231,8 @@ namespace po_projekt_kontrola_lotu
                 slider2Text.Text = ((double)Math.Round(slider2.Value)).ToString();
             }
         }
-
+        // tworzenie listy statków 
+        List<FlyObject> ListaStatkow = new List<FlyObject>();
         // rysowanie obiektow latajacych
         private void CreateFlyObject(FlyObject FlOb,Brush brush1)
         {
@@ -244,8 +246,26 @@ namespace po_projekt_kontrola_lotu
                 // -5 bo przesuwa elipse
                 Margin = new Thickness(FlOb.getPoczX()-5, FlOb.getPoczY()-5, 0, 0)
             };
-            FlyMapa.Children.Add(FlyObj);
 
+            // Sprawdzenie kolizji z istniejącymi obiektami
+            Rect newObjectRect = new Rect(FlOb.getPoczX() - 5, FlOb.getPoczY() - 5, 10, 10);
+            foreach (var existingObject in ListaStatkow)
+            {
+                Rect existingObjectRect = new Rect(existingObject.getPoczX() - 5, existingObject.getPoczY() - 5, 10, 10);
+                if (newObjectRect.IntersectsWith(existingObjectRect))
+                {
+                    // Usunięcie nachodzących punktów
+                    FlyMapa.Children.Remove(FlyObj);
+
+                    // Wyświetlenie komunikatu o kolizji obiektów
+                    MessageBox.Show("Kolizja obiektów!");
+
+                    return; // Zakończenie tworzenia obiektu w przypadku kolizji
+                }
+            }
+
+            FlyMapa.Children.Add(FlyObj);
+            ListaStatkow.Add(FlOb);
         }
         // rysowanie odcinkow
         private void CreateOdcinek(Odcinek o, Brush brush1)
@@ -263,15 +283,9 @@ namespace po_projekt_kontrola_lotu
                 linia1.StrokeThickness = 2;
             }
             FlyMapa.Children.Add(linia1);
-        }
+        }       
 
 
-        // generowanie statkow
-
-        // tworzenie listy statków 
-        List<FlyObject> ListaStatkow = new List<FlyObject>();
-        //tworzenie listy siatek
-        List<Grid> ListaGrid = new List<Grid>();
         public void DodajdoLegendy(string nazwa, Brush kolor)
         {
             Grid legendGrid = new Grid //tworzy siatkę, która posiada dwie kolumny
@@ -338,7 +352,7 @@ namespace po_projekt_kontrola_lotu
                     CreateFlyObject(Statek, Statek.GetBrush());
                     List<Odcinek> TrasaStatek = Statek.getTrasa();
                     foreach (Odcinek odc in TrasaStatek)
-                        CreateOdcinek(odc, Statek.GetBrush());
+                       CreateOdcinek(odc, Statek.GetBrush());
                     DodajdoLegendy("Samolot", Statek.GetBrush());
                 }
                 if (typ == 2)
