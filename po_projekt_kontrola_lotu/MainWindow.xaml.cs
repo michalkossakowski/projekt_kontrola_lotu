@@ -385,10 +385,9 @@ namespace po_projekt_kontrola_lotu
         // zmiana tras
         private void zmiana_Click(object sender, RoutedEventArgs e)
         {
-            var wybor = ((int)Math.Round(slider2.Value)) - 1;
+            var wybor = ((int)Math.Round(slider2.Value))-1;
             var statek = ListaStatkow[wybor];
             statek.zmien_trase();
-            // MessageBox.Show("Zmieniono trasę statku nr:"+wybor+" ", "Switch 1");
 
             FlyMapa.Children.Clear();
             foreach (var sta in ListaStatkow)
