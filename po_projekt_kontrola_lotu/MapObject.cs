@@ -2,7 +2,6 @@
 using System.Windows.Media;
 using System;
 
-
 class MapObject
 {
     private Punkt p;

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
 using System;
-
 class Punkt
 {
     private double x;
@@ -38,7 +37,6 @@ class Punkt
     {
         return y;
     }
-
     public void setX(double sx)
     {
         this.x = sx;

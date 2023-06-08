@@ -21,6 +21,7 @@ namespace po_projekt_kontrola_lotu
         public MainWindow()
         {
             ///////////////////////////////////////////////// poczatek main
+
             // wyłączenie rozszerzania okna
             this.ResizeMode = ResizeMode.NoResize;
 
@@ -34,16 +35,19 @@ namespace po_projekt_kontrola_lotu
         }
 
         ///////////////////////////////////////////////// Obsługa Timer
+        //timer start
         private void Start_Click(object sender, RoutedEventArgs e)
         {
             _timer.Start();
             this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 0, 255, 0));
         }
+        //timer stop
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
             _timer.Stop();
             this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
         }
+        //timer reset
         private void ResetTimer()
         {
             _counter = 0;
@@ -53,27 +57,6 @@ namespace po_projekt_kontrola_lotu
         }
 
         /////////////////////////////////////////////////// Resetowanie
-        private void ResetFun()
-        {
-            //resetowanie timera
-            ResetTimer();
-            //reset Mapy i legendy
-            Mapa.Children.Clear();
-            LegendaContainer.Children.Clear();
-            wybierz_statek.Visibility = Visibility.Hidden;
-            slider2.Visibility = Visibility.Hidden;
-            slider2Text.Visibility = Visibility.Hidden;
-            zmien_trase.Visibility = Visibility.Hidden;
-        }
-
-        //resetowanie statków
-        private void ResetFlyObj()
-        {
-            FlyMapa.Children.Clear();
-            ListaStatkow.Clear();
-            ResetTimer();
-        }
-
         //przycisk reset
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
@@ -85,22 +68,49 @@ namespace po_projekt_kontrola_lotu
             //reset obiektow
             ResetFlyObj();
             // ukrywanie interfejsu
-            Hideinterface();
+            HideGeneruj();
+            HideTimer();
+            HideZmienTrase();
         }
-        //ukrywanie interfejsu
-        private void Hideinterface()
+        private void ResetFun()
+        {
+            //resetowanie timera
+            ResetTimer();
+            //reset Mapy i legendy
+            Mapa.Children.Clear();
+            LegendaContainer.Children.Clear();
+        }
+        //resetowanie statków
+        private void ResetFlyObj()
+        {
+            FlyMapa.Children.Clear();
+            ListaStatkow.Clear();
+            ResetTimer();
+        }
+        //ukrywanie Generowania statków
+        private void HideGeneruj()
         {
             ilosc_statkow.Visibility = Visibility.Hidden;
             slider1Text.Visibility = Visibility.Hidden;
             wygeneruj_trasy.Visibility = Visibility.Hidden;
             slider1.Visibility = Visibility.Hidden;
+        }
+        // ukrywanie timera
+        private void HideTimer()
+        {
             start.Visibility = Visibility.Hidden;
             stop.Visibility = Visibility.Hidden;
             Timer_text.Visibility = Visibility.Hidden;
             TimerBox.Visibility = Visibility.Hidden;
         }
-
-
+        // ukrywanie zmien trase
+        private void HideZmienTrase()
+        {
+            wybierz_statek.Visibility = Visibility.Hidden;
+            slider2.Visibility = Visibility.Hidden;
+            slider2Text.Visibility = Visibility.Hidden;
+            zmien_trase.Visibility = Visibility.Hidden;
+        }
 
         ///////////////////////////////////////////// wczytywanie mapy
 
@@ -177,6 +187,7 @@ namespace po_projekt_kontrola_lotu
             kwadrat.Fill = br1;
             kwadrat.Stroke = Brushes.Black;
             kwadrat.StrokeThickness = 1;
+            kwadrat.Margin = new Thickness(1, 5, 1, 5);
 
             TextBlock opis = new TextBlock(); //dodaje komentarz 
             opis.Text = "Budynki";
@@ -192,13 +203,16 @@ namespace po_projekt_kontrola_lotu
             Grid.SetColumn(opis, 1);
 
             LegendaContainer.Children.Add(legendGrid);
+            ShowGeneruj();
+
+        }
+        private void ShowGeneruj()
+        {
             ilosc_statkow.Visibility = Visibility.Visible;
             slider1Text.Visibility = Visibility.Visible;
             wygeneruj_trasy.Visibility = Visibility.Visible;
             slider1.Visibility = Visibility.Visible;
-
         }
-
 
         ///////////////////////////// obiekty latajace
         //slidery
@@ -274,8 +288,9 @@ namespace po_projekt_kontrola_lotu
         kolo.Fill = kolor;
         kolo.Stroke = Brushes.Black;
         kolo.StrokeThickness = 1;
+        kolo.Margin = new Thickness(1, 5, 1, 5);
 
-        TextBlock opisKola = new TextBlock(); //dodaje opis dla koła
+            TextBlock opisKola = new TextBlock(); //dodaje opis dla koła
         opisKola.Text = nazwa;
         opisKola.VerticalAlignment = VerticalAlignment.Center;
         opisKola.Margin = new Thickness(5, 0, 0, 0);
@@ -364,7 +379,7 @@ namespace po_projekt_kontrola_lotu
             var wybor = ((int)Math.Round(slider2.Value))-1;
             var statek = ListaStatkow[wybor];
             statek.zmien_trase();
-            MessageBox.Show("Zmieniono trasę statku nr:"+wybor+" ", "Switch 1");
+            // MessageBox.Show("Zmieniono trasę statku nr:"+wybor+" ", "Switch 1");
             
             FlyMapa.Children.Clear();
             foreach (var sta in ListaStatkow)
@@ -404,7 +419,7 @@ namespace po_projekt_kontrola_lotu
                     liczniklotow--;
                     if(liczniklotow == 0)
                     {                     
-                        for (int i = LegendaContainer.Children.Count - 1; i > 0; i--)
+                        for (int i = LegendaContainer.Children.Count - 1; i >= 0; i--)
                             LegendaContainer.Children.RemoveAt(i);
                     }
                 }
