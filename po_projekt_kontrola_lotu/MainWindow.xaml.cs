@@ -234,7 +234,7 @@ namespace po_projekt_kontrola_lotu
         // tworzenie listy statków 
         List<FlyObject> ListaStatkow = new List<FlyObject>();
         // rysowanie obiektow latajacych
-        private void CreateFlyObject(FlyObject FlOb,Brush brush1)
+        private void CreateFlyObject(FlyObject FlOb, Brush brush1)
         {
             Ellipse FlyObj = new Ellipse
             {
@@ -244,7 +244,7 @@ namespace po_projekt_kontrola_lotu
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
                 // -5 bo przesuwa elipse
-                Margin = new Thickness(FlOb.getPoczX()-5, FlOb.getPoczY()-5, 0, 0)
+                Margin = new Thickness(FlOb.getPoczX() - 5, FlOb.getPoczY() - 5, 10, 10)
             };
 
             // Sprawdzenie kolizji z istniejącymi obiektami
@@ -252,10 +252,11 @@ namespace po_projekt_kontrola_lotu
             foreach (var existingObject in ListaStatkow)
             {
                 Rect existingObjectRect = new Rect(existingObject.getPoczX() - 5, existingObject.getPoczY() - 5, 10, 10);
-                if (newObjectRect.IntersectsWith(existingObjectRect))
+               if (newObjectRect.IntersectsWith(existingObjectRect))
                 {
                     // Usunięcie nachodzących punktów
                     FlyMapa.Children.Remove(FlyObj);
+                    ListaStatkow.Remove(existingObject);
 
                     // Wyświetlenie komunikatu o kolizji obiektów
                     MessageBox.Show("Kolizja obiektów!");
@@ -263,7 +264,6 @@ namespace po_projekt_kontrola_lotu
                     return; // Zakończenie tworzenia obiektu w przypadku kolizji
                 }
             }
-
             FlyMapa.Children.Add(FlyObj);
             ListaStatkow.Add(FlOb);
         }
@@ -348,8 +348,9 @@ namespace po_projekt_kontrola_lotu
                 if (typ == 1)
                 {
                     var Statek = new Samolot(rnd.Next(120, 180), rnd.Next(120, 380));
-                    ListaStatkow.Add(Statek);
+                    
                     CreateFlyObject(Statek, Statek.GetBrush());
+                   // ListaStatkow.Add(Statek);
                     List<Odcinek> TrasaStatek = Statek.getTrasa();
                     foreach (Odcinek odc in TrasaStatek)
                        CreateOdcinek(odc, Statek.GetBrush());
@@ -358,8 +359,8 @@ namespace po_projekt_kontrola_lotu
                 if (typ == 2)
                 {
                     var Statek = new Smiglowiec(rnd.Next(120, 380), rnd.Next(120, 380));
-                    ListaStatkow.Add(Statek);
                     CreateFlyObject(Statek, Statek.GetBrush());
+                   // ListaStatkow.Add(Statek);
                     List<Odcinek> TrasaStatek = Statek.getTrasa();
                     foreach (Odcinek odc in TrasaStatek)
                         CreateOdcinek(odc, Statek.GetBrush());
@@ -367,8 +368,8 @@ namespace po_projekt_kontrola_lotu
                 }
                 if(typ == 3) {
                     var Statek = new Balon(rnd.Next(120, 380), rnd.Next(120, 380));
-                    ListaStatkow.Add(Statek);
                     CreateFlyObject(Statek, Statek.GetBrush());
+                 //   ListaStatkow.Add(Statek);
                     List<Odcinek> TrasaStatek = Statek.getTrasa();
                     foreach (Odcinek odc in TrasaStatek)
                         CreateOdcinek(odc, Statek.GetBrush());
@@ -377,8 +378,8 @@ namespace po_projekt_kontrola_lotu
                 if (typ == 4)
                 {
                     var Statek = new Szybowiec(rnd.Next(120, 380), rnd.Next(120, 380));
-                    ListaStatkow.Add(Statek);
                     CreateFlyObject(Statek, Statek.GetBrush());
+                  //  ListaStatkow.Add(Statek);
                     List<Odcinek> TrasaStatek = Statek.getTrasa();
                     foreach (Odcinek odc in TrasaStatek)
                         CreateOdcinek(odc, Statek.GetBrush());
@@ -392,18 +393,20 @@ namespace po_projekt_kontrola_lotu
         {
             var wybor = ((int)Math.Round(slider2.Value))-1;
             var statek = ListaStatkow[wybor];
-            statek.zmien_trase();
             // MessageBox.Show("Zmieniono trasę statku nr:"+wybor+" ", "Switch 1");
-            
+
+            List<FlyObject> ListaStatkowTMP = new List<FlyObject>(ListaStatkow);
             FlyMapa.Children.Clear();
-            foreach (var sta in ListaStatkow)
+            ListaStatkow.Clear();
+            statek.zmien_trase();
+            foreach (var sta in ListaStatkowTMP)
             {
                 List<Odcinek> TrasaStatek = sta.getTrasa();
                 if (TrasaStatek.Count >= 1)
                 {
                     CreateFlyObject(sta, sta.GetBrush());
                     foreach (Odcinek odc in TrasaStatek)
-                        CreateOdcinek(odc, sta.GetBrush());
+                    CreateOdcinek(odc, sta.GetBrush());
                 }
             }
             }
@@ -417,7 +420,9 @@ namespace po_projekt_kontrola_lotu
             //statki 
             FlyMapa.Children.Clear();
             int liczniklotow = LegendaContainer.Children.Count-1;
-            foreach (var sta in ListaStatkow)
+            List<FlyObject>ListaStatkowTMP= new List<FlyObject>(ListaStatkow);
+            ListaStatkow.Clear();
+            foreach (var sta in ListaStatkowTMP)
             {
                 List<Odcinek> TrasaStatek = sta.getTrasa();
                 if (TrasaStatek.Count>=1)
@@ -431,11 +436,11 @@ namespace po_projekt_kontrola_lotu
                 if(TrasaStatek.Count==0)
                 {
                     liczniklotow--;
-                    if(liczniklotow == 0)
-                    {                     
+                 if(liczniklotow <= 0)
+                  {                     
                         for (int i = LegendaContainer.Children.Count - 1; i >= 0; i--)
                             LegendaContainer.Children.RemoveAt(i);
-                    }
+                  }
                 }
             }
 
