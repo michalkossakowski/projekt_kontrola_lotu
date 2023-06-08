@@ -382,7 +382,7 @@ namespace po_projekt_kontrola_lotu
             }
         }
 
-        // zmiana trast
+        // zmiana tras
         private void zmiana_Click(object sender, RoutedEventArgs e)
         {
             var wybor = ((int)Math.Round(slider2.Value)) - 1;
