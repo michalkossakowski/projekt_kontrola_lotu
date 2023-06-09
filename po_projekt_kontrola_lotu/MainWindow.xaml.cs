@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using System.IO; //potrzebne jest do plików tekstowych
 using Path = System.IO.Path; //do wczytywania plików z folderu
 using Microsoft.Win32;//do wczytywania plików z folderu
+using System.Reflection.Metadata;
 
 namespace po_projekt_kontrola_lotu
 {
@@ -233,37 +234,44 @@ namespace po_projekt_kontrola_lotu
         // rysowanie obiektow latajacych
         private void CreateFlyObject(FlyObject FlOb, Brush brush1)
         {
-            Ellipse FlyObj = new Ellipse
+            Ellipse FlyObjEl = new Ellipse
             {
-                Width = 10,
-                Height = 10,
+                Width = 16,
+                Height = 16,
                 Fill = brush1,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
                 // -5 bo przesuwa elipse
-                Margin = new Thickness(FlOb.getPoczX() - 5, FlOb.getPoczY() - 5, 0, 0)
+                Margin = new Thickness(FlOb.getPoczX() - 8, FlOb.getPoczY() - 8, 0, 0)
             };
+            FlyMapa.Children.Add(FlyObjEl);
+
             TextBlock idEl = new TextBlock();
             idEl.Text = FlOb.getId().ToString();
-            idEl.Margin = new Thickness(FlOb.getPoczX() - 5, FlOb.getPoczY() + 1, 0, 0);
+            idEl.Margin = new Thickness(FlOb.getPoczX() -4, FlOb.getPoczY() + 4, 0, 0);
             idEl.FontSize = 15;
             idEl.FontWeight = FontWeights.Bold;
             idEl.Foreground = Brushes.Black;
-    
-
-            FlyMapa.Children.Add(FlyObj);
             FlyMapa.Children.Add(idEl);
 
+
+            TextBlock wysFlOb = new TextBlock();
+            wysFlOb.Text = FlOb.getBierzWys().ToString();
+            wysFlOb.Margin = new Thickness(FlOb.getPoczX()-14, FlOb.getPoczY() - 26, 0, 0);
+            wysFlOb.FontSize = 12;
+            wysFlOb.FontWeight = FontWeights.Bold;
+            wysFlOb.Foreground = Brushes.Black;
+            wysFlOb.Background = brush1;
+            FlyMapa.Children.Add(wysFlOb);
 
         }
         // rysowanie odcinkow
         private void CreateOdcinek(Odcinek o, Brush brush1)
         {
+            var p1 = new Punkt(o.getP1());
+            var p2 = new Punkt(o.getP2());
             Line linia1 = new Line();
             {
-                var p1 = new Punkt(o.getP1());
-                var p2 = new Punkt(o.getP2());
-
                 linia1.X1 = p1.getX();
                 linia1.Y1 = p1.getY();
                 linia1.X2 = p2.getX();

@@ -123,7 +123,7 @@ abstract class FlyObject
     protected Punkt pocz;
     protected List<Odcinek> Trasa;
     protected Brush brush1;
-
+    protected double bierzaca_wysokosc;
 
     public FlyObject(double x, double y,int id)
     {
@@ -134,6 +134,10 @@ abstract class FlyObject
     public virtual int getId()
     {
         return id;
+    }
+    public virtual double getBierzWys()
+    {
+        return bierzaca_wysokosc;
     }
 
     public virtual Brush GetBrush()
@@ -160,6 +164,7 @@ abstract class FlyObject
     public virtual void skok(Odcinek odc)
     {
         pocz = odc.getP2();
+        bierzaca_wysokosc = odc.getWysokosc();
     }
     // zmiana trasy 
     public abstract void zmien_trase();
@@ -173,6 +178,8 @@ class Samolot : FlyObject
     {
         // kolor czerwony
         brush1 = new SolidColorBrush(Color.FromRgb(255,0,0));
+        Random rnd = new Random();
+        bierzaca_wysokosc = rnd.Next(1000, 1500);
         zmien_trase();
     }
 
@@ -203,6 +210,8 @@ class Smiglowiec : FlyObject {
     public Smiglowiec(double x, double y, int id) : base(x, y, id)
     {
         // kolor niebieski
+        Random rnd = new Random();
+        bierzaca_wysokosc = rnd.Next(100, 200);
         brush1 = new SolidColorBrush(Color.FromRgb(0, 155, 255));
         zmien_trase();
     }
@@ -234,6 +243,8 @@ class Balon : FlyObject
     public Balon(double x, double y, int id) : base(x, y, id)
     {
         // kolor rózowy 
+        Random rnd = new Random();
+        bierzaca_wysokosc = rnd.Next(100, 500);
         brush1 = new SolidColorBrush(Color.FromRgb(255, 0, 255));
         zmien_trase();
     }
@@ -265,6 +276,8 @@ class Szybowiec : FlyObject
     public Szybowiec(double x, double y, int id) : base(x, y, id)
     {
         // kolor pomaranczowy
+        Random rnd = new Random();
+        bierzaca_wysokosc = rnd.Next(100, 300);
         brush1 = new SolidColorBrush(Color.FromRgb(255, 125, 0));
         zmien_trase();
     }
