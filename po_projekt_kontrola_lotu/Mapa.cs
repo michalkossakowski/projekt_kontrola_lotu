@@ -9,6 +9,7 @@ using System.IO; //potrzebne jest do plików tekstowych
 using Path = System.IO.Path; //do wczytywania plików z folderu
 using Microsoft.Win32;//do wczytywania plików z folderu
 using po_projekt_kontrola_lotu;
+using System.Collections;
 
 class Mapa{
 
