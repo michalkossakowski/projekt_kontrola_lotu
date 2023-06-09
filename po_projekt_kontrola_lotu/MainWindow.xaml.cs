@@ -80,6 +80,8 @@ namespace po_projekt_kontrola_lotu
             HideGeneruj();
             HideTimer();
             HideZmienTrase();
+            legendatext.Visibility = Visibility.Hidden;
+            legendabox.Visibility = Visibility.Hidden;
         }
 
         // reset timera, mapy i legendy
