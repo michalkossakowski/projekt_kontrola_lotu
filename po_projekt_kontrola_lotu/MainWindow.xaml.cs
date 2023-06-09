@@ -19,7 +19,6 @@ namespace po_projekt_kontrola_lotu
         private DispatcherTimer _timer;
         private double _counter = 0;
 
-        
         public MainWindow()
         {
             // wyłączenie rozszerzania okna
@@ -227,16 +226,13 @@ namespace po_projekt_kontrola_lotu
         //rysowanie obiektów na mapie
         private void CreateObject(double x, double y)
         {
-            Random rnd = new Random();
-            Brush br1 = new SolidColorBrush(Color.FromRgb(100, 255, 100));
+            var ob = new MapObject(new Punkt(x, y));
             // Twórz obiekt na mapie o określonych koordynatach
             Rectangle kwadraty = new Rectangle
             {
-                Width = rnd.Next(10, 51),
-                Height = rnd.Next(10, 51),
-                Fill = br1,
-                Stroke = Brushes.Black,
-                StrokeThickness = 1,
+                Width = ob.getA(),
+                Height = ob.getB(),
+                Fill = new SolidColorBrush(Color.FromRgb(100, 255, 100)),
                 Margin = new Thickness(x, y, 0, 0)
             };
             Mapa.Children.Add(kwadraty);
@@ -268,7 +264,6 @@ namespace po_projekt_kontrola_lotu
             slider2.Maximum = ilosc;
             Showinterface();
 
-            //komentarz
             for (int i = 1; i <= ilosc; i++)
             {
                 var typ = rnd.Next(1, 5);
@@ -433,8 +428,6 @@ namespace po_projekt_kontrola_lotu
             }
         }
 
-
-
         // * * * przejście timera co sekundę * * *
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -480,23 +473,29 @@ namespace po_projekt_kontrola_lotu
             {
                 var x1 = ListaStatkow[i].getPoczX();
                 var y1 = ListaStatkow[i].getPoczY();
+                var w1 = ListaStatkow[i].getBierzWys();
                 for (int j = i + 1; j <= ilStat; j++)
                 {
                     var x2 = ListaStatkow[j].getPoczX();
                     var y2 = ListaStatkow[j].getPoczY();
-                    if (Math.Abs(x1 - x2) < 16 && Math.Abs(y1 - y2) < 16)
+                    var w2 = ListaStatkow[j].getBierzWys();
+                    if (Math.Abs(x1 - x2) < 16 && Math.Abs(y1 - y2) < 16 && Math.Abs(w1 - w2) < 100)
                     {
-                        MessageBox.Show("Kolizja obiektu nr: " + ListaStatkow[i].getId() + " z obiektm nr: " + ListaStatkow[j].getId() + " ! \nOba obiekty zostaną zniszczone !", " Wykryto Kolizję !!!");
+                        MessageBox.Show("Kolizja obiektu nr: " + ListaStatkow[i].getId() + " na wysokości: " + w1 +"\nz obiektm nr: " + ListaStatkow[j].getId() + " na wysokości: " + w2 + "\nOba obiekty zostaną zniszczone !", " Wykryto Kolizję !!!");
                         ListaStatkow.RemoveAt(j);
                         ListaStatkow.RemoveAt(i);
                         return;
                     }
-                    if (Math.Abs(x1 - x2) < 32 && Math.Abs(y1 - y2) < 32)
+                    if (Math.Abs(x1 - x2) < 32 && Math.Abs(y1 - y2) < 32 && Math.Abs(w1 - w2) < 200)
                     {
                         _timer.Stop();
                         this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
-                        MessageBox.Show("Obiekty nr: " + ListaStatkow[i].getId() + " oraz nr: " + ListaStatkow[j].getId() + " są niebezpiecznie blisko siebie \nZatrzymano timer ! \nZastanów się nad zmianą trasy !", "Wykryto Niebezpieczeństwo !!!");
-                       
+                        MessageBoxResult result = MessageBox.Show("Obiekty nr: " + ListaStatkow[i].getId() + " na wysokości: " + w1 + " \noraz obiekt nr: " + ListaStatkow[j].getId() + " na wysokości: " + w2 + " \nsą niebezpiecznie blisko siebie ! \nCzy chcesz zatrzymać czas aby zmienić trasę ?", "Wykryto Niebezpieczeństwo !!!", MessageBoxButton.YesNo);
+                        if (result == MessageBoxResult.No)
+                        {
+                            _timer.Start();
+                            this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 0, 255, 0));
+                        }
                     }
                 }
             }
@@ -504,5 +503,3 @@ namespace po_projekt_kontrola_lotu
         //////////////////////////////////////////////////////////// koniec Mainwindow
     }
 }
-
-

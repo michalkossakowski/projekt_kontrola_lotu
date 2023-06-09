@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media;
 using System;
+
 class Szybowiec : FlyObject
 {
     public Szybowiec(double x, double y, int id) : base(x, y, id)

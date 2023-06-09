@@ -44,13 +44,14 @@ abstract class FlyObject
     {
         pocz.przesun(x,y);
     }
+
     // skoki co odcinek
     public virtual void skok(Odcinek odc)
     {
         pocz = odc.getP2();
         bierzaca_wysokosc = odc.getWysokosc();
     }
+
     // zmiana trasy 
     public abstract void zmien_trase();
-
 }
