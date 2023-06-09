@@ -461,8 +461,17 @@ namespace po_projekt_kontrola_lotu
                     }
                 }
             }
-            // sprawdzanie kolizji
-            sprawdzKolizje();
+
+            for(int i=0; i<ListaStatkow.Count ; i++)
+            {
+                var Tra = ListaStatkow[i].getTrasa();
+                if (Tra.Count == 0)
+                {
+                    ListaStatkow.RemoveAt(i);
+                }
+            }
+                // sprawdzanie kolizji
+                sprawdzKolizje();
         }
         
         // * * * Sprawdzanie czy istnije niebezpieczenstwo lub kolizja * * *
