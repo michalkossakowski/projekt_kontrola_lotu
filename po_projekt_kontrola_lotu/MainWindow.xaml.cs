@@ -323,7 +323,7 @@ namespace po_projekt_kontrola_lotu
                 Fill = brush1,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
-                // -5 bo przesuwa elipse
+                // -8 bo przesuwa elipse
                 Margin = new Thickness(FlOb.getPoczX() - 8, FlOb.getPoczY() - 8, 0, 0)
             };
             FlyMapa.Children.Add(FlyObjEl);
@@ -461,15 +461,6 @@ namespace po_projekt_kontrola_lotu
                     foreach (Odcinek odc in TrasaStatek)
                         CreateOdcinek(odc, sta.GetBrush());
                 }
-                if (TrasaStatek.Count == 0)
-                {
-                    liczniklotow--;
-                    if (liczniklotow == 0)
-                    {
-                        for (int i = LegendaContainer.Children.Count - 1; i >= 0; i--)
-                            LegendaContainer.Children.RemoveAt(i);
-                    }
-                }
             }
 
             // usuwanie statkow ktore dotarly do konca 
@@ -478,7 +469,9 @@ namespace po_projekt_kontrola_lotu
                 var Tra = ListaStatkow[i].getTrasa();
                 if (Tra.Count == 0)
                 {
+                    LegendaContainer.Children.RemoveAt(i + 1);
                     ListaStatkow.RemoveAt(i);
+                    
                 }
             }
             if (ListaStatkow.Count == 0)
@@ -510,6 +503,8 @@ namespace po_projekt_kontrola_lotu
                         MessageBox.Show("Kolizja obiektu nr: " + ListaStatkow[i].getId() + " na wysokości: " + w1 +"\nz obiektm nr: " + ListaStatkow[j].getId() + " na wysokości: " + w2 + "\nOba obiekty zostaną zniszczone !", " Wykryto Kolizję !!!");
                         ListaStatkow.RemoveAt(j);
                         ListaStatkow.RemoveAt(i);
+                        LegendaContainer.Children.RemoveAt(j+1);
+                        LegendaContainer.Children.RemoveAt(i+1);
                         return;
                     }
                     if (Math.Abs(x1 - x2) < 32 && Math.Abs(y1 - y2) < 32 && Math.Abs(w1 - w2) < 300)
