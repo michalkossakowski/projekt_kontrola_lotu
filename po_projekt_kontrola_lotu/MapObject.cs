@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿/*
+using System.Collections.Generic;
 using System.Windows.Media;
 using System;
 
@@ -14,3 +15,4 @@ class MapObject
         this.b = b;
     }
 }
+*/
