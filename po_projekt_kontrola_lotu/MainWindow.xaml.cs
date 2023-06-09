@@ -486,7 +486,7 @@ namespace po_projekt_kontrola_lotu
                         ListaStatkow.RemoveAt(i);
                         return;
                     }
-                    if (Math.Abs(x1 - x2) < 32 && Math.Abs(y1 - y2) < 32 && Math.Abs(w1 - w2) < 200)
+                    if (Math.Abs(x1 - x2) < 32 && Math.Abs(y1 - y2) < 32 && Math.Abs(w1 - w2) < 300)
                     {
                         _timer.Stop();
                         this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
