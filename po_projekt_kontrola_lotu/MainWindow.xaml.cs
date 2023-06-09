@@ -463,9 +463,8 @@ namespace po_projekt_kontrola_lotu
                     liczniklotow--;
                     if (liczniklotow == 0)
                     {
-                        MessageBox.Show("Wszystkie loty się zakończyły !", " Koniec lotów !");
-                        resetAll();
-                        return;
+                        for (int i = LegendaContainer.Children.Count - 1; i >= 0; i--)
+                            LegendaContainer.Children.RemoveAt(i);
                     }
                 }
             }
@@ -479,8 +478,14 @@ namespace po_projekt_kontrola_lotu
                     ListaStatkow.RemoveAt(i);
                 }
             }
-                // sprawdzanie kolizji
-                sprawdzKolizje();
+            if (ListaStatkow.Count == 0)
+            {
+                MessageBox.Show("Wszystkie loty się zakończyły !", " Koniec lotów !");
+                resetAll();
+                return;
+            }
+            // sprawdzanie kolizji
+            sprawdzKolizje();
         }
         
         // * * * Sprawdzanie czy istnije niebezpieczenstwo lub kolizja * * *
