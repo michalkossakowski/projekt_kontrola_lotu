@@ -12,18 +12,18 @@ using po_projekt_kontrola_lotu;
 
 class Legenda
 {
-    private string nazwa;
-    private Brush kolor;
-    public void DodajdoLegendy(string nazwa, Brush kolor)
+ 
+    public Grid DodajdoLegendy(string nazwa, Brush kolor)
     {
         Grid legendGrid = new Grid //tworzy siatkę, która posiada dwie kolumny
         {
             ColumnDefinitions =
-                {
+            {
                 new ColumnDefinition(),
                 new ColumnDefinition()
-                }
+            }
         };
+
         Ellipse kolo = new Ellipse(); //dodaje wczytane koło 
         kolo.Width = 20;
         kolo.Height = 20;
@@ -42,7 +42,9 @@ class Legenda
 
         Grid.SetColumn(kolo, 0);//ustawia wizualne przedstawienie po lewej
         Grid.SetColumn(opisKola, 1);// ustawia opis po prawej
-        LegendaContainer.Children.Add(legendGrid);
+
+        return legendGrid;
     }
+
 
 }

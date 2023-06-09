@@ -264,6 +264,7 @@ namespace po_projekt_kontrola_lotu
         }
 
         // przycisk do generowania statków
+        Legenda legend= new Legenda();  
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
             Random rnd = new Random();
@@ -278,23 +279,28 @@ namespace po_projekt_kontrola_lotu
             {
                 var typ = rnd.Next(1, 5);
                 FlyObject Statek;
+                Grid legendGrid= new Grid();
                 switch (typ)
                 {
                     case 1:
                         Statek = new Samolot(rnd.Next(120, 180), rnd.Next(120, 380), i);
-                        DodajdoLegendy(i + " Samolot", Statek.GetBrush());
+                        legendGrid=legend.DodajdoLegendy(i + " Samolot", Statek.GetBrush());
+                        LegendaContainer.Children.Add(legendGrid);
                         break;
                     case 2:
                         Statek = new Smiglowiec(rnd.Next(120, 380), rnd.Next(120, 380), i);
-                        DodajdoLegendy(i + " Śmigłowiec", Statek.GetBrush());
+                        legendGrid = legend.DodajdoLegendy(i + " Śmigłowiec", Statek.GetBrush());
+                        LegendaContainer.Children.Add(legendGrid);
                         break;
                     case 3:
                         Statek = new Balon(rnd.Next(120, 380), rnd.Next(120, 380), i);
-                        DodajdoLegendy(i + " Balon", Statek.GetBrush());
+                        legendGrid = legend.DodajdoLegendy(i + " Balon", Statek.GetBrush());
+                        LegendaContainer.Children.Add(legendGrid);
                         break;
                     case 4:
                         Statek = new Szybowiec(rnd.Next(120, 380), rnd.Next(120, 380), i);
-                         DodajdoLegendy(i + " Szybowiec", Statek.GetBrush());
+                        legendGrid = legend.DodajdoLegendy(i + " Szybowiec", Statek.GetBrush());
+                        LegendaContainer.Children.Add(legendGrid);
                         break;
                     default:
                         Statek = null;
@@ -365,37 +371,6 @@ namespace po_projekt_kontrola_lotu
 
         // * * * Legenda * * *
 
-        // dodawanie do legendy
-        public void DodajdoLegendy(string nazwa, Brush kolor)
-        {
-            Grid legendGrid = new Grid //tworzy siatkę, która posiada dwie kolumny
-            {
-                ColumnDefinitions =
-                {
-                new ColumnDefinition(),
-                new ColumnDefinition()
-                }
-            };
-            Ellipse kolo = new Ellipse(); //dodaje wczytane koło 
-            kolo.Width = 20;
-            kolo.Height = 20;
-            kolo.Fill = kolor;
-            kolo.Stroke = Brushes.Black;
-            kolo.StrokeThickness = 1;
-            kolo.Margin = new Thickness(0, 5, 1, 5);
-
-            TextBlock opisKola = new TextBlock(); //dodaje opis dla koła
-            opisKola.Text = nazwa;
-            opisKola.VerticalAlignment = VerticalAlignment.Center;
-            opisKola.Margin = new Thickness(0, 0, 0, 0);
-
-            legendGrid.Children.Add(kolo); //wpisuje koło i opis do legendy
-            legendGrid.Children.Add(opisKola);
-
-            Grid.SetColumn(kolo, 0);//ustawia wizualne przedstawienie po lewej
-            Grid.SetColumn(opisKola, 1);// ustawia opis po prawej
-            LegendaContainer.Children.Add(legendGrid);
-        }
 
         // * * * Zmiana Trasy * * *
 
