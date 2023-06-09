@@ -8,7 +8,6 @@ using System.Windows.Threading;
 using System.IO; //potrzebne jest do plików tekstowych
 using Path = System.IO.Path; //do wczytywania plików z folderu
 using Microsoft.Win32;//do wczytywania plików z folderu
-using System.Reflection.Metadata;
 
 namespace po_projekt_kontrola_lotu
 {
@@ -21,21 +20,16 @@ namespace po_projekt_kontrola_lotu
         // mainwindow
         public MainWindow()
         {
-            ///////////////////////////////////////////////// poczatek main
-
             // wyłączenie rozszerzania okna
             this.ResizeMode = ResizeMode.NoResize;
-
             //timer
             InitializeComponent();
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += new EventHandler(Timer_Tick);
-
-            ///////////////////////////////////////////////// koniec main
         }
 
-        ///////////////////////////////////////////////// Obsługa Timer
+        // *** Obsługa Timer ***
         //timer start
         private void Start_Click(object sender, RoutedEventArgs e)
         {
@@ -57,7 +51,7 @@ namespace po_projekt_kontrola_lotu
             this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
         }
 
-        /////////////////////////////////////////////////// Resetowanie
+        // * * * Reset * * *
         //przycisk reset
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
@@ -73,6 +67,7 @@ namespace po_projekt_kontrola_lotu
             HideTimer();
             HideZmienTrase();
         }
+        // reset timera, mapy i legendy
         private void ResetFun()
         {
             //resetowanie timera
@@ -113,7 +108,7 @@ namespace po_projekt_kontrola_lotu
             zmien_trase.Visibility = Visibility.Hidden;
         }
 
-        ///////////////////////////////////////////// wczytywanie mapy
+        // * * * wczytywanie mapy * * * 
 
         //rysowanie obiektów na mapie
         private void CreateObject(double x, double y)
@@ -348,44 +343,36 @@ namespace po_projekt_kontrola_lotu
             for (int i = 1; i <= ilosc; i++)
             {
                 var typ = rnd.Next(1, 5);
-                if (typ == 1)
+                FlyObject Statek;
+                switch (typ)
                 {
-                    var Statek = new Samolot(rnd.Next(120, 180), rnd.Next(120, 380),i);
-                    ListaStatkow.Add(Statek);
-                    CreateFlyObject(Statek, Statek.GetBrush());
-                    List<Odcinek> TrasaStatek = Statek.getTrasa();
-                    foreach (Odcinek odc in TrasaStatek)
-                        CreateOdcinek(odc, Statek.GetBrush());
-                    DodajdoLegendy(i+" Samolot", Statek.GetBrush());
+                    case 1:
+                        Statek = new Samolot(rnd.Next(120, 180), rnd.Next(120, 380), i);
+                        DodajdoLegendy(i + " Samolot", Statek.GetBrush());
+                        break;
+                    case 2:
+                        Statek = new Smiglowiec(rnd.Next(120, 380), rnd.Next(120, 380), i);
+                        DodajdoLegendy(i + " Śmigłowiec", Statek.GetBrush());
+                        break;
+                    case 3:
+                        Statek = new Balon(rnd.Next(120, 380), rnd.Next(120, 380), i);
+                        DodajdoLegendy(i + " Balon", Statek.GetBrush());
+                        break;
+                    case 4:
+                        Statek = new Szybowiec(rnd.Next(120, 380), rnd.Next(120, 380), i);
+                         DodajdoLegendy(i + " Szybowiec", Statek.GetBrush());
+                        break;
+                    default:
+                        Statek = null;
+                        break;
                 }
-                if (typ == 2)
+                if(Statek != null)
                 {
-                    var Statek = new Smiglowiec(rnd.Next(120, 380), rnd.Next(120, 380),i);
                     ListaStatkow.Add(Statek);
                     CreateFlyObject(Statek, Statek.GetBrush());
                     List<Odcinek> TrasaStatek = Statek.getTrasa();
                     foreach (Odcinek odc in TrasaStatek)
                         CreateOdcinek(odc, Statek.GetBrush());
-                    DodajdoLegendy(i + " Śmigłowiec", Statek.GetBrush());
-                }
-                if (typ == 3) {
-                    var Statek = new Balon(rnd.Next(120, 380), rnd.Next(120, 380),i);
-                    ListaStatkow.Add(Statek);
-                    CreateFlyObject(Statek, Statek.GetBrush());
-                    List<Odcinek> TrasaStatek = Statek.getTrasa();
-                    foreach (Odcinek odc in TrasaStatek)
-                        CreateOdcinek(odc, Statek.GetBrush());
-                    DodajdoLegendy(i + " Balon", Statek.GetBrush());
-                }
-                if (typ == 4)
-                {
-                    var Statek = new Szybowiec(rnd.Next(120, 380), rnd.Next(120, 380),i);
-                    ListaStatkow.Add(Statek);
-                    CreateFlyObject(Statek, Statek.GetBrush());
-                    List<Odcinek> TrasaStatek = Statek.getTrasa();
-                    foreach (Odcinek odc in TrasaStatek)
-                        CreateOdcinek(odc, Statek.GetBrush());
-                    DodajdoLegendy(i + " Szybowiec", Statek.GetBrush());
                 }
             }
         }
@@ -393,9 +380,21 @@ namespace po_projekt_kontrola_lotu
         // zmiana tras
         private void zmiana_Click(object sender, RoutedEventArgs e)
         {
-            var wybor = ((int)Math.Round(slider2.Value))-1;
-            var statek = ListaStatkow[wybor];
-            statek.zmien_trase();
+            var wybor = ((int)Math.Round(slider2.Value));
+
+            int czy_ist = 0;
+            foreach (var st in ListaStatkow)
+            {
+                if (st.getId() == wybor)
+                {
+                    st.zmien_trase();
+                    czy_ist = 1;
+                }
+            }
+            if(czy_ist == 0)
+            {
+                MessageBox.Show("Wybrany statek nr: " + wybor + " został już zniszczony!", " Wybrano zły statek !!!");
+            }
 
             FlyMapa.Children.Clear();
             foreach (var sta in ListaStatkow)
@@ -410,7 +409,7 @@ namespace po_projekt_kontrola_lotu
             }
         }
 
-        ///////////////////////////// timer, ruch statkow niedokonczony
+        ///////////////////////////// timer, ruch statkow, sprawdzanie kolizji
         private void Timer_Tick(object sender, EventArgs e)
         {
             // timer
@@ -443,9 +442,7 @@ namespace po_projekt_kontrola_lotu
             }
             sprawdzKolizje();
         }
-
         // czy kolizja
-
         private void sprawdzKolizje()
         {
             int ilStat = ListaStatkow.Count - 1;
@@ -457,29 +454,23 @@ namespace po_projekt_kontrola_lotu
                 {
                     var x2 = ListaStatkow[j].getPoczX();
                     var y2 = ListaStatkow[j].getPoczY();
-                    if (Math.Abs(x1 - x2) < 20 && Math.Abs(y1 - y2) < 20)
+                    if (Math.Abs(x1 - x2) < 16 && Math.Abs(y1 - y2) < 16)
                     {
-                        MessageBox.Show("Kolizja obiektu nr: " + (i+1) + " z obiektm nr: " + (j+1) +" ! \nOba obiekty zostaną zniszczone !", " Wykryto Kolizję !!!");
+                        MessageBox.Show("Kolizja obiektu nr: " + ListaStatkow[i].getId() + " z obiektm nr: " + ListaStatkow[j].getId() + " ! \nOba obiekty zostaną zniszczone !", " Wykryto Kolizję !!!");
                         ListaStatkow.RemoveAt(j);
                         ListaStatkow.RemoveAt(i);
                         return;
                     }
-                    if (Math.Abs(x1 - x2) < 30 && Math.Abs(y1 - y2) < 30)
+                    if (Math.Abs(x1 - x2) < 32 && Math.Abs(y1 - y2) < 32)
                     {
                         _timer.Stop();
                         this.TimerBox.Background = new SolidColorBrush(Color.FromArgb(50, 255, 0, 0));
-                        MessageBox.Show("Obiekty nr: " + (i + 1) + " oraz nr: " + (j + 1) + " są niebezpiecznie blisko siebie \nZatrzymano timer ! \nZastanów się nad zmianą trasy !", "Wykryto Niebezpieczeństwo !!!");
+                        MessageBox.Show("Obiekty nr: " + ListaStatkow[i].getId() + " oraz nr: " + ListaStatkow[j].getId() + " są niebezpiecznie blisko siebie \nZatrzymano timer ! \nZastanów się nad zmianą trasy !", "Wykryto Niebezpieczeństwo !!!");
                        
                     }
                 }
             }
         }
-
-
-
-
-
-
         /////////////////////////////////////////////// koniec window
     }
 }
