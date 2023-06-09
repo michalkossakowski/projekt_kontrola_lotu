@@ -61,16 +61,20 @@ namespace po_projekt_kontrola_lotu
         //przycisk reset
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
+            resetAll();
+        }
+        //reset wszysktiego
+
+        private void resetAll()
+        {
             //reset timera mapy i legendy
             ResetFun();
-
+            Reset.Visibility = Visibility.Hidden;
             //reset wczytywania pliku
             wczytaj.Content = "Wczytaj Plik";
             wczytaj.IsEnabled = true;
-
             //reset obiektow
             ResetFlyObj();
-
             // ukrywanie interfejsu
             HideGeneruj();
             HideTimer();
@@ -151,6 +155,9 @@ namespace po_projekt_kontrola_lotu
         //przycisk wczytaj
         private void Wczytaj_Click(object sender, RoutedEventArgs e)
         {
+            Reset.Visibility = Visibility.Visible;
+            legendatext.Visibility = Visibility.Visible;
+            legendabox.Visibility = Visibility.Visible;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             string nadrzednyFolder1 = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName;
             string nadrzednyFolder2 = Directory.GetParent(nadrzednyFolder1).FullName;
@@ -456,12 +463,14 @@ namespace po_projekt_kontrola_lotu
                     liczniklotow--;
                     if (liczniklotow == 0)
                     {
-                        for (int i = LegendaContainer.Children.Count - 1; i >= 0; i--)
-                            LegendaContainer.Children.RemoveAt(i);
+                        MessageBox.Show("Wszystkie loty się zakończyły !", " Koniec lotów !");
+                        resetAll();
+                        return;
                     }
                 }
             }
 
+            // usuwanie statkow ktore dotarly do konca 
             for(int i=0; i<ListaStatkow.Count ; i++)
             {
                 var Tra = ListaStatkow[i].getTrasa();
