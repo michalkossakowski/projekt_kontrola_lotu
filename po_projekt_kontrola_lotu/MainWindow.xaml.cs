@@ -179,29 +179,10 @@ namespace po_projekt_kontrola_lotu
                 wczytaj.IsEnabled = false;
                 WczytajPlik(openFileDialog.FileName); //mapa z pliku
             }
-            Rectangle kwadrat = new Rectangle(); //dodaje wczytany kwadrat
-            Brush br1 = new SolidColorBrush(Color.FromRgb(100, 255, 100));
-            kwadrat.Width = 20;
-            kwadrat.Height = 20;
-            kwadrat.Fill = br1;
-            kwadrat.Stroke = Brushes.Black;
-            kwadrat.StrokeThickness = 1;
-            kwadrat.Margin = new Thickness(0, 5, 0, 5);
+            Legenda legenda = new Legenda();
+            Grid budynkiGrid = legenda.StworzBudynek();
 
-            TextBlock opis = new TextBlock(); //dodaje komentarz 
-            opis.Text = "Budynki";
-            opis.VerticalAlignment = VerticalAlignment.Center;
-            opis.Margin = new Thickness(0, 0, 0, 0);
-
-            Grid legendGrid = new Grid(); //dzieli legendę na dwie kolumny. Jedną obrazkową, drugą opisową
-            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            legendGrid.Children.Add(kwadrat); //wpisuje kwadrat i komentarz do legendy
-            legendGrid.Children.Add(opis);
-            Grid.SetColumn(kwadrat, 0);
-            Grid.SetColumn(opis, 1);
-
-            LegendaContainer.Children.Add(legendGrid);
+            LegendaContainer.Children.Add(budynkiGrid);
             ShowGeneruj();
         }
 
