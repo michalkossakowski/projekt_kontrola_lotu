@@ -232,7 +232,7 @@ namespace po_projekt_kontrola_lotu
         // * * * Generowanie Statkow * * *
 
         // tworzenie listy statków 
-        List<FlyObject> ListaStatkow = new List<FlyObject>();
+        private List<FlyObject> ListaStatkow = new List<FlyObject>();
 
         // Wybor ilości obiektów do wygenerowania
         private void slider1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -244,7 +244,7 @@ namespace po_projekt_kontrola_lotu
         }
 
         // przycisk do generowania statków
-        Legenda legend= new Legenda();  
+        private Legenda legend= new Legenda();  
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
             Random rnd = new Random();
