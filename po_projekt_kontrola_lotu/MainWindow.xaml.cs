@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,7 +18,7 @@ namespace po_projekt_kontrola_lotu
         // timer zmienne globalne
         private DispatcherTimer _timer;
         private double _counter = 0;
-
+        
         public MainWindow()
         {
             // wyłączenie rozszerzania okna
@@ -202,10 +201,10 @@ namespace po_projekt_kontrola_lotu
                         if (parts.Length == 2 && double.TryParse(parts[0], out double x) && double.TryParse(parts[1], out double y))
                             CreateObject(x, y);
                         else
-                            MessageBox.Show("Nieprawidłowe dane: " + linia);
+                            MessageBox.Show("Nieprawidłowe dane: " + linia+" \n Mapa została wczytana bez uszkodzonych linii !");
                     }
                     else
-                        MessageBox.Show("Nieprawidłowy format linii: " + linia);
+                        MessageBox.Show("Nieprawidłowy format linii: \""+linia+"\" \nMapa została wczytana bez uszkodzonych linii !");                                                                                                                                                                        
                 }
             }
             catch (Exception ex)
