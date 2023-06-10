@@ -12,7 +12,6 @@ using po_projekt_kontrola_lotu;
 
 class Legenda
 {
- 
     public Grid DodajdoLegendy(string nazwa, Brush kolor)
     {
         Grid legendGrid = new Grid //tworzy siatkę, która posiada dwie kolumny

@@ -1,0 +1,123 @@
+﻿using NUnit.Framework;
+using System.Collections.Generic;
+using System.Windows.Media;
+
+namespace po_projekt_kontrola_lotu.Testy
+{
+    [TestFixture]
+    public class FlyObjectTesty
+    {
+        [Test]
+        public void Konstruktor_PowinienUstawicIdPoczatekTrasyIPustaListeOdcinkow()
+        {
+            // Arrange
+            double x = 1.0;
+            double y = 2.0;
+            int id = 123;
+
+            // Act
+            FlyObject flyObject = new MockFlyObject(x, y, id);
+
+            // Assert
+            Assert.AreEqual(id, flyObject.getId()); // czy właściwe id?
+            Assert.AreEqual(x, flyObject.getPoczX()); // czy właściwy X?
+            Assert.AreEqual(y, flyObject.getPoczY()); // czy właściwy Y?
+            Assert.IsEmpty(flyObject.getTrasa()); // czy lista jest pusta?
+        }
+
+        [Test]
+        public void GetBiezacaWysokosc_PowinienZwrocicUstawionaBiezacaWysokosc()
+        {
+            // Arrange
+            double x = 1.0;
+            double y = 2.0;
+            int id = 123;
+            double bierzacaWysokosc = 10.0;
+            FlyObject flyObject = new MockFlyObject(x, y, id);
+            flyObject.SetBierzacaWysokosc(bierzacaWysokosc);
+
+            // Act
+            double result = flyObject.getBierzWys();
+
+            // Assert
+            Assert.AreEqual(bierzacaWysokosc, result); //czy wysokość się zgadza?
+        }
+
+        [Test]
+        public void GetBrush_PowinienZwrocicUstawionyBrush()
+        {
+            // Arrange
+            double x = 1.0;
+            double y = 2.0;
+            int id = 123;
+            Brush brush = Brushes.Red;
+            FlyObject flyObject = new MockFlyObject(x, y, id);
+            flyObject.SetBrush(brush);
+
+            // Act
+            Brush result = flyObject.GetBrush();
+
+            // Assert
+            Assert.AreEqual(brush, result); // czy kolor obiektu się zgadza z podanym?
+        }
+
+        [Test]
+        public void GetTrasa_PowinienZwrocicUstawionaTrase()
+        {
+            // Arrange
+            double x = 1.0;
+            double y = 2.0;
+            int id = 123;
+            List<Odcinek> trasa = new List<Odcinek>();
+            trasa.Add(new Odcinek(new Punkt(1.0, 2.0), 10.0, 5.0, 3.0));
+            FlyObject flyObject = new MockFlyObject(x, y, id);
+            flyObject.SetTrasa(trasa);
+
+            // Act
+            List<Odcinek> result = flyObject.getTrasa();
+
+            // Assert
+            Assert.AreEqual(trasa, result); //czy trasa się zgadza?
+        }
+
+        [Test]
+        public void Przesun_PowinienPrzesunacPunktPoczatkowy()
+        {
+            // Arrange
+            double x = 1.0;
+            double y = 2.0;
+            int id = 123;
+            double przesuniecieX = 5.0;
+            double przesuniecieY = -3.0;
+            FlyObject flyObject = new MockFlyObject(x, y, id);
+
+            // Act
+            flyObject.przesun(przesuniecieX, przesuniecieY);
+            double newX = flyObject.getPoczX();
+            double newY = flyObject.getPoczY();
+
+            // Assert
+            Assert.AreEqual(x + przesuniecieX, newX); // czy prawidłowo przesuwa punkty początkowe?
+            Assert.AreEqual(y + przesuniecieY, newY);
+        }
+
+        [Test]
+        public void Skok_PowinienUstawicPunktPoczatkowyNaKoniecOdcinkaIBiezacaWysokoscNaOdcinku()
+        {
+            // Arrange
+            double x = 1.0;
+            double y = 2.0;
+            int id = 123;
+            Odcinek odcinek = new Odcinek(new Punkt(1.0, 2.0), 10.0, 5.0, 3.0);
+            FlyObject flyObject = new MockFlyObject(x, y, id);
+
+            // Act
+            flyObject.skok(odcinek);
+            Punkt pocz = flyObject.getPocz();
+            double biezacaWysokosc = flyObject.getBierzWys();
+
+            // Assert
+            Assert.AreEqual(odcinek.getP2(), pocz);
+            Assert.AreEqual(odcinek.getWysokosc(), biezacaWysokosc);
+        }
+    }

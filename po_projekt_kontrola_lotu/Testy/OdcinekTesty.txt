@@ -1,0 +1,59 @@
+﻿using NUnit.Framework;
+using System;
+
+namespace po_projekt_kontrola_lotu.Testy
+{
+    [TestFixture]
+    public class OdcinekTesty
+    {
+        [Test]
+        public void Konstruktor_PowinienUstawicPunktyIKierunekOdpowiednio()
+        {
+            // Arrange
+            Punkt p1 = new Punkt(1.0, 2.0);
+            double wysokosc = 10.0;
+            double predkosc = 5.0;
+            double kierunek = 3.0;
+
+            // Act
+            Odcinek odcinek = new Odcinek(p1, wysokosc, predkosc, kierunek);
+
+            // Assert
+            Assert.AreEqual(p1, odcinek.getP1()); //czy punkty się zgadzają?
+            Assert.AreEqual(p1, odcinek.getP2());
+            Assert.AreEqual(kierunek, odcinek.getKierunek()); // czy kierunek się zgadza?
+        }
+        [Test]
+        public void Konstruktor_PowinienPrzesunacPunktP2WlasciwieNaPodstawieKierunku()
+        {
+            // Arrange
+            Punkt p1 = new Punkt(1.0, 2.0);
+            double wysokosc = 10.0;
+            double predkosc = 5.0;
+            double kierunek = 3.0;
+            Punkt oczekiwanyP2 = new Punkt(1.0, 7.0);
+
+            // Act
+            Odcinek odcinek = new Odcinek(p1, wysokosc, predkosc, kierunek);
+
+            // Assert
+            Assert.AreEqual(oczekiwanyP2, odcinek.getP2()); //czy punkt P2 znajduje się we właściwym miejscu?
+        }
+
+        [Test]
+        public void GetWysokosc_PowinienZwrocicUstawionaWysokosc()
+        {
+            // Arrange
+            Punkt p1 = new Punkt(1.0, 2.0);
+            double wysokosc = 10.0;
+            double predkosc = 5.0;
+            double kierunek = 3.0;
+
+            // Act
+            Odcinek odcinek = new Odcinek(p1, wysokosc, predkosc, kierunek);
+
+            // Assert
+            Assert.AreEqual(wysokosc, odcinek.getWysokosc()); //czy zwraca poprawną wysokość?
+        }
+    }
+}

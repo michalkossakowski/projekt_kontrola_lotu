@@ -7,7 +7,7 @@ class Balon : FlyObject
     {
         // kolor rózowy 
         Random rnd = new Random();
-        bierzaca_wysokosc = rnd.Next(100, 500);
+        biezaca_wysokosc = rnd.Next(100, 500);
         brush1 = new SolidColorBrush(Color.FromRgb(255, 0, 255));
         zmien_trase();
     }

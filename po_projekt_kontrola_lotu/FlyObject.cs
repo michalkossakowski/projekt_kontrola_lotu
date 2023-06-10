@@ -7,7 +7,7 @@ abstract class FlyObject
     protected Punkt pocz;
     protected List<Odcinek> Trasa;
     protected Brush brush1;
-    protected double bierzaca_wysokosc;
+    protected double biezaca_wysokosc;
 
     public FlyObject(double x, double y,int id)
     {
@@ -19,9 +19,9 @@ abstract class FlyObject
     {
         return id;
     }
-    public virtual double getBierzWys()
+    public virtual double getBiezWys()
     {
-        return bierzaca_wysokosc;
+        return biezaca_wysokosc;
     }
 
     public virtual Brush GetBrush()
@@ -49,7 +49,7 @@ abstract class FlyObject
     public virtual void skok(Odcinek odc)
     {
         pocz = odc.getP2();
-        bierzaca_wysokosc = odc.getWysokosc();
+        biezaca_wysokosc = odc.getWysokosc();
     }
 
     // zmiana trasy 

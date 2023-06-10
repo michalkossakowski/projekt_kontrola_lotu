@@ -9,7 +9,7 @@ class Samolot : FlyObject
         // kolor czerwony
         brush1 = new SolidColorBrush(Color.FromRgb(255, 0, 0));
         Random rnd = new Random();
-        bierzaca_wysokosc = rnd.Next(1000, 1500);
+        biezaca_wysokosc = rnd.Next(1000, 1500);
         zmien_trase();
     }
 

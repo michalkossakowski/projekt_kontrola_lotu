@@ -343,7 +343,7 @@ namespace po_projekt_kontrola_lotu
             FlyMapa.Children.Add(idEl);
 
             TextBlock wysFlOb = new TextBlock();
-            wysFlOb.Text = FlOb.getBierzWys().ToString();
+            wysFlOb.Text = FlOb.getBiezWys().ToString();
             wysFlOb.Margin = new Thickness(FlOb.getPoczX() - 14, FlOb.getPoczY() - 26, 0, 0);
             wysFlOb.FontSize = 12;
             wysFlOb.FontWeight = FontWeights.Bold;
@@ -467,12 +467,12 @@ namespace po_projekt_kontrola_lotu
             {
                 var x1 = ListaStatkow[i].getPoczX();
                 var y1 = ListaStatkow[i].getPoczY();
-                var w1 = ListaStatkow[i].getBierzWys();
+                var w1 = ListaStatkow[i].getBiezWys();
                 for (int j = i + 1; j <= ilStat; j++)
                 {
                     var x2 = ListaStatkow[j].getPoczX();
                     var y2 = ListaStatkow[j].getPoczY();
-                    var w2 = ListaStatkow[j].getBierzWys();
+                    var w2 = ListaStatkow[j].getBiezWys();
                     if (Math.Abs(x1 - x2) < 16 && Math.Abs(y1 - y2) < 16 && Math.Abs(w1 - w2) < 100)
                     {
                         MessageBox.Show("Kolizja obiektu nr: " + ListaStatkow[i].getId() + " na wysokości: " + w1 +"\nz obiektm nr: " + ListaStatkow[j].getId() + " na wysokości: " + w2 + "\nOba obiekty zostaną zniszczone !", " Wykryto Kolizję !!!");

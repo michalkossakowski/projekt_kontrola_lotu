@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Testy\**" />
+    <EmbeddedResource Remove="Testy\**" />
+    <None Remove="Testy\**" />
+    <Page Remove="Testy\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Mapy\" />
   </ItemGroup>
 

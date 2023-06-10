@@ -7,7 +7,7 @@ class Szybowiec : FlyObject
     {
         // kolor pomaranczowy
         Random rnd = new Random();
-        bierzaca_wysokosc = rnd.Next(100, 300);
+        biezaca_wysokosc = rnd.Next(100, 300);
         brush1 = new SolidColorBrush(Color.FromRgb(255, 125, 0));
         zmien_trase();
     }
