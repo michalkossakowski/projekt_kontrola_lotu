@@ -25,10 +25,6 @@ class Punkt
         this.x += px;
         this.y += py;
     }
-    public override string ToString()
-    {
-        return "(" + this.x + "," + this.y + ")";
-    }
     public double getX()
     {
         return x;
