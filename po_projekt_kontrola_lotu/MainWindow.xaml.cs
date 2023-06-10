@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,7 +18,7 @@ namespace po_projekt_kontrola_lotu
         // timer zmienne globalne
         private DispatcherTimer _timer;
         private double _counter = 0;
-
+        
         public MainWindow()
         {
             // wyłączenie rozszerzania okna
@@ -179,29 +178,10 @@ namespace po_projekt_kontrola_lotu
                 wczytaj.IsEnabled = false;
                 WczytajPlik(openFileDialog.FileName); //mapa z pliku
             }
-            Rectangle kwadrat = new Rectangle(); //dodaje wczytany kwadrat
-            Brush br1 = new SolidColorBrush(Color.FromRgb(100, 255, 100));
-            kwadrat.Width = 20;
-            kwadrat.Height = 20;
-            kwadrat.Fill = br1;
-            kwadrat.Stroke = Brushes.Black;
-            kwadrat.StrokeThickness = 1;
-            kwadrat.Margin = new Thickness(0, 5, 0, 5);
+            Legenda legenda = new Legenda();
+            Grid budynkiGrid = legenda.StworzBudynek();
 
-            TextBlock opis = new TextBlock(); //dodaje komentarz 
-            opis.Text = "Budynki";
-            opis.VerticalAlignment = VerticalAlignment.Center;
-            opis.Margin = new Thickness(0, 0, 0, 0);
-
-            Grid legendGrid = new Grid(); //dzieli legendę na dwie kolumny. Jedną obrazkową, drugą opisową
-            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            legendGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            legendGrid.Children.Add(kwadrat); //wpisuje kwadrat i komentarz do legendy
-            legendGrid.Children.Add(opis);
-            Grid.SetColumn(kwadrat, 0);
-            Grid.SetColumn(opis, 1);
-
-            LegendaContainer.Children.Add(legendGrid);
+            LegendaContainer.Children.Add(budynkiGrid);
             ShowGeneruj();
         }
 
@@ -221,10 +201,10 @@ namespace po_projekt_kontrola_lotu
                         if (parts.Length == 2 && double.TryParse(parts[0], out double x) && double.TryParse(parts[1], out double y))
                             CreateObject(x, y);
                         else
-                            MessageBox.Show("Nieprawidłowe dane: " + linia);
+                            MessageBox.Show("Nieprawidłowe dane: " + linia+" \n Mapa została wczytana bez uszkodzonych linii !");
                     }
                     else
-                        MessageBox.Show("Nieprawidłowy format linii: " + linia);
+                        MessageBox.Show("Nieprawidłowy format linii: \""+linia+"\" \nMapa została wczytana bez uszkodzonych linii !");                                                                                                                                                                        
                 }
             }
             catch (Exception ex)
@@ -264,6 +244,7 @@ namespace po_projekt_kontrola_lotu
         }
 
         // przycisk do generowania statków
+        Legenda legend= new Legenda();  
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
         {
             Random rnd = new Random();
@@ -278,23 +259,28 @@ namespace po_projekt_kontrola_lotu
             {
                 var typ = rnd.Next(1, 5);
                 FlyObject Statek;
+                Grid legendGrid= new Grid();
                 switch (typ)
                 {
                     case 1:
                         Statek = new Samolot(rnd.Next(120, 180), rnd.Next(120, 380), i);
-                        DodajdoLegendy(i + " Samolot", Statek.GetBrush());
+                        legendGrid=legend.DodajdoLegendy(i + " Samolot", Statek.GetBrush());
+                        LegendaContainer.Children.Add(legendGrid);
                         break;
                     case 2:
                         Statek = new Smiglowiec(rnd.Next(120, 380), rnd.Next(120, 380), i);
-                        DodajdoLegendy(i + " Śmigłowiec", Statek.GetBrush());
+                        legendGrid = legend.DodajdoLegendy(i + " Śmigłowiec", Statek.GetBrush());
+                        LegendaContainer.Children.Add(legendGrid);
                         break;
                     case 3:
                         Statek = new Balon(rnd.Next(120, 380), rnd.Next(120, 380), i);
-                        DodajdoLegendy(i + " Balon", Statek.GetBrush());
+                        legendGrid = legend.DodajdoLegendy(i + " Balon", Statek.GetBrush());
+                        LegendaContainer.Children.Add(legendGrid);
                         break;
                     case 4:
                         Statek = new Szybowiec(rnd.Next(120, 380), rnd.Next(120, 380), i);
-                         DodajdoLegendy(i + " Szybowiec", Statek.GetBrush());
+                        legendGrid = legend.DodajdoLegendy(i + " Szybowiec", Statek.GetBrush());
+                        LegendaContainer.Children.Add(legendGrid);
                         break;
                     default:
                         Statek = null;
@@ -323,7 +309,7 @@ namespace po_projekt_kontrola_lotu
                 Fill = brush1,
                 Stroke = Brushes.Black,
                 StrokeThickness = 1,
-                // -5 bo przesuwa elipse
+                // -8 bo przesuwa elipse
                 Margin = new Thickness(FlOb.getPoczX() - 8, FlOb.getPoczY() - 8, 0, 0)
             };
             FlyMapa.Children.Add(FlyObjEl);
@@ -337,7 +323,7 @@ namespace po_projekt_kontrola_lotu
             FlyMapa.Children.Add(idEl);
 
             TextBlock wysFlOb = new TextBlock();
-            wysFlOb.Text = FlOb.getBierzWys().ToString();
+            wysFlOb.Text = FlOb.getBiezWys().ToString();
             wysFlOb.Margin = new Thickness(FlOb.getPoczX() - 14, FlOb.getPoczY() - 26, 0, 0);
             wysFlOb.FontSize = 12;
             wysFlOb.FontWeight = FontWeights.Bold;
@@ -365,37 +351,6 @@ namespace po_projekt_kontrola_lotu
 
         // * * * Legenda * * *
 
-        // dodawanie do legendy
-        public void DodajdoLegendy(string nazwa, Brush kolor)
-        {
-            Grid legendGrid = new Grid //tworzy siatkę, która posiada dwie kolumny
-            {
-                ColumnDefinitions =
-                {
-                new ColumnDefinition(),
-                new ColumnDefinition()
-                }
-            };
-            Ellipse kolo = new Ellipse(); //dodaje wczytane koło 
-            kolo.Width = 20;
-            kolo.Height = 20;
-            kolo.Fill = kolor;
-            kolo.Stroke = Brushes.Black;
-            kolo.StrokeThickness = 1;
-            kolo.Margin = new Thickness(0, 5, 1, 5);
-
-            TextBlock opisKola = new TextBlock(); //dodaje opis dla koła
-            opisKola.Text = nazwa;
-            opisKola.VerticalAlignment = VerticalAlignment.Center;
-            opisKola.Margin = new Thickness(0, 0, 0, 0);
-
-            legendGrid.Children.Add(kolo); //wpisuje koło i opis do legendy
-            legendGrid.Children.Add(opisKola);
-
-            Grid.SetColumn(kolo, 0);//ustawia wizualne przedstawienie po lewej
-            Grid.SetColumn(opisKola, 1);// ustawia opis po prawej
-            LegendaContainer.Children.Add(legendGrid);
-        }
 
         // * * * Zmiana Trasy * * *
 
@@ -461,15 +416,6 @@ namespace po_projekt_kontrola_lotu
                     foreach (Odcinek odc in TrasaStatek)
                         CreateOdcinek(odc, sta.GetBrush());
                 }
-                if (TrasaStatek.Count == 0)
-                {
-                    liczniklotow--;
-                    if (liczniklotow == 0)
-                    {
-                        for (int i = LegendaContainer.Children.Count - 1; i >= 0; i--)
-                            LegendaContainer.Children.RemoveAt(i);
-                    }
-                }
             }
 
             // usuwanie statkow ktore dotarly do konca 
@@ -478,7 +424,9 @@ namespace po_projekt_kontrola_lotu
                 var Tra = ListaStatkow[i].getTrasa();
                 if (Tra.Count == 0)
                 {
+                    LegendaContainer.Children.RemoveAt(i + 1);
                     ListaStatkow.RemoveAt(i);
+                    
                 }
             }
             if (ListaStatkow.Count == 0)
@@ -499,17 +447,19 @@ namespace po_projekt_kontrola_lotu
             {
                 var x1 = ListaStatkow[i].getPoczX();
                 var y1 = ListaStatkow[i].getPoczY();
-                var w1 = ListaStatkow[i].getBierzWys();
+                var w1 = ListaStatkow[i].getBiezWys();
                 for (int j = i + 1; j <= ilStat; j++)
                 {
                     var x2 = ListaStatkow[j].getPoczX();
                     var y2 = ListaStatkow[j].getPoczY();
-                    var w2 = ListaStatkow[j].getBierzWys();
+                    var w2 = ListaStatkow[j].getBiezWys();
                     if (Math.Abs(x1 - x2) < 16 && Math.Abs(y1 - y2) < 16 && Math.Abs(w1 - w2) < 100)
                     {
                         MessageBox.Show("Kolizja obiektu nr: " + ListaStatkow[i].getId() + " na wysokości: " + w1 +"\nz obiektm nr: " + ListaStatkow[j].getId() + " na wysokości: " + w2 + "\nOba obiekty zostaną zniszczone !", " Wykryto Kolizję !!!");
                         ListaStatkow.RemoveAt(j);
                         ListaStatkow.RemoveAt(i);
+                        LegendaContainer.Children.RemoveAt(j+1);
+                        LegendaContainer.Children.RemoveAt(i+1);
                         return;
                     }
                     if (Math.Abs(x1 - x2) < 32 && Math.Abs(y1 - y2) < 32 && Math.Abs(w1 - w2) < 300)

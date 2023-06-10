@@ -7,7 +7,7 @@ class Smiglowiec : FlyObject
     {
         // kolor niebieski
         Random rnd = new Random();
-        bierzaca_wysokosc = rnd.Next(100, 200);
+        biezaca_wysokosc = rnd.Next(100, 200);
         brush1 = new SolidColorBrush(Color.FromRgb(0, 155, 255));
         zmien_trase();
     }

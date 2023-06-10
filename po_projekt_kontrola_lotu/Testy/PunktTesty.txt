@@ -1,0 +1,80 @@
+﻿using NUnit.Framework;
+using System.Collections.Generic;
+using System.Windows.Media;
+
+namespace po_projekt_kontrola_lotu.Testy
+{
+    [TestFixture]
+    public class PunktyTesty
+    {
+        [Test]
+        public void KonstruktorDomyslny_PowinienTworzycPunktZOsiadaniemZero()
+        {
+            // Arrange
+            Punkt punkt = new Punkt();
+
+            // Assert
+            Assert.AreEqual(0, punkt.getX());// czy miejsca punktów się zgadzają?
+            Assert.AreEqual(0, punkt.getY());
+        }
+
+        [Test]
+        public void KonstruktorZParametrami_PowinienTworzycPunktZDanymiWspolrzednymi()
+        {
+            // Arrange
+            double x = 2.5;
+            double y = 3.8;
+            Punkt punkt = new Punkt(x, y);
+
+            // Assert
+            Assert.AreEqual(x, punkt.getX()); // czy miejsca punktów się zgadzają?
+            Assert.AreEqual(y, punkt.getY());
+        }
+
+        [Test]
+        public void KonstruktorKopiujacy_PowinienTworzycPunktZOdpowiednimiWspolrzednymiJakoPunktPierwotny()
+        {
+            // Arrange
+            Punkt punkt1 = new Punkt(1.2, 2.4);
+
+            // Act
+            Punkt punkt2 = new Punkt(punkt1);
+
+            // Assert
+            Assert.AreEqual(punkt1.getX(), punkt2.getX());//czy miejsca punktów się zgadzają?
+            Assert.AreEqual(punkt1.getY(), punkt2.getY());
+        }
+
+        [Test]
+        public void Przesun_PowinienPrzesunacPunktOWartosciachPodanychJakoOffset()
+        {
+            // Arrange
+            Punkt punkt = new Punkt(1.0, 2.0);
+            double px = 0.5;
+            double py = -1.0;
+            double oczekiwaneX = 1.5;
+            double oczekiwaneY = 1.0;
+
+            // Act
+            punkt.przesun(px, py);
+
+            // Assert
+            Assert.AreEqual(oczekiwaneX, punkt.getX());//czy miejsca punktów się zgadzają po przesunięciu?
+            Assert.AreEqual(oczekiwaneY, punkt.getY());
+        }
+
+        [Test]
+        public void ToString_PowinienZwrocicNapisPrzedstawiajacyWspolrzednePunktu()
+        {
+            // Arrange
+            Punkt punkt = new Punkt(2.5, 3.8);
+            string oczekiwanyNapis = "(2.5,3.8)";
+
+            // Act
+            string wynik = punkt.ToString();
+
+            // Assert
+            Assert.AreEqual(oczekiwanyNapis, wynik); //czy wyświetla oczekiwane współrzędne?
+        }
+    }
+}
