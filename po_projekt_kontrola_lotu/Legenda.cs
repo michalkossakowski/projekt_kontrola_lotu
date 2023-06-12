@@ -10,7 +10,7 @@ using Path = System.IO.Path; //do wczytywania plików z folderu
 using Microsoft.Win32;//do wczytywania plików z folderu
 using po_projekt_kontrola_lotu;
 
-class Legenda
+public class Legenda
 {
     public Grid DodajdoLegendy(string nazwa, Brush kolor)
     {

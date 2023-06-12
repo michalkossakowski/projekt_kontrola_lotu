@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Windows.Media;
-using System;
-class Punkt
+﻿
+public class Punkt
 {
     private double x;
     private double y;

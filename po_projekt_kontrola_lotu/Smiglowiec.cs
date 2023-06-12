@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media;
 using System;
 
-class Smiglowiec : FlyObject
+public class Smiglowiec : FlyObject
 {
     public Smiglowiec(double x, double y, int id) : base(x, y, id)
     {

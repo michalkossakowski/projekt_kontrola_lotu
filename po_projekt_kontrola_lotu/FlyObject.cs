@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
 using System;
-abstract class FlyObject
+public abstract class FlyObject
 {
     protected int id;
     protected Punkt pocz;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-class MapObject
+public class MapObject
 {
     private Punkt p;
     private int a;
