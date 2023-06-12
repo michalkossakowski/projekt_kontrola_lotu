@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -243,6 +243,14 @@ namespace po_projekt_kontrola_lotu
             }
         }
 
+
+        public class TenSamRespException : Exception
+        {
+            public TenSamRespException(string info) : base(info)
+            {
+            }
+        }
+
         // przycisk do generowania statków
         private Legenda legend= new Legenda();  
         private void wygeneruj_Click(object sender, RoutedEventArgs e)
@@ -263,7 +271,7 @@ namespace po_projekt_kontrola_lotu
                 switch (typ)
                 {
                     case 1:
-                        Statek = new Samolot(rnd.Next(120, 180), rnd.Next(120, 380), i);
+                        Statek = new Samolot(rnd.Next(120, 380), rnd.Next(120, 380), i);
                         legendGrid=legend.DodajdoLegendy(i + " Samolot", Statek.GetBrush());
                         LegendaContainer.Children.Add(legendGrid);
                         break;
@@ -286,14 +294,48 @@ namespace po_projekt_kontrola_lotu
                         Statek = null;
                         break;
                 }
+
                 if(Statek != null)
                 {
+                    
                     ListaStatkow.Add(Statek);
                     CreateFlyObject(Statek, Statek.GetBrush());
                     List<Odcinek> TrasaStatek = Statek.getTrasa();
                     foreach (Odcinek odc in TrasaStatek)
                         CreateOdcinek(odc, Statek.GetBrush());
                 }
+
+
+            }
+
+            try
+            {
+                for (int k = 0; k < ListaStatkow.Count; k++)
+                {
+                    FlyObject Statek0 = ListaStatkow[k];
+                    var x = Statek0.getPoczX();
+                    var y = Statek0.getPoczY();
+
+                    for (int j = k + 1; j < ListaStatkow.Count; j++)
+                    {
+                        FlyObject Statek1 = ListaStatkow[j];
+                        var xj = Statek1.getPoczX();
+                        var yj = Statek1.getPoczY();
+                        if (x == xj && y == yj)
+                        {
+                            ListaStatkow.RemoveAt(j);
+                            LegendaContainer.Children.RemoveAt(j + 1);
+                            throw new TenSamRespException("2 Statki zostały stworzone w jednym punkcie");
+                        }
+
+                    }
+
+                }
+            }
+            catch (TenSamRespException ex)
+            {
+                MessageBox.Show(ex.Message, "Informacja", MessageBoxButton.OK, MessageBoxImage.Warning);
+
             }
         }
 
@@ -363,22 +405,37 @@ namespace po_projekt_kontrola_lotu
             }
         }
 
+        public class StatekZniszczonyException : Exception
+        {
+            public StatekZniszczonyException(string info) : base(info)
+            {
+            }
+
+        }
+
+
         // przycisk do zmiany trasy
         private void zmiana_Click(object sender, RoutedEventArgs e)
         {
             var wybor = ((int)Math.Round(slider2.Value));
-
             int czy_ist = 0;
-            foreach (var st in ListaStatkow)
+            try
             {
-                if (st.getId() == wybor)
+                foreach (var st in ListaStatkow)
                 {
-                    st.zmien_trase();
-                    czy_ist = 1;
+                    if (st.getId() == wybor)
+                    {
+                        st.zmien_trase();
+                        czy_ist = 1;
+                    }
                 }
+                if (czy_ist == 0)
+                    throw new StatekZniszczonyException("Wybrany statek nr: " + wybor + " został już zniszczony!");
             }
-            if(czy_ist == 0)
-                MessageBox.Show("Wybrany statek nr: " + wybor + " został już zniszczony!", " Wybrano zły statek !!!");
+            catch(StatekZniszczonyException ex)
+            {
+                MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             FlyMapa.Children.Clear();
             foreach (var sta in ListaStatkow)
