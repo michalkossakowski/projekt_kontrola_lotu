@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
 using System;
-abstract class FlyObject
+public abstract class FlyObject
 {
     protected int id;
     protected Punkt pocz;
@@ -24,6 +24,11 @@ abstract class FlyObject
         return biezaca_wysokosc;
     }
 
+    public virtual void SetBiezacaWysokosc(double bw)
+    {
+        this.biezaca_wysokosc = bw;
+    }
+
     public virtual Brush GetBrush()
     {
         return brush1;
@@ -31,6 +36,15 @@ abstract class FlyObject
     public virtual List<Odcinek> getTrasa()
     {
         return Trasa;
+    }
+    public virtual void SetTrasa(List<Odcinek> listaO)
+    {
+        Trasa = listaO;
+    }
+
+    public virtual Punkt getPocz()
+    {
+        return pocz;
     }
     public virtual double getPoczX()
     {

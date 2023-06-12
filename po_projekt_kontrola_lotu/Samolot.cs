@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media;
 using System;
 
-class Samolot : FlyObject
+public class Samolot : FlyObject
 {
 
     public Samolot(double x, double y, int id) : base(x, y, id)

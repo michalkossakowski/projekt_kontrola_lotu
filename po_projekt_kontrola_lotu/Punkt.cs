@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Windows.Media;
-using System;
-class Punkt
+﻿
+public class Punkt
 {
     private double x;
     private double y;
@@ -25,6 +23,11 @@ class Punkt
         this.x += px;
         this.y += py;
     }
+    public override string ToString()
+    {
+        return "(" + this.x + "," + this.y + ")";
+    }
+
     public double getX()
     {
         return x;

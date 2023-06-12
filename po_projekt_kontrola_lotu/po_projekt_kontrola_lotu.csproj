@@ -12,4 +12,8 @@
     <Folder Include="Testy\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.13.3" />
+  </ItemGroup>
+
 </Project>

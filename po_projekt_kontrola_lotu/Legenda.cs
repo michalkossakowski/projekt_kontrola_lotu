@@ -4,7 +4,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 
 
-class Legenda
+public class Legenda
 {
     public Grid DodajdoLegendy(string nazwa, Brush kolor)
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-class Odcinek
+public class Odcinek
 {
     private Punkt p1;
     private Punkt p2;
