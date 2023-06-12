@@ -1,0 +1,8 @@
+punkty20, 20)
+punkty(210, 40)
+punkty(310, 20)
+punkty(410, 60)
+punkty(10, 120)
+punkty(110, 100)
+punkty(210, 110)
+punkty(310, 140)
